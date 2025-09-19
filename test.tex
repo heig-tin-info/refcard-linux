@@ -1,0 +1,308 @@
+\documentclass[10pt]{article}
+
+\usepackage{graphicx}
+\usepackage{tabularx}
+
+\usepackage[a4paper,landscape,margin=10mm]{geometry}
+\usepackage{multicol}
+\setlength{\columnsep}{5mm}
+\setlength{\columnseprule}{0.4pt}
+
+\usepackage{fontspec}
+% \setmainfont{TeX Gyre Heros}
+% \setsansfont{TeX Gyre Heros}
+% \setmonofont{Inconsolata}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[french]{babel}
+
+\usepackage{microtype}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.1em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  columns=flexible,
+  keepspaces=true,
+  upquote=true,
+  breaklines=true
+}
+
+\usepackage[os=win]{menukeys}
+\renewmenumacro{\keys}[+]{roundedkeys}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{titlesec}
+
+% Tailles des titres (s'applique aussi aux versions étoilées *)
+\titleformat{\section}
+  {\sffamily\bfseries\fontsize{12}{15}\selectfont} % ajoute  si tu veux en gras
+  {}{0pt}{}
+
+\titleformat{\subsection}
+  {\sffamily\bfseries\fontsize{10}{12}\selectfont}
+  {}{0pt}{}
+
+\titleformat{\subsubsection}
+  {\sffamily\bfseries\fontsize{8}{10}\selectfont}
+  {}{0pt}{}
+
+% Espacements (les tiens, inchangés)
+\titlespacing*{\section}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\subsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\subsubsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+
+
+\pagenumbering{gobble}
+
+% \titlespacing*{\section}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+% \titlespacing*{\subsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+% \titlespacing*{\subsubsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+
+\newlength\mybaselinestretch
+\mybaselinestretch=0pt plus 0.02pt\relax
+\addtolength{\baselineskip}{\mybaselinestretch}
+
+\setlength\parindent{0pt}
+\setlength\tabcolsep{1.5pt}
+\setlength{\columnseprule}{0.4pt}
+
+\def\revision{1.0}
+\def\revisiondate{2024-06-12}
+
+\begin{document}
+
+\begin{multicols}{4}
+
+\begin{tabularx}{\columnwidth}{lX}
+    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} &
+    \begin{center}
+      {\Large \bf Linux / Unix} \\
+      HEIG-VD -- version \revision \ -- \revisiondate \\
+    \end{center}
+\end{tabularx}
+
+\section*{Raccourcis clavier Bash}
+\subsection*{Mouvements}
+\keys{\ctrl + B} : recule d'un caractère \\
+\keys{\ctrl + F} : avance d'un caractère \\
+\keys{\ctrl + A} : début de ligne \quad
+\keys{\ctrl + E} : fin de ligne \\
+\keys{\Alt}{}+\keys{B} : recule d'un mot \quad
+\keys{\Alt}+\keys{F} : avance d'un mot \\[2pt]
+
+\subsection*{Édition}
+
+\keys{\ctrl + H} : suppr. caractère avant (\keys{\backspace}) \\
+\keys{\ctrl + D} : suppr. caractère sous le curseur (\keys{\del}) \\
+\keys{\ctrl + U} : coupe du début au curseur \\
+\keys{\ctrl + K} : coupe du curseur à la fin \\
+\keys{\ctrl + W} : coupe le mot avant le curseur (\keys{\Alt}+\keys{\backspace}) \\
+\keys{\ctrl + Y} : colle le dernier texte coupé \\
+\keys{\ctrl + T} : échange le caractère courant avec le précédent \\[2pt]
+
+\textbf{Exécution / complétion :}\\
+\keys{\ctrl + J}, \keys{\ctrl + M} : exécuter (\keys{\return}) \\
+\keys{\ctrl + I} : complétion (équiv. \keys{\tab}) \\
+\keys{\tab}{} : auto-complétion commandes/fichiers \\[2pt]
+
+\textbf{Marqueur :}\\
+\keys{\ctrl + @} : place un marqueur \\
+\keys{\ctrl + X},\keys{\ctrl + X} : échange curseur \(\leftrightarrow\) marqueur \\[2pt]
+
+\textbf{Contrôle :}\\
+\keys{\ctrl + C} : interrompre \\
+\keys{\ctrl + Z} : suspendre \\
+\keys{\ctrl + L} : effacer l'écran (\lstinline|clear|) \\
+\keys{\ctrl + D} : envoyer EOF (fermer le shell si vide) \\[2pt]
+
+\textbf{Historique / recherche :}\\
+\keys{\ctrl + R} : recherche historique \\
+\keys{\ctrl + G} : annuler la recherche \\
+\keys{\ctrl + P} : commande précédente \\
+\keys{\ctrl + N} : commande suivante \\
+\keys{\ctrl + S} : \emph{flux} pause (débloquer avec \keys{\ctrl + Q}) \\
+\keys{\Alt}+\keys{<} : début de l'historique \\
+\keys{\Alt}+\keys{>} : fin de l'historique \\
+\keys{\Alt}+\keys{P} : préc. dans l'historique \quad
+\keys{\Alt}+\keys{N} : suiv. dans l'historique \\[2pt]
+
+\textbf{Casse / mots :}\\
+\keys{\Alt}+\keys{U} : majuscules (mot après) \\
+\keys{\Alt}+\keys{L} : minuscules (mot après) \\
+\keys{\Alt}+\keys{C} : capitalise la première lettre \\
+\keys{\Alt}+\keys{D} : supprime le mot après \\
+\keys{\Alt}+\keys{.} : insère le dernier argument \\
+
+\section*{Placeholders courants}
+\lstinline|~| : $HOME \quad$
+\lstinline|.| : répertoire courant \\
+\lstinline|..| : répertoire parent \\
+\lstinline|!!| : dernière commande \\
+\lstinline|!n| : commande \#n de l'historique \\
+\lstinline|$?| : code retour dernière commande \\
+\lstinline|$0| : nom du script \\
+\lstinline|!*| : tous les arguments de la commande précédente \\
+\lstinline|^abc^123| : remplace \lstinline|abc| par \lstinline|123| dans la dernière commande \\
+\lstinline|`cmd`| (obsolète) \(\rightarrow\) préférer \lstinline|$(cmd)| \\
+\lstinline|$(cmd)| : substitution de commande \\
+\lstinline|${var}| : variable \\
+\lstinline|{a,b,c}| : expansion par alternatives \\
+\lstinline|{1..5}|, \lstinline|{a..e}| : expansions de séquence \\
+\lstinline|$(cmd1; cmd2)| : sous-coquille \\
+\lstinline|$(cmd &)| : arrière-plan (sous-coquille) \\
+\lstinline|$(( expr ))| : arithmétique \\
+
+\section*{Redirections / pipes}
+\lstinline|>| : stdout \textrightarrow{} fichier (écrase) \\
+\lstinline|>>| : stdout \textrightarrow{} fichier (ajoute) \\
+\lstinline|2>| : stderr \textrightarrow{} fichier (écrase) \\
+\lstinline|&>| : stdout+stderr \textrightarrow{} fichier (écrase) \\
+\lstinline|&>>| : stdout+stderr \textrightarrow{} fichier (ajoute) \\
+\lstinline|<| : stdin depuis fichier \\
+\lstinline|<<| : heredoc \quad \lstinline|<<<| : here-string \\
+\lstinline!|! : pipe \quad \lstinline!|&! : pipe stdout+stderr \\
+\lstinline|2>&1| : stderr \textrightarrow{} stdout \\
+\lstinline|cmd1 | cmd2 | cmd3| \\
+
+\section*{Commandes de base}
+\lstinline|uname -a| \quad
+\lstinline|date| \quad
+\lstinline|cal| \quad
+\lstinline|whoami| \\
+
+\section*{Fichiers / répertoires}
+\lstinline|pwd| \\
+\lstinline|ls| (\lstinline|-l -a -h -R -t -r -Q -i -d -S -1|) \\
+\lstinline|cd [répertoire]| \\
+\lstinline|mkdir [nom]| (\lstinline|-p|, \lstinline|-m [perms]|) \\
+\lstinline|rmdir [nom]| \\
+\lstinline|rm [fichier]| (\lstinline|-i -f -v -r|) \\
+\lstinline|cp [src] [dst]| (\lstinline|-i -f -v -r|) \\
+\lstinline|mv [src] [dst]| \\
+
+\section*{Exécution de commandes}
+\lstinline|source [fichier]| \\
+\lstinline|./[fichier]| (exécutable) \\
+
+\section*{Consultation de fichiers}
+\lstinline|cat| \quad
+\lstinline|less| \quad
+\lstinline|head| \quad
+\lstinline|tail| (\lstinline|-n N|, \lstinline|-f|) \\
+\lstinline|nano| \quad \lstinline|vi| \quad \lstinline|hexdump -C| \\
+\lstinline|file| \quad \lstinline|stat| \quad \lstinline|wc| \\
+\lstinline|diff [f1] [f2]| \\
+
+\section*{Flux / petits utilitaires}
+\lstinline|touch [f]| \\
+\lstinline|echo [-n|-e] "texte"| \\
+\lstinline|cat > [f]| (\keys{\ctrl}+\keys{D} pour terminer) \\
+\lstinline|cat >> [f]| (\keys{\ctrl}+\keys{D}) \\
+
+\section*{Variables d'environnement}
+\lstinline|export VAR=valeur| \quad \lstinline|echo $VAR| \\
+\lstinline|env| \quad \lstinline|printenv| \quad \lstinline|unset VAR| \\
+\lstinline|$PATH|, \lstinline|$HOME|, \lstinline|$SHELL|, \lstinline|$USER|, \lstinline|$PS1|, \lstinline|$PWD|, \lstinline|$OLDPWD| \\
+
+\section*{Processus / jobs}
+\lstinline|ps| \quad \lstinline|top| \quad \lstinline|htop| \\
+\lstinline|kill [PID]| \quad \lstinline|killall [nom]| \\
+\lstinline|bg| \quad \lstinline|fg| \quad \lstinline|jobs| \\
+
+\section*{Archives / compression}
+\textbf{\lstinline|.tar.gz|} : \lstinline|tar -czvf archive.tar.gz [f]| \\
+\lstinline|tar -xzvf archive.tar.gz| \\
+\textbf{\lstinline|.zip|} : \lstinline|zip archive.zip [f]| \quad \lstinline|unzip archive.zip| \\
+\textbf{\lstinline|.tar.xz|} : \lstinline|tar -cJvf| / \lstinline|tar -xJvf| \\
+\textbf{\lstinline|.7z|} : \lstinline|7z a archive.7z [f]| \quad \lstinline|7z x archive.7z| \\
+\textbf{bsdtar} : \lstinline|bsdtar -xf [archive]|, \lstinline|bsdtar -cf [arch] [f]|, \lstinline|bsdtar -tf [arch]| \\
+
+\section*{Permissions / utilisateurs}
+\lstinline|chmod [opts] [perms] [f]| \\
+\lstinline|chown utilisateur:groupe [f]| \\
+\lstinline|chgrp groupe [f]| \\
+\lstinline|umask| \\
+\lstinline|sudo [cmd]| \quad \lstinline|su [utilisateur]| \\
+\lstinline|who| \quad \lstinline|w| \quad \lstinline|id| \quad \lstinline|groups| \quad \lstinline|passwd| \\
+\textit{bits :} 1 x, 2 w, 4 r \\
+Exemples : \lstinline|chmod 755 f| (\lstinline|rwxr-xr-x|), \lstinline|chmod 644 f|, \lstinline|chmod u+x f|, \lstinline|chmod g-w f|, \lstinline|chmod o=r f|, \lstinline|chmod a+x f| \\
+
+\section*{less / more / man}
+Espace: page suivante \quad \keys{b}: page précédente \\
+\keys{\return}{}: ligne suivante \quad \keys{y}: ligne précédente \\
+\keys{/}: rechercher \quad \keys{n}/\keys{N}: suivant/précédent \\
+\keys{g}/\keys{G}: début/fin \quad \keys{q}: quitter \\
+\keys{h}: aide \quad \keys{m}: marque-page \\
+\keys{'}: aller au marque-page \quad \keys{`}: revenir \\
+\keys{+} \& \keys{-} + numéro : aller à la ligne \\
+
+\section*{Git}
+\lstinline|git status| \quad \lstinline|git add [f]| \\
+\lstinline|git commit -m "msg"| \\
+\lstinline|git push| \quad \lstinline|git pull| \\
+\lstinline|git clone [url]| \\
+\lstinline|git branch| \quad \lstinline|git checkout [br]| \\
+\lstinline|git merge [br]| \\
+
+\section*{Recherche}
+\lstinline|grep "texte" [f]| (\lstinline|-P -r -i -v -n -c -l -w -A n -B n -C n -o|) \\
+\lstinline|rg "texte" [rep]| (\lstinline|--json|) \\
+
+\section*{Remplacement}
+\lstinline|sed 's/ancien/nouveau/g' [f]| (\lstinline|-i -n -e -r|) \\
+\lstinline|perl -pe 's/ancien/nouveau/g' [f]| (\lstinline|-i -n -e -l|) \\
+\lstinline|perl -0777 -pe 's/ancien/nouveau/gs' [f]| \\
+
+\section*{Utilitaires}
+\lstinline|uniq [f]| (\lstinline|-c -d -u -i|) \\
+\lstinline|sort [f]| (\lstinline|-r -n -k n -u -t x|) \\
+\lstinline|cut -d x -f n [f]| \\
+\lstinline|awk '{print $n}' [f]| \\
+\lstinline|xargs [cmd]| (\lstinline|-n N -I {}|) \\
+\lstinline|tr 'set1' 'set2'| (\lstinline|-d -s|) \\
+\lstinline|tee [f]| (\lstinline|-a -i|) \\
+
+\section*{Aide}
+\lstinline|man [cmd]| (\lstinline|-k terme|, \lstinline|-f cmd|) \\
+\lstinline|apropos [terme]| \quad \lstinline|whatis [cmd]| \\
+\textit{Sections :} 1 utilisateur, 2 syscalls, 3 lib, 4 spéciaux, 5 formats, 6 jeux, 7 divers, 8 admin \\
+
+\section*{Réseau}
+\lstinline|ping [hôte]| (\lstinline|-c N -i s -s n -t TTL -W s|) \\
+\lstinline|ss -tuln| (\lstinline|-t -u -l -n -p|) \\
+\lstinline|ip addr| \quad \lstinline|ip route| \\
+
+\section*{Internet}
+\lstinline|wget [url]| (\lstinline|-O f -c -q --limit-rate=100k|) \\
+\lstinline|curl [url]| (\lstinline|-o f -O -L -I -d data -H 'Hdr: v'|) \\
+
+\section*{Env. virtuels Python}
+\lstinline|uv venv venv| \quad \lstinline|source venv/bin/activate| \\
+\lstinline|deactivate| \\
+\lstinline|pip install pkg| \quad \lstinline|pip uninstall pkg| \\
+\lstinline|pip list| \quad \lstinline|uv add pkg| \\
+\lstinline|pipx install pkg| \\
+
+\section*{APT (Debian/Ubuntu)}
+\lstinline|apt update| \quad \lstinline|apt upgrade| \\
+\lstinline|apt install pkg| \quad \lstinline|apt remove pkg| \\
+\lstinline|apt search terme| \quad \lstinline|apt show pkg| \\
+\lstinline|apt autoremove| (\lstinline|-y --purge|) \\
+
+\section*{Fun}
+\lstinline|cowsay "texte"| \\
+\lstinline|fortune | cowsay| \\
+\lstinline|sl| \quad \lstinline|lolcat| \\
+
+\section*{À installer (exemples)}
+\textbf{Manuels FR} : \lstinline|sudo apt install manpages-fr manpages-fr-extra| \\
+\textbf{Dev} : \lstinline|sudo apt install build-essential git curl wget vim htop| \\
+\textbf{Réseau} : \lstinline|sudo apt install net-tools iputils-ping traceroute dnsutils| \\
+
+\end{multicols}
+\end{document}
