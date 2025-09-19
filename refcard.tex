@@ -8,6 +8,8 @@
 \setlength{\columnsep}{5mm}
 \setlength{\columnseprule}{0.4pt}
 
+\usepackage{fontawesome5}
+
 \usepackage{fontspec}
 % \setmainfont{TeX Gyre Heros}
 % \setsansfont{TeX Gyre Heros}
@@ -86,41 +88,50 @@
     \end{center}
 \end{tabularx}
 
+\begin{tabularx}{\columnwidth}{lX}
+  \lstinline|[f]| & Nom de fichier \\
+  \lstinline|[d]| & Nom de répertoire \\
+  \lstinline|[cmd]| & Commande \\
+  \lstinline|"s"| & Chaîne de caractères \\
+\end{tabularx}
+
 \section*{Raccourcis clavier Bash}
 \subsection*{Mouvements}
-\keys{\ctrl + B} : recule d'un caractère \\
-\keys{\ctrl + F} : avance d'un caractère \\
-\keys{\ctrl + A} : début de ligne \quad
-\keys{\ctrl + E} : fin de ligne \\
-\keys{\Alt}{}+\keys{B} : recule d'un mot \quad
-\keys{\Alt}+\keys{F} : avance d'un mot \\[2pt]
+
+\begin{tabularx}{\columnwidth}{lX}
+\keys{\ctrl + B} & recule d'un caractère \\
+\keys{\ctrl + F} & avance d'un caractère \\
+\keys{\ctrl + A} & début de ligne \\
+\keys{\ctrl + E} & fin de ligne \\
+\keys{\Alt + B} & recule d'un mot \\
+\keys{\Alt + F} & avance d'un mot \\
+\end{tabularx}
 
 \subsection*{Édition}
 
-\keys{\ctrl + H} : suppr. caractère avant (\keys{\backspace}) \\
-\keys{\ctrl + D} : suppr. caractère sous le curseur (\keys{\del}) \\
-\keys{\ctrl + U} : coupe du début au curseur \\
-\keys{\ctrl + K} : coupe du curseur à la fin \\
-\keys{\ctrl + W} : coupe le mot avant le curseur (\keys{\Alt}+\keys{\backspace}) \\
-\keys{\ctrl + Y} : colle le dernier texte coupé \\
-\keys{\ctrl + T} : échange le caractère courant avec le précédent \\[2pt]
+\keys{\ctrl + H} \quad comme backspace (\keys{\backspace}) \\
+\keys{\ctrl + D} \quad comme delete (\keys{\del}) \\
+\keys{\ctrl + U} \quad coupe du début au curseur \\
+\keys{\ctrl + K} \quad coupe du curseur à la fin \\
+\keys{\ctrl + W} \quad coupe le mot avant le curseur \\
+\keys{\ctrl + Y} \quad colle le dernier texte coupé \\
+\keys{\ctrl + T} \quad swap le char courant avec le préc. \\
 
-\textbf{Exécution / complétion :}\\
+\subsection*{Exécution / complétion}
+
 \keys{\ctrl + J}, \keys{\ctrl + M} : exécuter (\keys{\return}) \\
 \keys{\ctrl + I} : complétion (équiv. \keys{\tab}) \\
-\keys{\tab}{} : auto-complétion commandes/fichiers \\[2pt]
+\keys{\tab}{} : auto-complétion \\
 
-\textbf{Marqueur :}\\
-\keys{\ctrl + @} : place un marqueur \\
-\keys{\ctrl + X},\keys{\ctrl + X} : échange curseur \(\leftrightarrow\) marqueur \\[2pt]
+\subsection*{Contrôle / Appels système}
 
-\textbf{Contrôle :}\\
-\keys{\ctrl + C} : interrompre \\
-\keys{\ctrl + Z} : suspendre \\
-\keys{\ctrl + L} : effacer l'écran (\lstinline|clear|) \\
-\keys{\ctrl + D} : envoyer EOF (fermer le shell si vide) \\[2pt]
+\keys{\ctrl + C} \quad interrompre (SIGINT) \\
+\keys{\ctrl + Z} \quad suspendre (SIGTSTP) \\
+\keys{\ctrl + L} \quad effacer l'écran (\lstinline|clear|) \\
+\keys{\ctrl + D} \quad envoyer EOF (ferme le shell) \\
 
-\textbf{Historique / recherche :}\\
+\subsection*{Historique / recherche}
+
 \keys{\ctrl + R} : recherche historique \\
 \keys{\ctrl + G} : annuler la recherche \\
 \keys{\ctrl + P} : commande précédente \\
@@ -131,31 +142,32 @@
 \keys{\Alt}+\keys{P} : préc. dans l'historique \quad
 \keys{\Alt}+\keys{N} : suiv. dans l'historique \\[2pt]
 
-\textbf{Casse / mots :}\\
-\keys{\Alt}+\keys{U} : majuscules (mot après) \\
-\keys{\Alt}+\keys{L} : minuscules (mot après) \\
-\keys{\Alt}+\keys{C} : capitalise la première lettre \\
-\keys{\Alt}+\keys{D} : supprime le mot après \\
-\keys{\Alt}+\keys{.} : insère le dernier argument \\
+\subsection*{Casse / mots}
 
-\section*{Placeholders courants}
-\lstinline|~| : $HOME \quad$
-\lstinline|.| : répertoire courant \\
-\lstinline|..| : répertoire parent \\
-\lstinline|!!| : dernière commande \\
-\lstinline|!n| : commande \#n de l'historique \\
-\lstinline|$?| : code retour dernière commande \\
-\lstinline|$0| : nom du script \\
-\lstinline|!*| : tous les arguments de la commande précédente \\
-\lstinline|^abc^123| : remplace \lstinline|abc| par \lstinline|123| dans la dernière commande \\
+\keys{\Alt + U} \quad majuscules (mot après) \\
+\keys{\Alt + L} \quad minuscules (mot après) \\
+\keys{\Alt + C} \quad capitalise la première lettre \\
+\keys{\Alt + D} \quad supprime le mot après \\
+\keys{\Alt + .} \quad insère le dernier argument \\
+
+\section*{Sucres}
+\lstinline|~| \quad \lstinline|$HOME|
+\lstinline|.| \quad répertoire courant \\
+\lstinline|..| \quad répertoire parent \\
+\lstinline|!!| \quad dernière commande \\
+\lstinline|!n| \quad commande \#n de l'historique \\
+\lstinline|$?| \quad code retour dernière commande \\
+\lstinline|$0| \quad nom du script \\
+\lstinline|!*| \quad tous les arguments de la commande précédente \\
+\lstinline|^abc^123| \quad remplace \lstinline|abc| par \lstinline|123| dans la dernière commande \\
 \lstinline|`cmd`| (obsolète) \(\rightarrow\) préférer \lstinline|$(cmd)| \\
-\lstinline|$(cmd)| : substitution de commande \\
-\lstinline|${var}| : variable \\
-\lstinline|{a,b,c}| : expansion par alternatives \\
-\lstinline|{1..5}|, \lstinline|{a..e}| : expansions de séquence \\
-\lstinline|$(cmd1; cmd2)| : sous-coquille \\
-\lstinline|$(cmd &)| : arrière-plan (sous-coquille) \\
-\lstinline|$(( expr ))| : arithmétique \\
+\lstinline|$(cmd)| \quad substitution de commande \\
+\lstinline|${var}| \quad variable \\
+\lstinline|{a,b,c}| \quad expansion par alternatives \\
+\lstinline|{1..5}|, \lstinline|{a..e}| \quad expansions de séquence \\
+\lstinline|$(cmd1; cmd2)| \quad sous-coquille \\
+\lstinline|$(cmd &)| \quad arrière-plan (sous-coquille) \\
+\lstinline|$(( expr ))| \quad arithmétique \\
 
 \section*{Redirections / pipes}
 \lstinline|>| : stdout \textrightarrow{} fichier (écrase) \\
@@ -170,39 +182,74 @@
 \lstinline|cmd1 | cmd2 | cmd3| \\
 
 \section*{Commandes de base}
-\lstinline|uname -a| \quad
-\lstinline|date| \quad
-\lstinline|cal| \quad
-\lstinline|whoami| \\
+\begin{tabularx}{\columnwidth}{l|X}
+  \lstinline|uname -a| & informations système \\
+  \lstinline|date|     & date et l'heure actuelles \\
+  \lstinline|cal|      & calendrier du mois en cours \\
+  \lstinline|whoami|   & nom de l'utilisateur courant \\
+\end{tabularx}
 
 \section*{Fichiers / répertoires}
-\lstinline|pwd| \\
-\lstinline|ls| (\lstinline|-l -a -h -R -t -r -Q -i -d -S -1|) \\
-\lstinline|cd [répertoire]| \\
-\lstinline|mkdir [nom]| (\lstinline|-p|, \lstinline|-m [perms]|) \\
-\lstinline|rmdir [nom]| \\
-\lstinline|rm [fichier]| (\lstinline|-i -f -v -r|) \\
-\lstinline|cp [src] [dst]| (\lstinline|-i -f -v -r|) \\
-\lstinline|mv [src] [dst]| \\
+
+\begin{tabularx}{\columnwidth}{l|X}
+  \lstinline|pwd| & chemin répertoire courant \\
+  \lstinline|ls| & liste les fichiers \\
+  \quad \lstinline|-l| & \quad détails \\
+  \quad \lstinline|-a| & \quad fichiers cachés \\
+  \quad \lstinline|-h| & \quad tailles lisibles \\
+  \quad \lstinline|-R| & \quad récursif \\
+  \quad \lstinline|-t| & \quad trier par date \\
+  \quad \lstinline|-r| & \quad ordre inverse \\
+  \quad \lstinline|-Q| & \quad guillemets \\
+  \quad \lstinline|-i| & \quad inode \\
+  \quad \lstinline|-d| & \quad répertoires seulement \\
+  \quad \lstinline|-S| & \quad trier par taille \\
+  \quad \lstinline|-1| & \quad un par ligne \\
+  \lstinline|cd [dir]| & \quad change de répertoire \\
+    \lstinline|mkdir [nom]| & \quad crée un répertoire \\
+      \quad \lstinline|-p| & \quad parents si besoin \\
+      \quad \lstinline|-m [perms]| & \quad permissions \\
+  \lstinline|rmdir [nom]| & \quad supprime un répertoire vide \\
+  \lstinline|rm [fichier]| & \quad supprime un fichier \\
+    \quad \lstinline|-i| & \quad interactif \\
+    \quad \lstinline|-f| & \quad force \\
+    \quad \lstinline|-v| & \quad verbeux \\
+    \quad \lstinline|-r| & \quad récursif \\
+  \lstinline|cp [src] [dst]| & \quad copie un fichier/répertoire \\
+  \lstinline|mv [src] [dst]| & \quad déplace/renomme \\
+\end{tabularx}
 
 \section*{Exécution de commandes}
 \lstinline|source [fichier]| \\
 \lstinline|./[fichier]| (exécutable) \\
 
 \section*{Consultation de fichiers}
-\lstinline|cat| \quad
-\lstinline|less| \quad
-\lstinline|head| \quad
-\lstinline|tail| (\lstinline|-n N|, \lstinline|-f|) \\
-\lstinline|nano| \quad \lstinline|vi| \quad \lstinline|hexdump -C| \\
-\lstinline|file| \quad \lstinline|stat| \quad \lstinline|wc| \\
-\lstinline|diff [f1] [f2]| \\
+
+\begin{tabularx}{\columnwidth}{l|X}
+    \lstinline|cat [f]| & affiche le contenu \\
+    \lstinline|less [f]| & affiche page par page \\
+    \lstinline|head [f]| & affiche les premières lignes \\
+    \quad \lstinline|-n N| & \quad N premières lignes (10 par défaut) \\
+    \lstinline|tail [f]| & affiche les dernières lignes \\
+    \quad \lstinline|-n N| & \quad N dernières lignes (10 par défaut) \\
+    \quad \lstinline|-f| & \quad suit le fichier (utile pour logs) \\
+    \lstinline|nano [f]| & éditeur simple \\
+    \lstinline|vi [f]| & éditeur avancé \\
+    \lstinline|hexdump -C [f]| & affiche en hexadécimal \\
+    \lstinline|file [f]| & type du fichier \\
+    \lstinline|stat [f]| & infos détaillées \\
+    \lstinline|wc [f]| & compte lignes/mots/caractères \\
+    \lstinline|diff [f1] [f2]| & compare deux fichiers \\
+\end{tabularx}
 
 \section*{Flux / petits utilitaires}
-\lstinline|touch [f]| \\
-\lstinline|echo [-n|-e] "texte"| \\
-\lstinline|cat > [f]| (\keys{\ctrl}+\keys{D} pour terminer) \\
-\lstinline|cat >> [f]| (\keys{\ctrl}+\keys{D}) \\
+
+\begin{tabularx}{\columnwidth}{l|X}
+    \lstinline|touch [f]| & crée ou met à jour la date d'un fichier \\
+    \lstinline|echo [-n|-e] "texte"| & affiche du texte \\
+    \lstinline|cat > [f]| & crée un fichier (terminer avec \keys{\ctrl}+\keys{D}) \\
+    \lstinline|cat >> [f]| & ajoute à un fichier (\keys{\ctrl}+\keys{D}) \\
+\end{tabularx}
 
 \section*{Variables d'environnement}
 \lstinline|export VAR=valeur| \quad \lstinline|echo $VAR| \\
@@ -294,15 +341,36 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \lstinline|apt search terme| \quad \lstinline|apt show pkg| \\
 \lstinline|apt autoremove| (\lstinline|-y --purge|) \\
 
-\section*{Fun}
-\lstinline|cowsay "texte"| \\
-\lstinline|fortune | cowsay| \\
-\lstinline|sl| \quad \lstinline|lolcat| \\
 
 \section*{À installer (exemples)}
 \textbf{Manuels FR} : \lstinline|sudo apt install manpages-fr manpages-fr-extra| \\
 \textbf{Dev} : \lstinline|sudo apt install build-essential git curl wget vim htop| \\
 \textbf{Réseau} : \lstinline|sudo apt install net-tools iputils-ping traceroute dnsutils| \\
+
+\section*{Fun}
+
+\begin{tabularx}{\columnwidth}{lX}
+\lstinline|cowsay "s"| & phylactere et vache\\
+\lstinline|fortune| & citation aléatoire \\
+\lstinline|sl| & locomotive à vapeur \\
+\lstinline|cmatrix| & effet Matrix \\
+\lstinline|toilet "s"| & texte ASCII art \\
+\lstinline|lolcat| & texte coloré \\
+\end{tabularx}
+
+\section*{Substituts modernes}
+
+\begin{tabularx}{\columnwidth}{lX}
+lsd & Substitut de ls  \\
+batcat& Substitut de cat avec coloration syntaxique  \\
+fd & Substitut de find  \\
+ripgrep (rg) & Substitut de grep  \\
+sd & Substitut de sed  \\
+hexyl & Substitut de hexdump  \\
+broot & Explorateur de fichiers en ligne de commande  \\
+fzf & Outil de recherche floue  \\
+git-delta & Substitut de git diff avec coloration syntaxique \\
+\end{tabularx}
 
 \end{multicols}
 \end{document}

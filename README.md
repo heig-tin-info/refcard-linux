@@ -2,11 +2,19 @@
 
 ## Raccourcis clavier Bash
 
-CTRL + B: Recule d'un caractère
-CTRL + F: Avance d'un caractère
+>CTRL + B: Recule d'un caractère
+>CTRL + F: Avance d'un caractère
+>CTRL + A: Déplace le curseur au début de la ligne
+>CTRL + E: Déplace le curseur à la fin de la ligne
 
-CTRL + H: Supprime le caractère avant le curseur (équivalent de la touche Backspace)
-CTRL + D: Supprime le caractère sous le curseur (équivalent de la touche Delete)
+>CTRL + H: Supprime le caractère avant le curseur (équivalent de la touche Backspace)
+>CTRL + D: Supprime le caractère sous le curseur (équivalent de la touche Delete)
+>CTRL + U: Supprime tout avant le curseur
+>CTRL + K: Supprime tout après le curseur
+
+>CTRL + W: Supprime le mot avant le curseur (équivalent de ALT + Backspace)
+>CTRL + Y: Colle le texte précédemment coupé
+>CTRL + T: Échange le caractère sous le curseur avec le précédent
 
 CTRL + J: Exécute la commande (équivalent de la touche Entrée)
 CTRL + M: Exécute la commande (équivalent de la touche Entrée)
@@ -18,16 +26,9 @@ CTRL + X, CTRL + X: Échange la position du curseur avec le marqueur
 
 CTRL + C: Interrompt la commande en cours
 CTRL + Z: Met en pause la commande en cours
-CTRL + A: Déplace le curseur au début de la ligne
-CTRL + E: Déplace le curseur à la fin de la ligne
-CTRL + U: Supprime tout avant le curseur
-CTRL + K: Supprime tout après le curseur
-CTRL + W: Supprime le mot avant le curseur (équivalent de ALT + Backspace)
 CTRL + L: Efface l'écran (équivalent de la commande 'clear')
 CTRL + D: Envoie un EOF (ferme le terminal)
 CTRL + R: Recherche dans l'historique des commandes
-CTRL + Y: Colle le texte précédemment coupé
-CTRL + T: Échange le caractère sous le curseur avec le précédent
 CTRL + G: Annule la recherche dans l'historique
 CTRL + P: Rappelle la commande précédente dans l'historique
 CTRL + N: Rappelle la commande suivante dans l'historique
@@ -47,83 +48,6 @@ ALT + B: Recule d'un mot
 ALT + D: Supprime le mot après le curseur
 ALT + . : Insère le dernier argument de la commande précédente
 TAB: Auto-complétion des commandes et des fichiers
-
-## Placeholders courants
-
-~ : Répertoire personnel de l'utilisateur
-. : Répertoire courant
-.. : Répertoire parent
-!! : Dernière commande
-!n : Commande numéro n dans l'historique
-$? : Code de retour de la dernière commande
-$0 : Nom du script en cours d'exécution
-!* : Tous les arguments de la dernière commande
-^abc^123: Remplace 'abc' par '123' dans la dernière commande
-`command` : Exécute une commande et remplace par sa sortie (obsolète, utiliser $())
-`$(command)` : Exécute une commande et remplace par sa sortie (moderne)
-`${var}`: Référence une variable
-`{a,b,c}` : Expansion de séquence (ex: echo {1,2,3} affiche 1 2 3)
-`{1..5}` : Expansion de séquence numérique (ex: echo {1..5} affiche 1 2 3 4 5)
-`{a..e}` : Expansion de séquence alphabétique (ex: echo {a..e} affiche a b c d e)
-`$(command1; command2)` : Exécute plusieurs commandes dans une sous-coquille
-`$(command &)` : Exécute une commande en arrière-plan dans une sous-coquille
-`$((expression))` : Évalue une expression arithmétique
-
-## Redirections
-
-`>` : Redirige la sortie standard vers un fichier (écrase le fichier)
-`>>` : Redirige la sortie standard vers un fichier (ajoute à la fin du fichier)
-`2>` : Redirige la sortie d'erreur vers un fichier (écrase le fichier)
-`&>` : Redirige la sortie standard et la sortie d'erreur vers un fichier (écrase le fichier)
-`&>>` : Redirige la sortie standard et la sortie d'erreur vers un fichier (ajoute à la fin du fichier)
-`<` : Redirige l'entrée standard depuis un fichier
-`<<` : Redirige l'entrée standard depuis une chaîne de texte (heredoc)
-`<<<` : Redirige l'entrée standard depuis une chaîne de texte (here string)
-`|` : Pipe, redirige la sortie standard d'une commande vers l'entrée standard d'une autre commande
-`|&` : Pipe, redirige la sortie standard et la sortie d'erreur d'une commande vers l'entrée standard d'une autre commande
-`2>&1` : Redirige la sortie d'erreur vers la sortie standard
-`command1 | command2 | command3` : Chaîne de commandes avec pipes
-
-## Commandes de base
-
-uname -a : Affiche les informations système
-date : Affiche la date et l'heure actuelles
-cal : Affiche le calendrier du mois en cours
-whoami : Affiche le nom de l'utilisateur courant
-
-## Interaction avec le système de fichiers
-
-pwd : Affiche le répertoire courant
-ls : Liste les fichiers et répertoires
-  `-l`: Affiche les détails (permissions, propriétaire, taille, date)
-  `-a`: Affiche les fichiers cachés
-  `-h`: Affiche les tailles en format lisible (Ko, Mo, Go)
-  `-R`: Liste les répertoires de manière récursive
-  `-t`: Trie par date de modification
-  `-r`: Inverse l'ordre de tri
-  `-Q`: Entoure les noms de fichiers de guillemets
-  `-i`: Affiche les numéros d'inode
-  `-d`: Affiche les répertoires eux-mêmes, pas leur contenu
-  `-S`: Trie par taille
-  `-1`: Affiche un fichier par ligne
-cd [répertoire] : Change de répertoire
-mkdir [nom] : Crée un nouveau répertoire
-  `-p`: Crée les répertoires parents si nécessaire
-  `-m [permissions]`: Définit les permissions du répertoire
-rmdir [nom] : Supprime un répertoire vide
-rm [fichier] : Supprime un fichier
-  `-i`: Demande confirmation avant de supprimer chaque fichier
-  `-f`: Force la suppression sans demander confirmation
-  `-v`: Affiche les fichiers supprimés
-  `-r` ou `-R`: Supprime les répertoires et leur contenu de manière récursive
-
-cp [source] [destination] : Copie un fichier ou répertoire
-  `-i`: Demande confirmation avant d'écraser un fichier existant
-  `-f`: Force la copie en écrasant les fichiers existants sans demander confirmation
-  `-v`: Affiche les fichiers copiés
-  `-r` ou `-R`: Copie les répertoires et leur contenu de manière récursive
-
-mv [source] [destination] : Déplace ou renomme un fichier ou répertoire
 
 ## Exécution de commandes
 
@@ -419,15 +343,3 @@ sudo apt install build-essential git curl wget vim htop
 
 Outils réseau
 sudo apt install net-tools iputils-ping traceroute dnsutils
-
-## Substituts modernes
-
-lsd : Substitut moderne de ls (doit installer)
-batcat: Substitut moderne de cat avec coloration syntaxique (doit installer)
-fd : Substitut moderne de find (doit installer)
-ripgrep (rg) : Substitut moderne de grep (doit installer)
-sd : Substitut moderne de sed (doit installer)
-hexyl : Substitut moderne de hexdump (doit installer)
-broot : Explorateur de fichiers en ligne de commande (doit installer)
-fzf : Outil de recherche floue (doit installer)
-git-delta : Substitut moderne de git diff avec coloration syntaxique (doit installer)
