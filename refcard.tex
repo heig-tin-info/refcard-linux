@@ -1,15 +1,16 @@
-\documentclass[10pt]{article}
+%\documentclass[10pt]{article}
+\documentclass[9pt]{extarticle}
 
 \usepackage{graphicx}
 \usepackage{tabularx}
-
+\usepackage{heiglogo}
 \usepackage[a4paper,landscape,margin=10mm]{geometry}
 \usepackage{multicol}
 \setlength{\columnsep}{5mm}
 \setlength{\columnseprule}{0.4pt}
 
-\usepackage{fontawesome5}
-
+\usepackage{fontawesome}
+\usepackage[most]{tcolorbox}
 \usepackage{fontspec}
 % \setmainfont{TeX Gyre Heros}
 % \setsansfont{TeX Gyre Heros}
@@ -33,6 +34,17 @@
   breaklines=true
 }
 
+\newtcbox{\inlinecode}{nobeforeafter,
+  colframe=black!40, colback=black!5,
+  boxrule=0.3pt, arc=2pt,
+  boxsep=1pt, % padding global
+  left=1.5pt, right=1.5pt, top=1.5pt, bottom=1.5pt, % marges internes
+  tcbox raise base,
+  fontupper=\ttfamily\footnotesize
+}
+
+\newcommand{\lstcode}[1]{\inlinecode{#1}}
+
 \usepackage[os=win]{menukeys}
 \renewmenumacro{\keys}[+]{roundedkeys}
 
@@ -54,9 +66,9 @@
   {}{0pt}{}
 
 % Espacements (les tiens, inchangés)
-\titlespacing*{\section}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-\titlespacing*{\subsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-\titlespacing*{\subsubsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\section}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\subsection}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\subsubsection}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
 
 
 \pagenumbering{gobble}
@@ -76,24 +88,153 @@
 \def\revision{1.0}
 \def\revisiondate{2024-06-12}
 
+% % Largeur de la colonne "commande" + écart
+% \newlength{\cmdlabelwidth} \setlength{\cmdlabelwidth}{2.8cm} % ajuste au besoin
+% \newlength{\cmdlabelsep}   \setlength{\cmdlabelsep}{0.4em}
+
+% % Bloc de commandes compact
+% \newenvironment{cmdblock}{%
+%   \par\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+% }{\par}
+
+% % Une ligne "commande — description" compacte avec wrap automatique
+% \newcommand{\cmditem}[2]{%
+%   \noindent
+%   \makebox[\cmdlabelwidth][l]{\inlinecode{#1}}%
+%   \hspace{\cmdlabelsep}%
+%   \parbox[t]{\dimexpr\linewidth-\cmdlabelwidth-\cmdlabelsep\relax}{#2}%
+%   \par
+% }
+
+% PRÉREQUIS
+\usepackage{environ}
+\usepackage{ragged2e} % pour \RaggedRight
+
+% style de code inline (ton tcolorbox)
+% \usepackage[most]{tcolorbox}
+% \newtcbox{\inlinecode}{nobeforeafter,
+%   colframe=black!40, colback=black!5,
+%   boxrule=0.4pt, arc=2pt,
+%   boxsep=1pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+%   tcbox raise base,
+%   fontupper=\ttfamily\footnotesize
+% }
+
+% écart entre la colonne commande et la description
+\newlength{\cmdlabelsep} \setlength{\cmdlabelsep}{0.4em}
+
+% largeur “colonne commande” (calculée à la volée)
+\newlength{\cmdlabelwidth}
+
+% Définitions par défaut (pour éviter “undefined”)
+% \newcommand{\cmditem}[2]{} % placeholder
+% \newcommand{\cmdline}[2]{% rendu final d’une ligne
+%   \noindent
+%   \makebox[\cmdlabelwidth][l]{\inlinecode{#1}}%
+%   \hspace{\cmdlabelsep}%
+%   \begin{minipage}[t]{\dimexpr\linewidth-\cmdlabelwidth-\cmdlabelsep\relax}
+%     \RaggedRight #2%
+%   \end{minipage}\par
+% }
+
+% Bloc avec mesure automatique de la largeur max
+% \NewEnviron{cmdblock}{%
+%   % 1) Passe de mesure (aucune sortie)
+%   \setlength{\cmdlabelwidth}{0pt}%
+%   \setbox0=\vbox{%
+%     \renewcommand{\cmditem}[2]{%
+%       \sbox2{\inlinecode{##1}}%
+%       \ifdim\wd2>\cmdlabelwidth
+%         \global\setlength{\cmdlabelwidth}{\wd2}%
+%       \fi
+%     }%
+%     \BODY
+%   }%
+%   % 2) Composition réelle
+%   \renewcommand{\cmditem}[2]{\cmdline{##1}{##2}}%
+%   \BODY
+% }
+\newenvironment{cmdblock}{%
+  \par\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+}{\par}
+
+\newcommand{\cmditem}[2]{%
+  \noindent\inlinecode{#1}\quad #2\par
+}
+% indentation supplémentaire pour les sous-lignes (options)
+\newlength{\cmdoptindent}
+\setlength{\cmdoptindent}{1em} % ajuste au goût
+
+\newcommand{\cmdopt}[1]{%
+  \hspace*{\cmdoptindent}%
+  \begin{minipage}[t]{\dimexpr\linewidth-\cmdoptindent\relax}
+    \RaggedRight #1%
+  \end{minipage}\par
+}
+
+% \usepackage{xparse}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes.geometric}
+% % distance marge droite -> bord gauche de la règle
+% \newlength{\mcRuleOffset}
+% \setlength{\mcRuleOffset}{\dimexpr\columnsep/2 - \columnseprule/2\relax}
+
+% % petit triangle contour, pointe vers la droite, collé à la règle
+% \newcommand{\mcChevbox}[2]{%
+%   \hbox to \linewidth{%
+%     \hfil
+%     \makebox[0pt][l]{\hskip \mcRuleOffset
+%       \tikz[baseline]{%
+%         \node[
+%           isosceles triangle,
+%           shape border rotate=-90,
+%           draw, fill=none,
+%           inner sep=0pt,
+%           minimum width=#1,
+%           minimum height=#2,
+%           anchor=east
+%         ] {};
+%       }%
+%     }%
+%   }%
+% }
+
+% % \placeChevron[<largeur>=6pt][<hauteur>=8pt]
+% \NewDocumentCommand{\placeChevron}{O{6pt} O{8pt}}{%
+%   \begingroup
+%   \ifhmode
+%     \vadjust pre{\mcChevbox{#1}{#2}}%
+%   \else
+%     \nointerlineskip\smash{\mcChevbox{#1}{#2}}%
+%   \fi
+%   \endgroup
+% }
+
+\newcommand{\codefa}[2][]{%
+  \raisebox{-0.15ex}{\faIcon[#1]{#2}}%
+}
 \begin{document}
 
 \begin{multicols}{4}
+\raggedbottom
 
 \begin{tabularx}{\columnwidth}{lX}
-    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} &
-    \begin{center}
+    \raisebox{-2em}{\includegraphics[height=5em]{linux-logo.pdf}} &
+    \begin{raggedright}
       {\Large \bf Linux / Unix} \\
       HEIG-VD -- version \revision \ -- \revisiondate \\
-    \end{center}
+    \end{raggedright}
 \end{tabularx}
-
+Carte de référence des commandes et utilitaires Linux/Unix courants.
 \begin{tabularx}{\columnwidth}{lX}
   \lstinline|[f]| & Nom de fichier \\
   \lstinline|[d]| & Nom de répertoire \\
   \lstinline|[cmd]| & Commande \\
   \lstinline|"s"| & Chaîne de caractères \\
 \end{tabularx}
+
+  % File:  {\scriptsize\faFileO\par}
+  % Folder: {\scriptsize\faFolderO\par}
 
 \section*{Raccourcis clavier Bash}
 \subsection*{Mouvements}
@@ -132,15 +273,15 @@
 
 \subsection*{Historique / recherche}
 
-\keys{\ctrl + R} : recherche historique \\
-\keys{\ctrl + G} : annuler la recherche \\
-\keys{\ctrl + P} : commande précédente \\
-\keys{\ctrl + N} : commande suivante \\
-\keys{\ctrl + S} : \emph{flux} pause (débloquer avec \keys{\ctrl + Q}) \\
-\keys{\Alt}+\keys{<} : début de l'historique \\
-\keys{\Alt}+\keys{>} : fin de l'historique \\
-\keys{\Alt}+\keys{P} : préc. dans l'historique \quad
-\keys{\Alt}+\keys{N} : suiv. dans l'historique \\[2pt]
+\keys{\ctrl + R} \quad recherche historique \\
+\keys{\ctrl + G} \quad annuler la recherche \\
+\keys{\ctrl + P} \quad commande précédente \\
+\keys{\ctrl + N} \quad commande suivante \\
+\keys{\ctrl + S} \quad pause (débloquer: \keys{\ctrl + Q}) \\
+\keys{\Alt}+\keys{<} \quad début de l'historique \\
+\keys{\Alt}+\keys{>} \quad fin de l'historique \\
+\keys{\Alt}+\keys{P} \quad préc. dans l'historique\\
+\keys{\Alt}+\keys{N} \quad suiv. dans l'historique \\
 
 \subsection*{Casse / mots}
 
@@ -151,115 +292,136 @@
 \keys{\Alt + .} \quad insère le dernier argument \\
 
 \section*{Sucres}
-\lstinline|~| \quad \lstinline|$HOME|
-\lstinline|.| \quad répertoire courant \\
-\lstinline|..| \quad répertoire parent \\
-\lstinline|!!| \quad dernière commande \\
-\lstinline|!n| \quad commande \#n de l'historique \\
-\lstinline|$?| \quad code retour dernière commande \\
-\lstinline|$0| \quad nom du script \\
-\lstinline|!*| \quad tous les arguments de la commande précédente \\
-\lstinline|^abc^123| \quad remplace \lstinline|abc| par \lstinline|123| dans la dernière commande \\
-\lstinline|`cmd`| (obsolète) \(\rightarrow\) préférer \lstinline|$(cmd)| \\
-\lstinline|$(cmd)| \quad substitution de commande \\
-\lstinline|${var}| \quad variable \\
-\lstinline|{a,b,c}| \quad expansion par alternatives \\
-\lstinline|{1..5}|, \lstinline|{a..e}| \quad expansions de séquence \\
-\lstinline|$(cmd1; cmd2)| \quad sous-coquille \\
-\lstinline|$(cmd &)| \quad arrière-plan (sous-coquille) \\
-\lstinline|$(( expr ))| \quad arithmétique \\
+\lstcode{\~} \quad \lstcode{\$HOME} \\
+\lstcode{.} \quad répertoire courant \\
+\lstcode{..} \quad répertoire parent \\
+\lstcode{!!} \quad dernière commande \\
+\lstcode{!n} \quad commande \#n de l'historique \\
+\lstcode{\$?} \quad code retour dernière commande \\
+\lstcode{\$0} \quad nom du script \\
+\lstcode{!*} \quad arguments ancienne command \\
+\lstcode{\^abc\^123} \quad substitution dans dernière commande \\
+\lstcode{`cmd`} obsolète, préférer \lstcode{\$(cmd)} \\
+\lstcode{\$(cmd)} \quad substitution de commande \\
+\lstcode{\${var}} \quad variable \\
+\lstcode{{a,b,c}} \quad expansion par alternatives \\
+\lstcode{{1..5}}, \lstcode{{a..e}} \quad expansions de séquence \\
+\lstcode{\$(cmd1; cmd2)} \quad sous-coquille \\
+\lstcode{\$(cmd \&)} \quad arrière-plan (sous-coquille) \\
+\lstcode{\$(( expr ))} \quad arithmétique \\
 
 \section*{Redirections / pipes}
-\lstinline|>| : stdout \textrightarrow{} fichier (écrase) \\
-\lstinline|>>| : stdout \textrightarrow{} fichier (ajoute) \\
-\lstinline|2>| : stderr \textrightarrow{} fichier (écrase) \\
-\lstinline|&>| : stdout+stderr \textrightarrow{} fichier (écrase) \\
-\lstinline|&>>| : stdout+stderr \textrightarrow{} fichier (ajoute) \\
-\lstinline|<| : stdin depuis fichier \\
-\lstinline|<<| : heredoc \quad \lstinline|<<<| : here-string \\
-\lstinline!|! : pipe \quad \lstinline!|&! : pipe stdout+stderr \\
-\lstinline|2>&1| : stderr \textrightarrow{} stdout \\
-\lstinline|cmd1 | cmd2 | cmd3| \\
+\begin{cmdblock}
+\cmditem{cmd > f}{stdout \textrightarrow{} fichier (x)}
+\cmditem{cmd >> f}{stdout \textrightarrow{} fichier (a)}
+\cmditem{cmd 2> f}{stderr \textrightarrow{} fichier (x)}
+\cmditem{cmd \&> f}{stdout+stderr \textrightarrow{} fichier (x)}
+\cmditem{cmd \&>> f}{stdout+stderr \textrightarrow{} fichier (a)}
+\cmditem{cmd < f}{stdin depuis fichier}
+\cmditem{cmd << EOF}{heredoc (jusqu'à EOF)}
+\cmditem{cmd <<< "s"}{here-string (inject sur stdin)}
+\cmditem{cmd1 | cmd2}{pipe (stdout \textrightarrow{} stdin)}
+\cmditem{cmd1 |\& cmd2}{pipe (stdout+stderr \textrightarrow{} stdin)}
+\end{cmdblock}
 
 \section*{Commandes de base}
-\begin{tabularx}{\columnwidth}{l|X}
-  \lstinline|uname -a| & informations système \\
-  \lstinline|date|     & date et l'heure actuelles \\
-  \lstinline|cal|      & calendrier du mois en cours \\
-  \lstinline|whoami|   & nom de l'utilisateur courant \\
-\end{tabularx}
+\begin{cmdblock}
+\cmditem{uname -a}{informations système}
+\cmditem{uptime}{temps de fonctionnement}
+\cmditem{date}{date et l'heure actuelles}
+\cmditem{cal}{calendrier du mois en cours}
+\cmditem{whoami}{nom de l'utilisateur courant}
+\end{cmdblock}
 
 \section*{Fichiers / répertoires}
 
-\begin{tabularx}{\columnwidth}{l|X}
-  \lstinline|pwd| & chemin répertoire courant \\
-  \lstinline|ls| & liste les fichiers \\
-  \quad \lstinline|-l| & \quad détails \\
-  \quad \lstinline|-a| & \quad fichiers cachés \\
-  \quad \lstinline|-h| & \quad tailles lisibles \\
-  \quad \lstinline|-R| & \quad récursif \\
-  \quad \lstinline|-t| & \quad trier par date \\
-  \quad \lstinline|-r| & \quad ordre inverse \\
-  \quad \lstinline|-Q| & \quad guillemets \\
-  \quad \lstinline|-i| & \quad inode \\
-  \quad \lstinline|-d| & \quad répertoires seulement \\
-  \quad \lstinline|-S| & \quad trier par taille \\
-  \quad \lstinline|-1| & \quad un par ligne \\
-  \lstinline|cd [dir]| & \quad change de répertoire \\
-    \lstinline|mkdir [nom]| & \quad crée un répertoire \\
-      \quad \lstinline|-p| & \quad parents si besoin \\
-      \quad \lstinline|-m [perms]| & \quad permissions \\
-  \lstinline|rmdir [nom]| & \quad supprime un répertoire vide \\
-  \lstinline|rm [fichier]| & \quad supprime un fichier \\
-    \quad \lstinline|-i| & \quad interactif \\
-    \quad \lstinline|-f| & \quad force \\
-    \quad \lstinline|-v| & \quad verbeux \\
-    \quad \lstinline|-r| & \quad récursif \\
-  \lstinline|cp [src] [dst]| & \quad copie un fichier/répertoire \\
-  \lstinline|mv [src] [dst]| & \quad déplace/renomme \\
-\end{tabularx}
+\begin{cmdblock}
+  \cmditem{pwd}{chemin répertoire courant}
+  \cmditem{ls}{liste les fichiers}
+  \cmdopt{\lstcode{-l} détails, \lstcode{-a} fichiers cachés,
+          \lstcode{-h} tailles lisibles, \lstcode{-R} récursif,
+          \lstcode{-t} trier par date, \lstcode{-r} ordre inverse,
+          \lstcode{-Q} guillemets, \lstcode{-i} inode,
+          \lstcode{-d} répertoires seulement, \lstcode{-S} trier par taille,
+          \lstcode{-1} un par ligne}
+  \cmditem{cd [d]}{change de répertoire}
+  \cmditem{touch [f]}{crée fichier vide ou met à jour date}
+  \cmditem{mkdir [d]}{crée un répertoire.}
+  \cmdopt{\lstcode{-v} verbeux,
+    \lstcode{-p} parents si besoin,
+    \lstcode{-m [perms]} permissions}
+  \cmditem{rmdir [d]}{supprime un répertoire vide}
+  \cmditem{rm [f]}{supprime un fichier.}
+  \cmdopt{\lstcode{-i} interactif,
+    \lstcode{-f} force,
+    \lstcode{-v} verbeux,
+    \lstcode{-r} récursif}
+
+  \cmditem{cp [src] [dst]}{copie un fichier/répertoire.}
+  \cmdopt{\lstcode{-a} archive (récursif + attributs),
+    \lstcode{-i} interactif,
+    \lstcode{-f} force,
+    \lstcode{-v} verbeux,
+    \lstcode{-r} récursif}
+  \cmditem{mv [src] [dst]}{déplace/renomme.}
+  \cmdopt{\lstcode{-i} interactif,
+    \lstcode{-i} interactif,
+    \lstcode{-f} force,
+    \lstcode{-v} verbeux}
+\end{cmdblock}
 
 \section*{Exécution de commandes}
-\lstinline|source [fichier]| \\
-\lstinline|./[fichier]| (exécutable) \\
+\lstcode{source [fichier]} \\
+\lstcode{./[fichier]} (exécutable) \\
 
 \section*{Consultation de fichiers}
 
-\begin{tabularx}{\columnwidth}{l|X}
-    \lstinline|cat [f]| & affiche le contenu \\
-    \lstinline|less [f]| & affiche page par page \\
-    \lstinline|head [f]| & affiche les premières lignes \\
-    \quad \lstinline|-n N| & \quad N premières lignes (10 par défaut) \\
-    \lstinline|tail [f]| & affiche les dernières lignes \\
-    \quad \lstinline|-n N| & \quad N dernières lignes (10 par défaut) \\
-    \quad \lstinline|-f| & \quad suit le fichier (utile pour logs) \\
-    \lstinline|nano [f]| & éditeur simple \\
-    \lstinline|vi [f]| & éditeur avancé \\
-    \lstinline|hexdump -C [f]| & affiche en hexadécimal \\
-    \lstinline|file [f]| & type du fichier \\
-    \lstinline|stat [f]| & infos détaillées \\
-    \lstinline|wc [f]| & compte lignes/mots/caractères \\
-    \lstinline|diff [f1] [f2]| & compare deux fichiers \\
-\end{tabularx}
-
-\section*{Flux / petits utilitaires}
-
-\begin{tabularx}{\columnwidth}{l|X}
-    \lstinline|touch [f]| & crée ou met à jour la date d'un fichier \\
-    \lstinline|echo [-n|-e] "texte"| & affiche du texte \\
-    \lstinline|cat > [f]| & crée un fichier (terminer avec \keys{\ctrl}+\keys{D}) \\
-    \lstinline|cat >> [f]| & ajoute à un fichier (\keys{\ctrl}+\keys{D}) \\
-\end{tabularx}
+\begin{cmdblock}
+\cmditem{file [f]}{type du fichier}
+\cmditem{stat [f]}{infos détaillées}
+\cmditem{wc [f]}{compte occurences}
+\cmdopt{\lstcode{-l} lignes, \lstcode{-w} mots, \lstcode{-c} caractères}
+\cmditem{head [f]}{affiche premières lignes}
+\cmdopt{\lstcode{-n N} N premières lignes}
+\cmditem{tail [f]}{affiche les dernières lignes}
+\cmdopt{\lstcode{-n N} N dernières lignes,
+        \lstcode{-f} temps réel}
+\cmditem{less [f]}{affiche page par page}
+\cmditem{cat [f]}{affiche le contenu}
+\cmditem{hexdump -C [f]}{affiche en hexadécimal}
+\cmditem{diff [f1] [f2]}{comparaison ligne par ligne}
+\end{cmdblock}
 
 \section*{Variables d'environnement}
-\lstinline|export VAR=valeur| \quad \lstinline|echo $VAR| \\
-\lstinline|env| \quad \lstinline|printenv| \quad \lstinline|unset VAR| \\
-\lstinline|$PATH|, \lstinline|$HOME|, \lstinline|$SHELL|, \lstinline|$USER|, \lstinline|$PS1|, \lstinline|$PWD|, \lstinline|$OLDPWD| \\
+\begin{cmdblock}
+\cmditem{set}{liste variables et fonctions}
+\cmditem{env}{liste les variables d'env.}
+\cmditem{export VAR=[s]}{crée/mod. variable d'env.}
+\cmditem{echo \$VAR}{affiche valeur variable}
+\cmditem{\$PATH}{chemin des exécutables}
+\cmditem{\$HOME}{répertoire personnel}
+\cmditem{\$SHELL}{interpréteur de commandes}
+\cmditem{\$USER}{nom de l'utilisateur}
+\cmditem{\$PS1}{invite de commande}
+\cmditem{\$PWD}{répertoire courant}
+\cmditem{\$OLDPWD}{répertoire précédent}
+\end{cmdblock}
 
 \section*{Processus / jobs}
-\lstinline|ps| \quad \lstinline|top| \quad \lstinline|htop| \\
-\lstinline|kill [PID]| \quad \lstinline|killall [nom]| \\
-\lstinline|bg| \quad \lstinline|fg| \quad \lstinline|jobs| \\
+\begin{cmdblock}
+\cmditem{[cmd]\&}{exécute en arrière-plan}
+\cmditem{jobs}{liste les jobs en cours}
+\cmditem{wait [PID]}{attend la fin d'un job}
+\cmditem{disown [PID]}{détache un job du shell}
+\cmditem{fg [j]}{ramène un job au premier plan}
+\cmditem{bg [j]}{relance un job en arrière-plan}
+\cmditem{ps aux}{liste les processus}
+\cmditem{kill [pid]}{termine un processus}
+\cmditem{killall [p]}{termine tous les processus nommés}
+\cmditem{top}{moniteur de processus}
+\cmditem{htop}{top amélioré (si installé)}
+
+\end{cmdblock}
 
 \section*{Archives / compression}
 \textbf{\lstinline|.tar.gz|} : \lstinline|tar -czvf archive.tar.gz [f]| \\
@@ -270,12 +432,23 @@
 \textbf{bsdtar} : \lstinline|bsdtar -xf [archive]|, \lstinline|bsdtar -cf [arch] [f]|, \lstinline|bsdtar -tf [arch]| \\
 
 \section*{Permissions / utilisateurs}
-\lstinline|chmod [opts] [perms] [f]| \\
-\lstinline|chown utilisateur:groupe [f]| \\
-\lstinline|chgrp groupe [f]| \\
-\lstinline|umask| \\
-\lstinline|sudo [cmd]| \quad \lstinline|su [utilisateur]| \\
-\lstinline|who| \quad \lstinline|w| \quad \lstinline|id| \quad \lstinline|groups| \quad \lstinline|passwd| \\
+
+\begin{cmdblock}
+\cmditem{chmod}{modifie les permissions}
+\cmdopt{\lstcode{u} user, \lstcode{g} group, \lstcode{o} others, \lstcode{a} all,
+        \lstcode{+} add, \lstcode{-} remove, \lstcode{=} set exactly}
+\cmditem{chown}{change le propriétaire}
+\cmditem{chgrp}{change le groupe}
+\cmditem{umask}{masque de création de fichiers}
+\cmditem{sudo [cmd]}{exécute en superutilisateur}
+\cmditem{su [utilisateur]}{change d'utilisateur}
+\cmditem{who}{qui est connecté}
+\cmditem{w}{qui est connecté et que font-ils}
+\cmditem{id}{informations sur l'utilisateur courant}
+\cmditem{groups}{groupes de l'utilisateur courant}
+\cmditem{passwd}{change le mot de passe}
+\end{cmdblock}
+
 \textit{bits :} 1 x, 2 w, 4 r \\
 Exemples : \lstinline|chmod 755 f| (\lstinline|rwxr-xr-x|), \lstinline|chmod 644 f|, \lstinline|chmod u+x f|, \lstinline|chmod g-w f|, \lstinline|chmod o=r f|, \lstinline|chmod a+x f| \\
 
@@ -289,44 +462,116 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \keys{+} \& \keys{-} + numéro : aller à la ligne \\
 
 \section*{Git}
-\lstinline|git status| \quad \lstinline|git add [f]| \\
-\lstinline|git commit -m "msg"| \\
-\lstinline|git push| \quad \lstinline|git pull| \\
-\lstinline|git clone [url]| \\
-\lstinline|git branch| \quad \lstinline|git checkout [br]| \\
-\lstinline|git merge [br]| \\
+\begin{cmdblock}
+\cmditem{git init}{initialise un dépôt git}
+\cmditem{git status}{statut du dépôt}
+%\cmditem{git remote add origin [url]}{ajoute une origine}
+\cmditem{git remote -v}{liste les origines}
+\cmditem{git fetch}{récupère les changements distants}
+\cmditem{git pull}{récupère et fusionne les changements distants}
+\cmditem{git push}{pousse les changements locaux}
+\cmditem{git clone [url]}{clone un dépôt distant}
+\cmditem{git branch}{liste les branches}
+\cmditem{git branch [br]}{crée une branche}
+\cmditem{git checkout [br]}{change de branche}
+\cmditem{git commit -m "s"}{crée un commit}
+\cmditem{git add [f]}{ajoute un fichier au commit}
+\cmditem{git log}{historique des commits}
+\cmdopt{\lstcode{--oneline} résumé, \lstcode{--graph} graphe,
+        \lstcode{--stat} stats, \lstcode{-p} diff}
+\end{cmdblock}
+
+\section*{GCC}
+\begin{cmdblock}
+\cmditem{gcc [f.c]}{compile un fichier C}
+\cmdopt{\lstcode{-o f} nom de l'exécutable,
+        \lstcode{-Wall} tous les avertissements,
+        \lstcode{-Wextra} avertissements supplémentaires,
+        \lstcode{-g} infos debug,
+        \lstcode{-O0, -O1, -O2, -O3} optimisation,
+        \lstcode{-std=c17} standard C,
+        \lstcode{-I dir} inclure répertoire dir,
+        \lstcode{-L dir} lier répertoire dir,
+        \lstcode{-l lib} lier la bibliothèque lib
+        \lstcode{-c} compiler seulement (pas linker)}
+\cmditem{g++ [f.cpp]}{compile un fichier C++}
+\end{cmdblock}
 
 \section*{Recherche}
 \lstinline|grep "texte" [f]| (\lstinline|-P -r -i -v -n -c -l -w -A n -B n -C n -o|) \\
 \lstinline|rg "texte" [rep]| (\lstinline|--json|) \\
 
 \section*{Remplacement}
-\lstinline|sed 's/ancien/nouveau/g' [f]| (\lstinline|-i -n -e -r|) \\
-\lstinline|perl -pe 's/ancien/nouveau/g' [f]| (\lstinline|-i -n -e -l|) \\
-\lstinline|perl -0777 -pe 's/ancien/nouveau/gs' [f]| \\
+\begin{cmdblock}
+\cmditem{sed 's/search/new/g' [f]}{remplace avec BRE regex}
+\cmdopt{\lstcode{-i} modifie le fichier,
+        \lstcode{-n} n'affiche rien par défaut,
+        \lstcode{-E} regex étendues,
+        \lstcode{-e} script, \lstcode{-r} regex étendues}
+\cmditem{perl -pe 's/search/new/g' [f]}{remplace avec regex Perl}
+\cmdopt{\lstcode{-i} modifie le fichier,
+        \lstcode{-n} n'affiche rien par défaut,
+        \lstcode{-e} script, \lstcode{-l} gère les nouvelles lignes}
+\cmditem{perl -0777 -pe 's/search/new/gs' [f]}{remplace sur tout le fichier}
+\end{cmdblock}
 
 \section*{Utilitaires}
-\lstinline|uniq [f]| (\lstinline|-c -d -u -i|) \\
-\lstinline|sort [f]| (\lstinline|-r -n -k n -u -t x|) \\
-\lstinline|cut -d x -f n [f]| \\
-\lstinline|awk '{print $n}' [f]| \\
-\lstinline|xargs [cmd]| (\lstinline|-n N -I {}|) \\
-\lstinline|tr 'set1' 'set2'| (\lstinline|-d -s|) \\
-\lstinline|tee [f]| (\lstinline|-a -i|) \\
+\begin{cmdblock}
+\cmditem{uniq [f]}{filtre les lignes consécutives identiques}
+\cmdopt{\lstcode{-c} compte, \lstcode{-d} que les doublons,
+        \lstcode{-u} que les uniques, \lstcode{-i} ignore la casse}
+\cmditem{sort [f]}{trie les lignes}
+\cmdopt{\lstcode{-r} inverse, \lstcode{-n} numérique,
+        \lstcode{-k n} clé n, \lstcode{-u} unique,
+        \lstcode{-t x} séparateur x}
+\cmditem{cut -d x -f n [f]}{extrait le champ n, séparé par x}
+\cmditem{awk '{print \$n}' [f]}{extrait le champ n (espace séparateur)}
+\cmditem{xargs [cmd]}{construit des lignes de commande}
+\cmdopt{\lstcode{-n N} N arguments par commande,
+        \lstcode{-I \{\}} remplace \{\} par l'argument}
+\cmditem{tr 'set1' 'set2'}{remplace set1 par set2}
+\cmdopt{\lstcode{-d} supprime set1, \lstcode{-s} squeeze}
+\cmditem{tee [f]}{duplique le flux vers un fichier}
+\cmdopt{\lstcode{-a} ajoute au fichier, \lstcode{-i} ignore les signaux}
+\end{cmdblock}
 
 \section*{Aide}
-\lstinline|man [cmd]| (\lstinline|-k terme|, \lstinline|-f cmd|) \\
-\lstinline|apropos [terme]| \quad \lstinline|whatis [cmd]| \\
-\textit{Sections :} 1 utilisateur, 2 syscalls, 3 lib, 4 spéciaux, 5 formats, 6 jeux, 7 divers, 8 admin \\
+\begin{cmdblock}
+\cmditem{help [cmd]}{aide interne bash}
+\cmditem{[cmd] --help}{aide d'une commande}
+\cmditem{man [cmd]}{manuel d'une commande}
+\cmditem{apropos [terme]}{cherche dans les manuels}
+\cmditem{whatis [cmd]}{description commande}
+\end{cmdblock}
 
-\section*{Réseau}
-\lstinline|ping [hôte]| (\lstinline|-c N -i s -s n -t TTL -W s|) \\
-\lstinline|ss -tuln| (\lstinline|-t -u -l -n -p|) \\
-\lstinline|ip addr| \quad \lstinline|ip route| \\
+\emph{Sections du manuel: 1 utilisateur, 2 syscalls, 3 lib, 4 spéciaux, 5 formats, 6 jeux, 7 divers, 8 admin} \\
+
+\section*{Gestion Réseau}
+\begin{cmdblock}
+\cmditem{ip a}{liste adresses IP}
+\cmditem{ip r}{table de routage}
+\cmditem{ping [hôte]}{teste la connectivité}
+\cmditem{ss -tuln}{sockets réseau}
+\cmditem{dig [hôte]}{résolution DNS avancée}
+\end{cmdblock}
 
 \section*{Internet}
-\lstinline|wget [url]| (\lstinline|-O f -c -q --limit-rate=100k|) \\
-\lstinline|curl [url]| (\lstinline|-o f -O -L -I -d data -H 'Hdr: v'|) \\
+\begin{cmdblock}
+\cmditem{ssh user@host}{connexion SSH}
+\cmditem{scp [src] [dst]}{copie sécurisée}
+\cmditem{wget [url]}{télécharge un fichier}
+\cmdopt{\lstcode{-O f} fichier de sortie,
+        \lstcode{-c} reprendre, \lstcode{-q} silencieux,
+        \lstcode{--limit-rate=100k} limite le débit}
+\cmditem{curl [url]}{transfère une URL}
+\cmdopt{\lstcode{-o f} fichier de sortie,
+        \lstcode{-O} nomme comme l'original,
+        \lstcode{-L} suivre redirections,
+        \lstcode{-I} en-têtes seulement,
+        \lstcode{-d data} données POST,
+        \lstcode{-H 'Hdr: v'} ajoute un en-tête}
+\cmditem{lynx [url]}{navigateur web en console}
+\end{cmdblock}
 
 \section*{Env. virtuels Python}
 \lstinline|uv venv venv| \quad \lstinline|source venv/bin/activate| \\
@@ -336,11 +581,15 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \lstinline|pipx install pkg| \\
 
 \section*{APT (Debian/Ubuntu)}
-\lstinline|apt update| \quad \lstinline|apt upgrade| \\
-\lstinline|apt install pkg| \quad \lstinline|apt remove pkg| \\
-\lstinline|apt search terme| \quad \lstinline|apt show pkg| \\
-\lstinline|apt autoremove| (\lstinline|-y --purge|) \\
-
+\begin{cmdblock}
+\cmditem{apt update}{met à jour liste des paquets}
+\cmditem{apt upgrade}{met à jour les paquets installés}
+\cmditem{apt install [pkg]}{installe un paquet}
+\cmditem{apt remove [pkg]}{désinstalle un paquet}
+\cmditem{apt search [terme]}{cherche un paquet}
+\cmditem{apt show [pkg]}{informations sur un paquet}
+\cmditem{apt autoremove}{supprime dépendances inutiles}
+\end{cmdblock}
 
 \section*{À installer (exemples)}
 \textbf{Manuels FR} : \lstinline|sudo apt install manpages-fr manpages-fr-extra| \\
@@ -349,14 +598,14 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 
 \section*{Fun}
 
-\begin{tabularx}{\columnwidth}{lX}
-\lstinline|cowsay "s"| & phylactere et vache\\
-\lstinline|fortune| & citation aléatoire \\
-\lstinline|sl| & locomotive à vapeur \\
-\lstinline|cmatrix| & effet Matrix \\
-\lstinline|toilet "s"| & texte ASCII art \\
-\lstinline|lolcat| & texte coloré \\
-\end{tabularx}
+\begin{cmdblock}
+\cmditem{cowsay "s"}{phylactere et vache}
+\cmditem{fortune}{citation aléatoire }
+\cmditem{sl}{locomotive à vapeur }
+\cmditem{cmatrix}{effet Matrix }
+\cmditem{toilet "s"}{texte ASCII art }
+\cmditem{lolcat}{texte coloré }
+\end{cmdblock}
 
 \section*{Substituts modernes}
 
