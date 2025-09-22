@@ -43,10 +43,18 @@
   fontupper=\ttfamily\footnotesize
 }
 
-\newcommand{\lstcode}[1]{\inlinecode{#1}}
+%\lstMakeShortInline[columns=flexible]{|}
+
+%\newcommand{\lstcode}[1]{\inlinecode{#1}}
+% remplace ta définition existante
+\newcommand{\lstcode}[1]{\inlinecode{\detokenize{#1}}}
+\newcommand{\lstc}[1]{\inlinecode{#1}}
 
 \usepackage[os=win]{menukeys}
 \renewmenumacro{\keys}[+]{roundedkeys}
+
+\let\oldkeys\keys
+\renewcommand{\keys}[1]{\footnotesize\oldkeys{#1}\normalsize}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -85,8 +93,7 @@
 \setlength\tabcolsep{1.5pt}
 \setlength{\columnseprule}{0.4pt}
 
-\def\revision{1.0}
-\def\revisiondate{2024-06-12}
+\input{revision}
 
 % % Largeur de la colonne "commande" + écart
 % \newlength{\cmdlabelwidth} \setlength{\cmdlabelwidth}{2.8cm} % ajuste au besoin
@@ -168,7 +175,7 @@
 \newcommand{\cmdopt}[1]{%
   \hspace*{\cmdoptindent}%
   \begin{minipage}[t]{\dimexpr\linewidth-\cmdoptindent\relax}
-    \RaggedRight #1%
+    \RaggedRight \itshape #1%
   \end{minipage}\par
 }
 
@@ -250,85 +257,97 @@ Carte de référence des commandes et utilitaires Linux/Unix courants.
 
 \subsection*{Édition}
 
-\keys{\ctrl + H} \quad comme backspace (\keys{\backspace}) \\
-\keys{\ctrl + D} \quad comme delete (\keys{\del}) \\
-\keys{\ctrl + U} \quad coupe du début au curseur \\
-\keys{\ctrl + K} \quad coupe du curseur à la fin \\
-\keys{\ctrl + W} \quad coupe le mot avant le curseur \\
-\keys{\ctrl + Y} \quad colle le dernier texte coupé \\
-\keys{\ctrl + T} \quad swap le char courant avec le préc. \\
+\begin{tabularx}{\columnwidth}{lX}
+\keys{\ctrl + H} & comme backspace (\keys{\backspace}) \\
+\keys{\ctrl + D} & comme delete (\keys{\del}) \\
+\keys{\ctrl + U} & coupe du début au curseur \\
+\keys{\ctrl + K} & coupe du curseur à la fin \\
+\keys{\ctrl + W} & coupe le mot avant le curseur \\
+\keys{\ctrl + Y} & colle le dernier texte coupé \\
+\keys{\ctrl + T} & swap le char courant avec le précédent \\
+\keys{\Alt + D} & supprime le mot après \\
+\keys{\Alt + .} & insère le dernier argument \\
+\end{tabularx}
 
 \subsection*{Exécution / complétion}
 
-\keys{\ctrl + J}, \keys{\ctrl + M} : exécuter (\keys{\return}) \\
-\keys{\ctrl + I} : complétion (équiv. \keys{\tab}) \\
-\keys{\tab}{} : auto-complétion \\
+\begin{tabularx}{\columnwidth}{lX}
+\multicolumn{2}{l}{\keys{\ctrl + J}, \keys{\ctrl + M} exécuter (\keys{\return})} \\
+\keys{\ctrl + I} & complétion (équivalent \keys{\tab}) \\
+\keys{\tab}{} & auto-complétion \\
+\end{tabularx}
 
 \subsection*{Contrôle / Appels système}
 
-\keys{\ctrl + C} \quad interrompre (SIGINT) \\
-\keys{\ctrl + Z} \quad suspendre (SIGTSTP) \\
-\keys{\ctrl + L} \quad effacer l'écran (\lstinline|clear|) \\
-\keys{\ctrl + D} \quad envoyer EOF (ferme le shell) \\
-
-\subsection*{Historique / recherche}
-
-\keys{\ctrl + R} \quad recherche historique \\
-\keys{\ctrl + G} \quad annuler la recherche \\
-\keys{\ctrl + P} \quad commande précédente \\
-\keys{\ctrl + N} \quad commande suivante \\
-\keys{\ctrl + S} \quad pause (débloquer: \keys{\ctrl + Q}) \\
-\keys{\Alt}+\keys{<} \quad début de l'historique \\
-\keys{\Alt}+\keys{>} \quad fin de l'historique \\
-\keys{\Alt}+\keys{P} \quad préc. dans l'historique\\
-\keys{\Alt}+\keys{N} \quad suiv. dans l'historique \\
+\begin{tabularx}{\columnwidth}{lX}
+\keys{\ctrl + C} & interrompre (\emph{sigint}) \\
+\keys{\ctrl + Z} & suspendre (\emph{sigstp}) \\
+\keys{\ctrl + L} & effacer l'écran \\
+\keys{\ctrl + D} & envoyer \emph{EOF} (ferme le shell) \\
+\end{tabularx}
 
 \subsection*{Casse / mots}
 
-\keys{\Alt + U} \quad majuscules (mot après) \\
-\keys{\Alt + L} \quad minuscules (mot après) \\
-\keys{\Alt + C} \quad capitalise la première lettre \\
-\keys{\Alt + D} \quad supprime le mot après \\
-\keys{\Alt + .} \quad insère le dernier argument \\
+\begin{tabularx}{\columnwidth}{lX}
+\keys{\Alt + U} & majuscules (mot après) \\
+\keys{\Alt + L} & minuscules (mot après) \\
+\keys{\Alt + C} & capitalise la première lettre \\
+\end{tabularx}
 
-\section*{Sucres}
-\lstcode{\~} \quad \lstcode{\$HOME} \\
-\lstcode{.} \quad répertoire courant \\
-\lstcode{..} \quad répertoire parent \\
-\lstcode{!!} \quad dernière commande \\
-\lstcode{!n} \quad commande \#n de l'historique \\
-\lstcode{\$?} \quad code retour dernière commande \\
-\lstcode{\$0} \quad nom du script \\
-\lstcode{!*} \quad arguments ancienne command \\
-\lstcode{\^abc\^123} \quad substitution dans dernière commande \\
-\lstcode{`cmd`} obsolète, préférer \lstcode{\$(cmd)} \\
-\lstcode{\$(cmd)} \quad substitution de commande \\
-\lstcode{\${var}} \quad variable \\
-\lstcode{{a,b,c}} \quad expansion par alternatives \\
-\lstcode{{1..5}}, \lstcode{{a..e}} \quad expansions de séquence \\
-\lstcode{\$(cmd1; cmd2)} \quad sous-coquille \\
-\lstcode{\$(cmd \&)} \quad arrière-plan (sous-coquille) \\
-\lstcode{\$(( expr ))} \quad arithmétique \\
+\subsection*{Historique / recherche}
+
+\begin{tabularx}{\columnwidth}{lX}
+\keys{\ctrl + R} & recherche historique \\
+\keys{\ctrl + G} & annuler la recherche \\
+\keys{\ctrl + P} & commande précédente \\
+\keys{\ctrl + N} & commande suivante \\
+\keys{\ctrl + S} & pause (débloquer: \keys{\ctrl + Q}) \\
+\keys{\Alt}+\keys{<} & début de l'historique \\
+\keys{\Alt}+\keys{>} & fin de l'historique \\
+\keys{\Alt}+\keys{P} & préc. dans l'historique\\
+\keys{\Alt}+\keys{N} & suiv. dans l'historique \\
+\end{tabularx}
+
+\section*{Sucres syntaxiques}
+
+\begin{tabularx}{\columnwidth}{lX}
+\lstcode{~} & identique à \lstc{\$HOME} \\
+\lstcode{.} & répertoire courant \\
+\lstcode{..} & répertoire parent \\
+\lstcode{!!} & dernière commande \\
+\lstcode{!n} & commande \#n de l'historique \\
+\lstc{\$?} & code retour dernière commande \\
+\lstc{\$0} & nom du script \\
+\lstcode{!*} & arguments ancienne command \\
+\lstcode{^abc^123} & substitution dans dernière cmd. \\
+\lstcode{`cmd`} & obsolète, préférer \lstc{\$(cmd)} \\
+\lstc{\$(cmd)} & substitution de commande \\
+\lstc{\${var}} & rendu de variable \\
+\lstcode{{a,b,c}} & expansion par alternatives \\
+\lstcode{{1..5}} & expansions de séquence \\
+\lstc{\$(cmd1; cmd2)} & sous-coquille \\
+\lstc{\$(cmd \&)} & arrière-plan (sous-coquille) \\
+\lstc{\$(( expr ))} & arithmétique \\
+\end{tabularx}
 
 \section*{Redirections / pipes}
-\begin{cmdblock}
-\cmditem{cmd > f}{stdout \textrightarrow{} fichier (x)}
-\cmditem{cmd >> f}{stdout \textrightarrow{} fichier (a)}
-\cmditem{cmd 2> f}{stderr \textrightarrow{} fichier (x)}
-\cmditem{cmd \&> f}{stdout+stderr \textrightarrow{} fichier (x)}
-\cmditem{cmd \&>> f}{stdout+stderr \textrightarrow{} fichier (a)}
-\cmditem{cmd < f}{stdin depuis fichier}
-\cmditem{cmd << EOF}{heredoc (jusqu'à EOF)}
-\cmditem{cmd <<< "s"}{here-string (inject sur stdin)}
-\cmditem{cmd1 | cmd2}{pipe (stdout \textrightarrow{} stdin)}
-\cmditem{cmd1 |\& cmd2}{pipe (stdout+stderr \textrightarrow{} stdin)}
-\end{cmdblock}
+\begin{tabularx}{\columnwidth}{lX}
+\lstc{cmd > f} & stdout \textrightarrow{} fichier (écrase) \\
+\lstc{cmd >> f} & stdout \textrightarrow{} fichier (ajout) \\
+\lstc{cmd 2> f} & stderr \textrightarrow{} fichier (écrase) \\
+\lstc{cmd \&> f} & stdout+stderr \textrightarrow{} fichier (écrase) \\
+\lstc{cmd \&>> f} & stdout+stderr \textrightarrow{} fichier (ajout) \\
+\lstc{cmd < f} & stdin depuis fichier \\
+\lstc{cmd << EOF} & heredoc (jusqu'à EOF) \\
+\lstc{cmd <<< "s"} & here-string (inject sur stdin) \\
+\lstc{cmd1 | cmd2} & pipe (stdout \textrightarrow{} stdin) \\
+\lstc{cmd1 |\& cmd2} & pipe (stdout+stderr \textrightarrow{} stdin) \\
+\end{tabularx}
 
-\section*{Commandes de base}
+\section*{Utilisateur}
 \begin{cmdblock}
-\cmditem{uname -a}{informations système}
-\cmditem{uptime}{temps de fonctionnement}
-\cmditem{date}{date et l'heure actuelles}
+\cmditem{uptime}{temps de fonctionnement depuis reboot}
+\cmditem{date}{date et heure actuelles}
 \cmditem{cal}{calendrier du mois en cours}
 \cmditem{whoami}{nom de l'utilisateur courant}
 \end{cmdblock}
@@ -365,8 +384,8 @@ Carte de référence des commandes et utilitaires Linux/Unix courants.
     \lstcode{-r} récursif}
   \cmditem{mv [src] [dst]}{déplace/renomme.}
   \cmdopt{\lstcode{-i} interactif,
-    \lstcode{-i} interactif,
     \lstcode{-f} force,
+    \lstcode{-n} ne pas écraser,
     \lstcode{-v} verbeux}
 \end{cmdblock}
 
@@ -424,12 +443,16 @@ Carte de référence des commandes et utilitaires Linux/Unix courants.
 \end{cmdblock}
 
 \section*{Archives / compression}
-\textbf{\lstinline|.tar.gz|} : \lstinline|tar -czvf archive.tar.gz [f]| \\
-\lstinline|tar -xzvf archive.tar.gz| \\
-\textbf{\lstinline|.zip|} : \lstinline|zip archive.zip [f]| \quad \lstinline|unzip archive.zip| \\
-\textbf{\lstinline|.tar.xz|} : \lstinline|tar -cJvf| / \lstinline|tar -xJvf| \\
-\textbf{\lstinline|.7z|} : \lstinline|7z a archive.7z [f]| \quad \lstinline|7z x archive.7z| \\
-\textbf{bsdtar} : \lstinline|bsdtar -xf [archive]|, \lstinline|bsdtar -cf [arch] [f]|, \lstinline|bsdtar -tf [arch]| \\
+\lstcode{tar -czvf archive.tar.gz [f]} crée archive .tar.gz \\
+\lstcode{tar -xzvf archive.tar.gz} extrait archive .tar.gz \\
+\lstcode{zip archive.zip [f]} crée archive .zip \\
+\lstcode{unzip archive.zip} extrait archive .zip \\
+\lstcode{tar -cJvf archive.tar.xz [f]} crée archive .tar.xz \\
+\lstcode{tar -xJvf archive.tar.xz} extrait archive .tar.xz \\
+\lstcode{7z a archive.7z [f]} crée archive .7z \\
+\lstcode{7z x archive.7z} extrait archive .7z \\
+\lstcode{bsdtar -xf [f]} extrait \\
+\lstcode{bsdtar -cf archive.tar [f]} crée archive .tar \\
 
 \section*{Permissions / utilisateurs}
 
@@ -447,19 +470,19 @@ Carte de référence des commandes et utilitaires Linux/Unix courants.
 \cmditem{id}{informations sur l'utilisateur courant}
 \cmditem{groups}{groupes de l'utilisateur courant}
 \cmditem{passwd}{change le mot de passe}
+\cmditem{last}{historique des connexions}
 \end{cmdblock}
 
 \textit{bits :} 1 x, 2 w, 4 r \\
 Exemples : \lstinline|chmod 755 f| (\lstinline|rwxr-xr-x|), \lstinline|chmod 644 f|, \lstinline|chmod u+x f|, \lstinline|chmod g-w f|, \lstinline|chmod o=r f|, \lstinline|chmod a+x f| \\
 
-\section*{less / more / man}
-Espace: page suivante \quad \keys{b}: page précédente \\
-\keys{\return}{}: ligne suivante \quad \keys{y}: ligne précédente \\
-\keys{/}: rechercher \quad \keys{n}/\keys{N}: suivant/précédent \\
-\keys{g}/\keys{G}: début/fin \quad \keys{q}: quitter \\
-\keys{h}: aide \quad \keys{m}: marque-page \\
-\keys{'}: aller au marque-page \quad \keys{`}: revenir \\
-\keys{+} \& \keys{-} + numéro : aller à la ligne \\
+\section*{Raccourcis less / more / man}
+Espace: page suivante, \keys{b}: page précédente \\
+\keys{\return}{}: ligne suivante, \keys{y}: ligne précédente \\
+\keys{/}: rechercher, \keys{n}/\keys{N}: suivant/précédent \\
+\keys{g}/\keys{G}: début/fin, \keys{q}: quitter \\
+\keys{h}: aide, \keys{m}: marque-page \\
+\keys{'}: aller au marque-page, \keys{`}: revenir \\
 
 \section*{Git}
 \begin{cmdblock}
@@ -468,7 +491,7 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 %\cmditem{git remote add origin [url]}{ajoute une origine}
 \cmditem{git remote -v}{liste les origines}
 \cmditem{git fetch}{récupère les changements distants}
-\cmditem{git pull}{récupère et fusionne les changements distants}
+\cmditem{git pull}{pull + merge}
 \cmditem{git push}{pousse les changements locaux}
 \cmditem{git clone [url]}{clone un dépôt distant}
 \cmditem{git branch}{liste les branches}
@@ -498,8 +521,28 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \end{cmdblock}
 
 \section*{Recherche}
-\lstinline|grep "texte" [f]| (\lstinline|-P -r -i -v -n -c -l -w -A n -B n -C n -o|) \\
-\lstinline|rg "texte" [rep]| (\lstinline|--json|) \\
+\begin{cmdblock}
+\cmditem{grep "s" [f]}{cherche une chaîne dans un fichier}
+\cmdopt{\lstcode{-P} regex Perl,
+        \lstcode{-r} récursif,
+        \lstcode{-i} ignore la casse,
+        \lstcode{-v} inverse (non),
+        \lstcode{-n} numéro de ligne,
+        \lstcode{-c} compte les lignes,
+        \lstcode{-l} liste les fichiers,
+        \lstcode{-w} mot entier,
+        \lstcode{-A n} n lignes après,
+        \lstcode{-B n} n lignes avant,
+        \lstcode{-C n} n lignes contexte,
+        \lstcode{-o} seulement correspondance}
+\cmditem{rg "s" [f]}{comme grep, plus rapide (si installé)}
+\cmditem{find [d] -name "s"}{cherche un fichier}
+\cmdopt{\lstcode{-iname} ignore la casse,
+        \lstcode{-type f/d} fichier/répertoire,
+        \lstcode{-exec cmd \{\} \;} exécute cmd sur chaque fichier}
+\cmditem{locate "s"}{cherche un fichier (base de données)}
+\cmditem{which [cmd]}{chemin d'une commande}
+\end{cmdblock}
 
 \section*{Remplacement}
 \begin{cmdblock}
@@ -580,6 +623,34 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \lstinline|pip list| \quad \lstinline|uv add pkg| \\
 \lstinline|pipx install pkg| \\
 
+\section*{Système}
+
+\begin{cmdblock}
+\cmditem{shutdown -h now}{arrête le système}
+\cmditem{shutdown -r now}{redémarre le système}
+\cmditem{systemctl status [service]}{statut d'un service}
+\cmditem{systemctl start [service]}{démarre un service}
+\cmditem{systemctl stop [service]}{arrête un service}
+\cmditem{systemctl restart [service]}{redémarre un service}
+\cmditem{systemctl enable [service]}{active un service au démarrage}
+\cmditem{systemctl disable [service]}{désactive un service au démarrage}
+\cmditem{journalctl -xe}{logs système}
+\cmditem{timedatectl}{date, heure, fuseau horaire}
+\cmditem{hostnamectl}{informations sur le système}
+\end{cmdblock}
+
+\section*{Hardware}
+
+\begin{cmdblock}
+\cmditem{uname -a}{informations système}
+\cmditem{lscpu}{infos CPU}
+\cmditem{lsblk}{liste les disques et partitions}
+
+\cmditem{df -h}{espace disque}
+\cmditem{du -sh [f/d]}{taille d'un fichier/répertoire}
+\cmditem{free -h}{mémoire}
+\end{cmdblock}
+
 \section*{APT (Debian/Ubuntu)}
 \begin{cmdblock}
 \cmditem{apt update}{met à jour liste des paquets}
@@ -589,12 +660,15 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \cmditem{apt search [terme]}{cherche un paquet}
 \cmditem{apt show [pkg]}{informations sur un paquet}
 \cmditem{apt autoremove}{supprime dépendances inutiles}
+\cmditem{dpkg -L [pkg]}{liste fichiers d'un paquet}
+\cmditem{dpkg -S [f]}{quel paquet fournit ce fichier}
 \end{cmdblock}
 
-\section*{À installer (exemples)}
-\textbf{Manuels FR} : \lstinline|sudo apt install manpages-fr manpages-fr-extra| \\
-\textbf{Dev} : \lstinline|sudo apt install build-essential git curl wget vim htop| \\
-\textbf{Réseau} : \lstinline|sudo apt install net-tools iputils-ping traceroute dnsutils| \\
+% \section*{À installer (exemples)}
+% \textbf{Utilitaires} : \lstinline|sudo apt install util-linux coreutils findutils grep sed awk wget curl unzip zip tar| \\
+% \textbf{Manuels FR} : \lstinline|sudo apt install manpages-fr manpages-fr-extra| \\
+% \textbf{Dev} : \lstinline|sudo apt install build-essential git curl wget vim htop| \\
+% \textbf{Réseau} : \lstinline|sudo apt install net-tools iputils-ping traceroute dnsutils| \\
 
 \section*{Fun}
 
@@ -607,18 +681,18 @@ Espace: page suivante \quad \keys{b}: page précédente \\
 \cmditem{lolcat}{texte coloré }
 \end{cmdblock}
 
-\section*{Substituts modernes}
+\section*{Substituts modernes conseillés}
 
 \begin{tabularx}{\columnwidth}{lX}
 lsd & Substitut de ls  \\
-batcat& Substitut de cat avec coloration syntaxique  \\
+batcat& Amélioration de cat  \\
 fd & Substitut de find  \\
 ripgrep (rg) & Substitut de grep  \\
 sd & Substitut de sed  \\
 hexyl & Substitut de hexdump  \\
-broot & Explorateur de fichiers en ligne de commande  \\
+broot & Explorateur de fichiers CLI  \\
 fzf & Outil de recherche floue  \\
-git-delta & Substitut de git diff avec coloration syntaxique \\
+git-delta & Substitut de git diff \\
 \end{tabularx}
 
 \end{multicols}
