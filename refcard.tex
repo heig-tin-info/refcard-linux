@@ -26,12 +26,35 @@
 \setlength{\parskip}{2pt}
 
 \usepackage{listings}
+\usepackage{xparse}
+
+% Règles de remplacement (STARRED !) pour listings
 \lstset{
   basicstyle=\ttfamily\footnotesize,
-  columns=flexible,
+  columns=fullflexible,
   keepspaces=true,
   upquote=true,
-  breaklines=true
+  breaklines=true,
+  literate=*%
+    {[f]}{{\raisebox{-0.15ex}{\scriptsize\faFileO}}}3
+    {[fc]}{{\raisebox{-0.15ex}{\scriptsize\faFileCodeO}}}4
+    {[fa]}{{\raisebox{-0.15ex}{\scriptsize\faFileArchiveO}}}4
+    {[d]}{{\raisebox{-0.15ex}{\scriptsize\faFolderO}}}3
+    {[p]}{{\raisebox{-0.15ex}{\scriptsize\faFilePowerpointO}}}2
+    {[t]}{{\raisebox{-0.15ex}{\scriptsize\faHashtag}}}2
+    {uu}{{test}}2
+}
+
+\NewDocumentCommand{\code}{v}{%
+  \tcbox[
+    on line,
+    colframe=black!60, colback=black!5,
+    bottom=1.5pt, left=1.5pt, right=1.5pt, top=1.5pt,
+    boxrule=0.4pt, arc=2pt, boxsep=0.2pt,
+    fontupper=\ttfamily\footnotesize,
+    before upper=\rule{0pt}{0.7em},
+    tcbox raise base
+  ]{\lstinline!#1!}%
 }
 
 \newtcbox{\inlinecode}{nobeforeafter,
@@ -220,7 +243,17 @@
 \newcommand{\codefa}[2][]{%
   \raisebox{-0.15ex}{\faIcon[#1]{#2}}%
 }
+
+\clubpenalty=0            % orphelines (début de page)
+\widowpenalty=0           % veuves (fin de page)
+\displaywidowpenalty=0
+
 \begin{document}
+
+\raggedcolumns                 % colonnes non équilibrées (hauteurs différentes)
+\setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
+\setlength{\postmulticols}{0pt}
+\setlength{\multicolsep}{0pt}
 
 \begin{multicols}{4}
 \raggedbottom
@@ -233,10 +266,10 @@
     \end{raggedright}
 \end{tabularx}
 \begin{raggedright}
-Carte de référence des commandes et utilitaires Linux/Unix courants. Les marqueurs suivants sont utilisés : \lstcode{[f]} : nom de fichier,
-\lstcode{[d]} : nom de répertoire,
-\lstcode{[cmd]} : commande,
-\lstcode{"s"} : chaîne de caractères
+Carte de référence des commandes et utilitaires Unix-like courants. Les marqueurs suivants sont utilisés : \code{[f]} : nom de fichier,
+\code{[d]} : nom de répertoire,
+\code{[p]} : commande,
+\code{"s"} : chaîne de caractères
 \end{raggedright}
 
   % File:  {\scriptsize\faFileO\par}
@@ -301,87 +334,89 @@ Carte de référence des commandes et utilitaires Linux/Unix courants. Les marqu
 \keys{\ctrl + P} & commande précédente \\
 \keys{\ctrl + N} & commande suivante \\
 \keys{\ctrl + S} & pause (débloquer: \keys{\ctrl + Q}) \\
-\keys{\Alt}+\keys{<} & début de l'historique \\
-\keys{\Alt}+\keys{>} & fin de l'historique \\
-\keys{\Alt}+\keys{P} & préc. dans l'historique\\
-\keys{\Alt}+\keys{N} & suiv. dans l'historique \\
+\keys{\Alt + <} & début de l'historique \\
+\keys{\Alt + >} & fin de l'historique \\
+\keys{\Alt + P} & préc. dans l'historique\\
+\keys{\Alt + N} & suiv. dans l'historique \\
 \end{tabularx}
 
 \section*{Sucres syntaxiques}
 
-\begin{tabularx}{\columnwidth}{lX}
-\lstcode{~} & identique à \lstc{\$HOME} \\
-\lstcode{.} & répertoire courant \\
-\lstcode{..} & répertoire parent \\
-\lstcode{!!} & dernière commande \\
-\lstcode{!n} & commande \#n de l'historique \\
-\lstc{\$?} & code retour dernière commande \\
-\lstc{\$0} & nom du script \\
-\lstcode{!*} & arguments ancienne command \\
-\lstcode{^abc^123} & substitution dans dernière cmd. \\
-\lstcode{`cmd`} & obsolète, préférer \lstc{\$(cmd)} \\
-\lstc{\$(cmd)} & substitution de commande \\
-\lstc{\${var}} & rendu de variable \\
-\lstcode{{a,b,c}} & expansion par alternatives \\
-\lstcode{{1..5}} & expansions de séquence \\
-\lstc{\$(cmd1; cmd2)} & sous-coquille \\
-\lstc{\$(cmd \&)} & arrière-plan (sous-coquille) \\
-\lstc{\$(( expr ))} & arithmétique \\
-\end{tabularx}
+\begin{tabbing}
+  aaaaaaaaaaaa \= a \kill
+\code|~| \> identique à \lstc{\$HOME} \\
+\code|.| \> répertoire courant \\
+\code|..| \> répertoire parent \\
+\code|!!| \> dernière commande \\
+\code|!n| \> commande \#n de l'historique \\
+\lstc{\$?} \> code retour dernière commande \\
+\lstc{\$0} \> nom du script \\
+\code{!*} \> arguments ancienne command \\
+\code{^abc^123} \> substitution dans dernière cmd. \\
+\code{`cmd`} \> obsolète, préférer \lstc{\$(cmd)} \\
+\lstc{\$(cmd)} \> substitution de commande \\
+\lstc{\${var}} \> rendu de variable \\
+\code{{a,b,c}} \> expansion par alternatives \\
+\code{{1..5}} \> expansions de séquence \\
+\lstc{\$(cmd1; cmd2)} \> sous-coquille \\
+\lstc{\$(cmd \&)} \> arrière-plan (sous-coquille) \\
+\lstc{\$(( expr ))} \> arithmétique \\
+\end{tabbing}
 
 \section*{Redirections / pipes}
-\begin{tabularx}{\columnwidth}{lX}
-\lstc{cmd > f} & stdout \textrightarrow{} fichier (écrase) \\
-\lstc{cmd >> f} & stdout \textrightarrow{} fichier (ajout) \\
-\lstc{cmd 2> f} & stderr \textrightarrow{} fichier (écrase) \\
-\lstc{cmd \&> f} & stdout+stderr \textrightarrow{} fichier (écrase) \\
-\lstc{cmd \&>> f} & stdout+stderr \textrightarrow{} fichier (ajout) \\
-\lstc{cmd < f} & stdin depuis fichier \\
-\lstc{cmd << EOF} & heredoc (jusqu'à EOF) \\
-\lstc{cmd <<< "s"} & here-string (inject sur stdin) \\
-\lstc{cmd1 | cmd2} & pipe (stdout \textrightarrow{} stdin) \\
-\lstc{cmd1 |\& cmd2} & pipe (stdout+stderr \textrightarrow{} stdin) \\
-\end{tabularx}
+\begin{tabbing}
+  aaaaaaaaa \= a \kill
+\code|[p] > [f]| \> stdout \textrightarrow{} fichier (écrase) \\
+\code|[p] >> [f]| \> stdout \textrightarrow{} fichier (ajout) \\
+\code|[p] 2> [f]| \> stderr \textrightarrow{} fichier (écrase) \\
+\code|[p] &> [f]| \> stdout+stderr \textrightarrow{} fichier (écrase) \\
+\code|[p] &>> [f]| \> stdout+stderr \textrightarrow{} fichier (ajout) \\
+\code|[p] < [f]| \> stdin depuis fichier \\
+\code|[p] << EOF| \> heredoc (jusqu'à EOF) \\
+\code|[p] <<< "s"| \> here-string (inject sur stdin) \\
+\code{[p] | [p]} \> pipe (stdout \textrightarrow{} stdin) \\
+\code{[p] |& [p]} \> pipe (stdout+stderr \textrightarrow{} stdin) \\
+\end{tabbing}
 
 \section*{Utilisateur}
 \begin{cmdblock}
-\cmditem{uptime}{temps de fonctionnement depuis reboot}
-\cmditem{date}{date et heure actuelles}
-\cmditem{cal}{calendrier du mois en cours}
-\cmditem{whoami}{nom de l'utilisateur courant}
+\code|uptime| \quad temps de fonctionnement depuis reboot \\
+\code|date| \quad date et heure actuelles \\
+\code|cal| \quad calendrier du mois en cours \\
+\code|whoami| \quad nom de l'utilisateur courant \\
 \end{cmdblock}
 
 \section*{Fichiers / répertoires}
 
 \begin{cmdblock}
-  \cmditem{pwd}{chemin répertoire courant}
-  \cmditem{ls}{liste les fichiers}
+  \code|pwd| \quad chemin répertoire courant \\
+  \code|ls| \quad liste les fichiers \\
   \cmdopt{\lstcode{-l} détails, \lstcode{-a} fichiers cachés,
           \lstcode{-h} tailles lisibles, \lstcode{-R} récursif,
           \lstcode{-t} trier par date, \lstcode{-r} ordre inverse,
           \lstcode{-Q} guillemets, \lstcode{-i} inode,
           \lstcode{-d} répertoires seulement, \lstcode{-S} trier par taille,
           \lstcode{-1} un par ligne}
-  \cmditem{cd [d]}{change de répertoire}
-  \cmditem{touch [f]}{crée fichier vide ou met à jour date}
-  \cmditem{mkdir [d]}{crée un répertoire.}
+  \code|cd [d]| \quad change de répertoire \\
+  \code|touch [f]| \quad crée fichier vide ou met à jour date \\
+  \code|mkdir [d]| \quad crée un répertoire. \\
   \cmdopt{\lstcode{-v} verbeux,
     \lstcode{-p} parents si besoin,
     \lstcode{-m [perms]} permissions}
-  \cmditem{rmdir [d]}{supprime un répertoire vide}
-  \cmditem{rm [f]}{supprime un fichier.}
+  \code|rmdir [d]| \quad supprime un répertoire vide \\
+  \code|rm [f]| \quad supprime un fichier. \\
   \cmdopt{\lstcode{-i} interactif,
     \lstcode{-f} force,
     \lstcode{-v} verbeux,
     \lstcode{-r} récursif}
 
-  \cmditem{cp [src] [dst]}{copie un fichier/répertoire.}
+  \code|cp [src] [dst]| \quad copie un fichier/répertoire. \\
   \cmdopt{\lstcode{-a} archive (récursif + attributs),
     \lstcode{-i} interactif,
     \lstcode{-f} force,
     \lstcode{-v} verbeux,
     \lstcode{-r} récursif}
-  \cmditem{mv [src] [dst]}{déplace/renomme.}
+  \code|mv [src] [dst]| \quad déplace/renomme. \\
   \cmdopt{\lstcode{-i} interactif,
     \lstcode{-f} force,
     \lstcode{-n} ne pas écraser,
@@ -389,55 +424,55 @@ Carte de référence des commandes et utilitaires Linux/Unix courants. Les marqu
 \end{cmdblock}
 
 \section*{Exécution de commandes}
-\lstcode{source [fichier]} \\
-\lstcode{./[fichier]} (exécutable) \\
+\code{source [f]} \quad exécute script dans contexte \\
+\code{./[p]} exécute programme dans répertoire courant \\
 
 \section*{Consultation de fichiers}
 
 \begin{cmdblock}
-\cmditem{file [f]}{type du fichier}
-\cmditem{stat [f]}{infos détaillées}
-\cmditem{wc [f]}{compte occurences}
+\code|file [f]|\quad type du fichier\par
+\code|stat [f]|\quad infos détaillées\par
+\code|wc [f]|\quad compte occurences\par
 \cmdopt{\lstcode{-l} lignes, \lstcode{-w} mots, \lstcode{-c} caractères}
-\cmditem{head [f]}{affiche premières lignes}
+\code{head [f]}\quad affiche premières lignes\par
 \cmdopt{\lstcode{-n N} N premières lignes}
-\cmditem{tail [f]}{affiche les dernières lignes}
+\code|tail [f]| \quad affiche les dernières lignes \\
 \cmdopt{\lstcode{-n N} N dernières lignes,
         \lstcode{-f} temps réel}
-\cmditem{less [f]}{affiche page par page}
-\cmditem{cat [f]}{affiche le contenu}
-\cmditem{hexdump -C [f]}{affiche en hexadécimal}
-\cmditem{diff [f1] [f2]}{comparaison ligne par ligne}
+\code|less [f]| \quad affiche page par page \\
+\code|cat [f]| \quad affiche le contenu \\
+\code|hexdump -C [f]| \quad affiche en hexadécimal \\
+\code|diff [f1] [f2]| \quad comparaison ligne par ligne \\
 \end{cmdblock}
 
 \section*{Variables d'environnement}
 \begin{cmdblock}
-\cmditem{set}{liste variables et fonctions}
-\cmditem{env}{liste les variables d'env.}
-\cmditem{export VAR=[s]}{crée/mod. variable d'env.}
-\cmditem{echo \$VAR}{affiche valeur variable}
-\cmditem{\$PATH}{chemin des exécutables}
-\cmditem{\$HOME}{répertoire personnel}
-\cmditem{\$SHELL}{interpréteur de commandes}
-\cmditem{\$USER}{nom de l'utilisateur}
-\cmditem{\$PS1}{invite de commande}
-\cmditem{\$PWD}{répertoire courant}
-\cmditem{\$OLDPWD}{répertoire précédent}
+\code|set| \quad liste variables et fonctions \\
+\code|env| \quad liste les variables d'env. \\
+\code|export VAR=[s]| \quad crée/mod. variable d'env. \\
+\code|echo \$VAR| \quad affiche valeur variable \\
+\code|\$PATH| \quad chemin des exécutables \\
+\code|\$HOME| \quad répertoire personnel \\
+\code|\$SHELL| \quad interpréteur de commandes \\
+\code|\$USER| \quad nom de l'utilisateur \\
+\code|\$PS1| \quad invite de commande \\
+\code|\$PWD| \quad répertoire courant \\
+\code|\$OLDPWD| \quad répertoire précédent \\
 \end{cmdblock}
 
 \section*{Processus / jobs}
 \begin{cmdblock}
-\cmditem{[cmd]\&}{exécute en arrière-plan}
-\cmditem{jobs}{liste les jobs en cours}
-\cmditem{wait [PID]}{attend la fin d'un job}
-\cmditem{disown [PID]}{détache un job du shell}
-\cmditem{fg [j]}{ramène un job au premier plan}
-\cmditem{bg [j]}{relance un job en arrière-plan}
-\cmditem{ps aux}{liste les processus}
-\cmditem{kill [pid]}{termine un processus}
-\cmditem{killall [p]}{termine tous les processus nommés}
-\cmditem{top}{moniteur de processus}
-\cmditem{htop}{top amélioré (si installé)}
+\code|[p]\&| \quad exécute en arrière-plan \\
+\code|jobs| \quad liste les jobs en cours \\
+\code|wait [PID]| \quad attend la fin d'un job \\
+\code|disown [PID]| \quad détache un job du shell \\
+\code|fg [j]| \quad ramène un job au premier plan \\
+\code|bg [j]| \quad relance un job en arrière-plan \\
+\code|ps aux| \quad liste les processus \\
+\code|kill [pid]| \quad termine un processus \\
+\code|killall [p]| \quad termine tous les processus nommés \\
+\code|top| \quad moniteur de processus \\
+\code|htop| \quad top amélioré (si installé) \\
 
 \end{cmdblock}
 
@@ -456,24 +491,24 @@ Carte de référence des commandes et utilitaires Linux/Unix courants. Les marqu
 \section*{Permissions / utilisateurs}
 
 \begin{cmdblock}
-\cmditem{chmod}{modifie les permissions}
+\code|chmod| \quad modifie les permissions \\
 \cmdopt{\lstcode{u} user, \lstcode{g} group, \lstcode{o} others, \lstcode{a} all,
         \lstcode{+} add, \lstcode{-} remove, \lstcode{=} set exactly}
-\cmditem{chown}{change le propriétaire}
-\cmditem{chgrp}{change le groupe}
-\cmditem{umask}{masque de création de fichiers}
-\cmditem{sudo [cmd]}{exécute en superutilisateur}
-\cmditem{su [utilisateur]}{change d'utilisateur}
-\cmditem{who}{qui est connecté}
-\cmditem{w}{qui est connecté et que font-ils}
-\cmditem{id}{informations sur l'utilisateur courant}
-\cmditem{groups}{groupes de l'utilisateur courant}
-\cmditem{passwd}{change le mot de passe}
-\cmditem{last}{historique des connexions}
+\code|chown| \quad change le propriétaire \\
+\code|chgrp| \quad change le groupe \\
+\code|umask| \quad masque de création de fichiers \\
+\code|sudo [p]| \quad exécute en superutilisateur \\
+\code|su [utilisateur]| \quad change d'utilisateur \\
+\code|who| \quad qui est connecté \\
+\code|w| \quad qui est connecté et que font-ils \\
+\code|id| \quad informations sur l'utilisateur courant \\
+\code|groups| \quad groupes de l'utilisateur courant \\
+\code|passwd| \quad change le mot de passe \\
+\code|last| \quad historique des connexions \\
 \end{cmdblock}
 
 \textit{bits :} 1 x, 2 w, 4 r \\
-Exemples : \lstinline|chmod 755 f| (\lstinline|rwxr-xr-x|), \lstinline|chmod 644 f|, \lstinline|chmod u+x f|, \lstinline|chmod g-w f|, \lstinline|chmod o=r f|, \lstinline|chmod a+x f| \\
+% Exemples : \lstinline|chmod 755 f| (\lstinline|rwxr-xr-x|), \lstinline|chmod 644 f|, \lstinline|chmod u+x f|, \lstinline|chmod g-w f|, \lstinline|chmod o=r f|, \lstinline|chmod a+x f| \\
 
 \section*{Raccourcis less / more / man}
 Espace: page suivante, \keys{b}: page précédente \\
@@ -483,45 +518,10 @@ Espace: page suivante, \keys{b}: page précédente \\
 \keys{h}: aide, \keys{m}: marque-page \\
 \keys{'}: aller au marque-page, \keys{`}: revenir \\
 
-\section*{Git}
-\begin{cmdblock}
-\cmditem{git init}{initialise un dépôt git}
-\cmditem{git status}{statut du dépôt}
-%\cmditem{git remote add origin [url]}{ajoute une origine}
-\cmditem{git remote -v}{liste les origines}
-\cmditem{git fetch}{récupère les changements distants}
-\cmditem{git pull}{pull + merge}
-\cmditem{git push}{pousse les changements locaux}
-\cmditem{git clone [url]}{clone un dépôt distant}
-\cmditem{git branch}{liste les branches}
-\cmditem{git branch [br]}{crée une branche}
-\cmditem{git checkout [br]}{change de branche}
-\cmditem{git commit -m "s"}{crée un commit}
-\cmditem{git add [f]}{ajoute un fichier au commit}
-\cmditem{git log}{historique des commits}
-\cmdopt{\lstcode{--oneline} résumé, \lstcode{--graph} graphe,
-        \lstcode{--stat} stats, \lstcode{-p} diff}
-\end{cmdblock}
-
-\section*{GCC}
-\begin{cmdblock}
-\cmditem{gcc [f.c]}{compile un fichier C}
-\cmdopt{\lstcode{-o f} nom de l'exécutable,
-        \lstcode{-Wall} tous les avertissements,
-        \lstcode{-Wextra} avertissements supplémentaires,
-        \lstcode{-g} infos debug,
-        \lstcode{-O0, -O1, -O2, -O3} optimisation,
-        \lstcode{-std=c17} standard C,
-        \lstcode{-I dir} inclure répertoire dir,
-        \lstcode{-L dir} lier répertoire dir,
-        \lstcode{-l lib} lier la bibliothèque lib
-        \lstcode{-c} compiler seulement (pas linker)}
-\cmditem{g++ [f.cpp]}{compile un fichier C++}
-\end{cmdblock}
 
 \section*{Recherche}
 \begin{cmdblock}
-\cmditem{grep "s" [f]}{cherche une chaîne dans un fichier}
+\code|grep "s" [f]| \quad cherche une chaîne dans un fichier \\
 \cmdopt{\lstcode{-P} regex Perl,
         \lstcode{-r} récursif,
         \lstcode{-i} ignore la casse,
@@ -534,133 +534,168 @@ Espace: page suivante, \keys{b}: page précédente \\
         \lstcode{-B n} n lignes avant,
         \lstcode{-C n} n lignes contexte,
         \lstcode{-o} seulement correspondance}
-\cmditem{rg "s" [f]}{comme grep, plus rapide (si installé)}
-\cmditem{find [d] -name "s"}{cherche un fichier}
+\code|rg "s" [f]| \quad comme grep, plus rapide (si installé) \\
+\code|find [d] -name "s"| \quad cherche un fichier \\
 \cmdopt{\lstcode{-iname} ignore la casse,
         \lstcode{-type f/d} fichier/répertoire,
         \lstcode{-exec cmd \{\} \;} exécute cmd sur chaque fichier}
-\cmditem{locate "s"}{cherche un fichier (base de données)}
-\cmditem{which [cmd]}{chemin d'une commande}
+\code|locate "s"| \quad cherche un fichier (base de données) \\
+\code|which [p]| \quad chemin d'une commande \\
 \end{cmdblock}
 
 \section*{Remplacement}
 \begin{cmdblock}
-\cmditem{sed 's/search/new/g' [f]}{remplace avec BRE regex}
+\code|sed 's/search/new/g' [f]| \quad remplace avec BRE regex \\
 \cmdopt{\lstcode{-i} modifie le fichier,
         \lstcode{-n} n'affiche rien par défaut,
         \lstcode{-E} regex étendues,
         \lstcode{-e} script, \lstcode{-r} regex étendues}
-\cmditem{perl -pe 's/search/new/g' [f]}{remplace avec regex Perl}
+\code|perl -pe 's/search/new/g' [f]| \quad remplace avec regex Perl \\
 \cmdopt{\lstcode{-i} modifie le fichier,
         \lstcode{-n} n'affiche rien par défaut,
         \lstcode{-e} script, \lstcode{-l} gère les nouvelles lignes}
-\cmditem{perl -0777 -pe 's/search/new/gs' [f]}{remplace sur tout le fichier}
+\code|perl -0777 -pe 's/search/new/gs' [f]| \quad remplace sur tout le fichier \\
 \end{cmdblock}
 
 \section*{Utilitaires}
 \begin{cmdblock}
-\cmditem{uniq [f]}{filtre les lignes consécutives identiques}
+\code|uniq [f]| \quad filtre les lignes consécutives identiques \\
 \cmdopt{\lstcode{-c} compte, \lstcode{-d} que les doublons,
         \lstcode{-u} que les uniques, \lstcode{-i} ignore la casse}
-\cmditem{sort [f]}{trie les lignes}
+\code|sort [f]| \quad trie les lignes \\
 \cmdopt{\lstcode{-r} inverse, \lstcode{-n} numérique,
         \lstcode{-k n} clé n, \lstcode{-u} unique,
         \lstcode{-t x} séparateur x}
-\cmditem{cut -d x -f n [f]}{extrait le champ n, séparé par x}
-\cmditem{awk '{print \$n}' [f]}{extrait le champ n (espace séparateur)}
-\cmditem{xargs [cmd]}{construit des lignes de commande}
+\code|cut -d x -f n [f]| \quad extrait le champ n, séparé par x \\
+\code|awk '{print \$n}' [f]| \quad extrait le champ n (espace séparateur) \\
+\code|xargs [p]| \quad construit des lignes de commande \\
 \cmdopt{\lstcode{-n N} N arguments par commande,
         \lstcode{-I \{\}} remplace \{\} par l'argument}
-\cmditem{tr 'set1' 'set2'}{remplace set1 par set2}
+\code|tr 'set1' 'set2'| \quad remplace set1 par set2 \\
 \cmdopt{\lstcode{-d} supprime set1, \lstcode{-s} squeeze}
-\cmditem{tee [f]}{duplique le flux vers un fichier}
+\code|tee [f]| \quad duplique le flux vers un fichier \\
 \cmdopt{\lstcode{-a} ajoute au fichier, \lstcode{-i} ignore les signaux}
 \end{cmdblock}
 
 \section*{Aide}
 \begin{cmdblock}
-\cmditem{help [cmd]}{aide interne bash}
-\cmditem{[cmd] --help}{aide d'une commande}
-\cmditem{man [cmd]}{manuel d'une commande}
-\cmditem{apropos [terme]}{cherche dans les manuels}
-\cmditem{whatis [cmd]}{description commande}
+\code|help [p]| \quad aide interne bash \\
+\code|[p] --help| \quad aide d'une commande \\
+\code|man [p]| \quad manuel d'une commande \\
+\code|apropos [terme]| \quad cherche dans les manuels \\
+\code|whatis [p]| \quad description commande \\
 \end{cmdblock}
 
 \emph{Sections du manuel: 1 utilisateur, 2 syscalls, 3 lib, 4 spéciaux, 5 formats, 6 jeux, 7 divers, 8 admin} \\
 
 \section*{Gestion Réseau}
 \begin{cmdblock}
-\cmditem{ip a}{liste adresses IP}
-\cmditem{ip r}{table de routage}
-\cmditem{ping [hôte]}{teste la connectivité}
-\cmditem{ss -tuln}{sockets réseau}
-\cmditem{dig [hôte]}{résolution DNS avancée}
+\code|ip a| \quad liste adresses IP \\
+\code|ip r| \quad table de routage \\
+\code|ping [hôte]| \quad teste la connectivité \\
+\code|ss -tuln| \quad sockets réseau \\
+\code|dig [hôte]| \quad résolution DNS avancée \\
 \end{cmdblock}
 
 \section*{Internet}
 \begin{cmdblock}
-\cmditem{ssh user@host}{connexion SSH}
-\cmditem{scp [src] [dst]}{copie sécurisée}
-\cmditem{wget [url]}{télécharge un fichier}
+\code|ssh user@host| \quad connexion SSH \\
+\code|scp [src] [dst]| \quad copie sécurisée \\
+\code|wget [url]| \quad télécharge un fichier \\
 \cmdopt{\lstcode{-O f} fichier de sortie,
         \lstcode{-c} reprendre, \lstcode{-q} silencieux,
         \lstcode{--limit-rate=100k} limite le débit}
-\cmditem{curl [url]}{transfère une URL}
+\code|curl [url]| \quad transfère une URL \\
 \cmdopt{\lstcode{-o f} fichier de sortie,
         \lstcode{-O} nomme comme l'original,
         \lstcode{-L} suivre redirections,
         \lstcode{-I} en-têtes seulement,
         \lstcode{-d data} données POST,
         \lstcode{-H 'Hdr: v'} ajoute un en-tête}
-\cmditem{lynx [url]}{navigateur web en console}
+\code|lynx [url]| \quad navigateur web en console \\
 \end{cmdblock}
 
-\section*{Env. virtuels Python}
-\lstinline|uv venv venv| \quad \lstinline|source venv/bin/activate| \\
-\lstinline|deactivate| \\
-\lstinline|pip install pkg| \quad \lstinline|pip uninstall pkg| \\
-\lstinline|pip list| \quad \lstinline|uv add pkg| \\
-\lstinline|pipx install pkg| \\
+\section*{Git}
+\begin{cmdblock}
+\code|git init| \quad initialise un dépôt git \\
+\code|git status| \quad statut du dépôt \\
+%\code|git remote add origin [url]| \quad ajoute une origine \\
+\code|git remote -v| \quad liste les origines \\
+\code|git fetch| \quad récupère les changements distants \\
+\code|git pull| \quad pull + merge \\
+\code|git push| \quad pousse les changements locaux \\
+\code|git clone [url]| \quad clone un dépôt distant \\
+\code|git branch| \quad liste les branches \\
+\code|git branch [br]| \quad crée une branche \\
+\code|git checkout [br]| \quad change de branche \\
+\code|git commit -m "s"| \quad crée un commit \\
+\code|git add [f]| \quad ajoute un fichier au commit \\
+\code|git log| \quad historique des commits \\
+\cmdopt{\lstcode{--oneline} résumé, \lstcode{--graph} graphe,
+        \lstcode{--stat} stats, \lstcode{-p} diff}
+\end{cmdblock}
+
+\section*{GCC}
+\begin{cmdblock}
+\code|gcc [f.c]| \quad compile un fichier C \\
+\cmdopt{\lstcode{-o f} nom de l'exécutable,
+        \lstcode{-Wall} tous les avertissements,
+        \lstcode{-Wextra} avertissements supplémentaires,
+        \lstcode{-g} infos debug,
+        \lstcode{-O0, -O1, -O2, -O3} optimisation,
+        \lstcode{-std=c17} standard C,
+        \lstcode{-I dir} inclure répertoire dir,
+        \lstcode{-L dir} lier répertoire dir,
+        \lstcode{-l lib} lier la bibliothèque lib
+        \lstcode{-c} compiler seulement (pas linker)}
+\end{cmdblock}
+
+\section*{Python}
+\code{python -mvenv venv} \quad crée environnement virtuel \\
+\code{uv venv venv} \quad même chose avec uv \\
+\code{source venv/bin/activate} \quad active l'env. virtuel \\
+\code{deactivate} \quad désactive l'env. virtuel \\
+\code{pip install pkg} \quad installe un paquet dans l'env. virtuel \\
+\code{pip list} \quad liste les paquets installés \\
 
 \section*{Système}
 
 \begin{cmdblock}
-\cmditem{shutdown -h now}{arrête le système}
-\cmditem{shutdown -r now}{redémarre le système}
-\cmditem{systemctl status [service]}{statut d'un service}
-\cmditem{systemctl start [service]}{démarre un service}
-\cmditem{systemctl stop [service]}{arrête un service}
-\cmditem{systemctl restart [service]}{redémarre un service}
-\cmditem{systemctl enable [service]}{active un service au démarrage}
-\cmditem{systemctl disable [service]}{désactive un service au démarrage}
-\cmditem{journalctl -xe}{logs système}
-\cmditem{timedatectl}{date, heure, fuseau horaire}
-\cmditem{hostnamectl}{informations sur le système}
+\code|shutdown -h now| \quad arrête le système \\
+\code|shutdown -r now| \quad redémarre le système \\
+\code|systemctl status [service]| \quad statut d'un service \\
+\code|systemctl start [service]| \quad démarre un service \\
+\code|systemctl stop [service]| \quad arrête un service \\
+\code|systemctl restart [service]| \quad redémarre service \\
+\code|systemctl enable [service]| \quad active service \\
+\code|systemctl disable [service]| \quad désactive service \\
+\code|journalctl -xe| \quad logs système \\
+\code|timedatectl| \quad date, heure, fuseau horaire \\
+\code|hostnamectl| \quad informations sur le système \\
 \end{cmdblock}
 
 \section*{Hardware}
 
 \begin{cmdblock}
-\cmditem{uname -a}{informations système}
-\cmditem{lscpu}{infos CPU}
-\cmditem{lsblk}{liste les disques et partitions}
-
-\cmditem{df -h}{espace disque}
-\cmditem{du -sh [f/d]}{taille d'un fichier/répertoire}
-\cmditem{free -h}{mémoire}
+\code|uname -a| \quad informations système \\
+\code|lscpu| \quad infos CPU \\
+\code|lsblk| \quad liste les disques et partitions \\
+\code|df -h| \quad espace disque \\
+\code|du -sh [f/d]| \quad taille d'un fichier/répertoire \\
+\code|free -h| \quad mémoire \\
 \end{cmdblock}
 
 \section*{APT (Debian/Ubuntu)}
 \begin{cmdblock}
-\cmditem{apt update}{met à jour liste des paquets}
-\cmditem{apt upgrade}{met à jour les paquets installés}
-\cmditem{apt install [pkg]}{installe un paquet}
-\cmditem{apt remove [pkg]}{désinstalle un paquet}
-\cmditem{apt search [terme]}{cherche un paquet}
-\cmditem{apt show [pkg]}{informations sur un paquet}
-\cmditem{apt autoremove}{supprime dépendances inutiles}
-\cmditem{dpkg -L [pkg]}{liste fichiers d'un paquet}
-\cmditem{dpkg -S [f]}{quel paquet fournit ce fichier}
+\code|apt update| \quad met à jour liste des paquets \\
+\code|apt upgrade| \quad met à jour les paquets installés \\
+\code|apt install [pkg]| \quad installe un paquet \\
+\code|apt remove [pkg]| \quad désinstalle un paquet \\
+\code|apt search [terme]| \quad cherche un paquet \\
+\code|apt show [pkg]| \quad informations sur un paquet \\
+\code|apt autoremove| \quad supprime dépendances inutiles \\
+\code|dpkg -L [pkg]| \quad liste fichiers d'un paquet \\
+\code|dpkg -S [f]| \quad quel paquet fournit ce fichier \\
 \end{cmdblock}
 
 % \section*{À installer (exemples)}
@@ -672,12 +707,12 @@ Espace: page suivante, \keys{b}: page précédente \\
 \section*{Fun}
 
 \begin{cmdblock}
-\cmditem{cowsay "s"}{phylactere et vache}
-\cmditem{fortune}{citation aléatoire }
-\cmditem{sl}{locomotive à vapeur }
-\cmditem{cmatrix}{effet Matrix }
-\cmditem{toilet "s"}{texte ASCII art }
-\cmditem{lolcat}{texte coloré }
+\code|cowsay "s"| \quad phylactere et vache \\
+\code|fortune| \quad citation aléatoire  \\
+\code|sl| \quad locomotive à vapeur  \\
+\code|cmatrix| \quad effet Matrix  \\
+\code|toilet "s"| \quad texte ASCII art  \\
+\code|lolcat| \quad texte coloré  \\
 \end{cmdblock}
 
 \section*{Substituts modernes conseillés}
