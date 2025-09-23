@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
         with:
-          ref: master
+          ref: main
           fetch-depth: 0 # To get all tags
       - name: work around permission issue
         run: git config --global --add safe.directory /srv
