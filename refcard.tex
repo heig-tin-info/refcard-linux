@@ -75,7 +75,7 @@
 \renewmenumacro{\keys}[+]{roundedkeys}
 
 \let\oldkeys\keys
-\renewcommand{\keys}[1]{\footnotesize\oldkeys{#1}\normalsize}
+\renewcommand{\keys}[1]{\small\oldkeys{#1}\normalsize}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -184,6 +184,7 @@
 % }
 \newenvironment{cmdblock}{%
   \par\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+  \RaggedRight%
 }{\par}
 
 \newcommand{\cmditem}[2]{%
@@ -252,6 +253,7 @@
 \setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
 \setlength{\postmulticols}{0pt}
 \setlength{\multicolsep}{0pt}
+\setlength{\topskip}{0pt plus 2pt minus 1pt}
 
 \begin{multicols}{4}
 \raggedbottom
