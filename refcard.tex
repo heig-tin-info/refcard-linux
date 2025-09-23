@@ -75,7 +75,7 @@
 \renewmenumacro{\keys}[+]{roundedkeys}
 
 \let\oldkeys\keys
-\renewcommand{\keys}[1]{\footnotesize\oldkeys{#1}\normalsize}
+\renewcommand{\keys}[1]{\small\oldkeys{#1}\normalsize}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -184,6 +184,7 @@
 % }
 \newenvironment{cmdblock}{%
   \par\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+  \RaggedRight%
 }{\par}
 
 \newcommand{\cmditem}[2]{%
@@ -252,6 +253,7 @@
 \setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
 \setlength{\postmulticols}{0pt}
 \setlength{\multicolsep}{0pt}
+\setlength{\topskip}{0pt plus 2pt minus 1pt}
 
 \begin{multicols}{4}
 \raggedbottom
@@ -422,8 +424,10 @@ Carte de référence des commandes et utilitaires Unix-like courants. Les marque
 \end{cmdblock}
 
 \section*{Exécution de commandes}
-\code{source [f]} \quad exécute script dans contexte \\
-\code{./[p]} exécute programme dans répertoire courant \\
+\begin{cmdblock}
+\code|source [f]| \quad exécute script dans contexte \\
+\code|./[p]| \quad exécute programme dans répertoire courant \\
+\end{cmdblock}
 
 \section*{Consultation de fichiers}
 
@@ -475,16 +479,18 @@ Carte de référence des commandes et utilitaires Unix-like courants. Les marque
 \end{cmdblock}
 
 \section*{Archives / compression}
-\lstcode{tar -czvf archive.tar.gz [f]} crée archive .tar.gz \\
-\lstcode{tar -xzvf archive.tar.gz} extrait archive .tar.gz \\
-\lstcode{zip archive.zip [f]} crée archive .zip \\
-\lstcode{unzip archive.zip} extrait archive .zip \\
-\lstcode{tar -cJvf archive.tar.xz [f]} crée archive .tar.xz \\
-\lstcode{tar -xJvf archive.tar.xz} extrait archive .tar.xz \\
-\lstcode{7z a archive.7z [f]} crée archive .7z \\
-\lstcode{7z x archive.7z} extrait archive .7z \\
-\lstcode{bsdtar -xf [f]} extrait \\
-\lstcode{bsdtar -cf archive.tar [f]} crée archive .tar \\
+\begin{cmdblock}
+\code|tar -czvf archive.tar.gz [f]| \quad crée archive .tar.gz \\
+\code|tar -xzvf archive.tar.gz| \quad extrait archive .tar.gz \\
+\code|zip archive.zip [f]| \quad crée archive .zip \\
+\code|unzip archive.zip| \quad extrait archive .zip \\
+\code|tar -cJvf archive.tar.xz [f]| \quad crée archive .tar.xz \\
+\code|tar -xJvf archive.tar.xz| \quad extrait archive .tar.xz \\
+\code|7z a archive.7z [f]| \quad crée archive .7z \\
+\code|7z x archive.7z| \quad extrait archive .7z \\
+\code|bsdtar -xf [f]| \quad extrait \\
+\code|bsdtar -cf archive.tar [f]| \quad crée archive .tar \\
+\end{cmdblock}
 
 \section*{Permissions / utilisateurs}
 
@@ -505,16 +511,17 @@ Carte de référence des commandes et utilitaires Unix-like courants. Les marque
 \code|last| \quad historique des connexions \\
 \end{cmdblock}
 
-\textit{bits :} 1 x, 2 w, 4 r \\
-% Exemples : \lstinline|chmod 755 f| (\lstinline|rwxr-xr-x|), \lstinline|chmod 644 f|, \lstinline|chmod u+x f|, \lstinline|chmod g-w f|, \lstinline|chmod o=r f|, \lstinline|chmod a+x f| \\
+\textit{bits :} 1 x, 2 w, 4 r
 
 \section*{Raccourcis less / more / man}
+\begin{cmdblock}
 Espace: page suivante, \keys{b}: page précédente \\
 \keys{\return}{}: ligne suivante, \keys{y}: ligne précédente \\
 \keys{/}: rechercher, \keys{n}/\keys{N}: suivant/précédent \\
 \keys{g}/\keys{G}: début/fin, \keys{q}: quitter \\
 \keys{h}: aide, \keys{m}: marque-page \\
 \keys{'}: aller au marque-page, \keys{`}: revenir \\
+\end{cmdblock}
 
 
 \section*{Recherche}
@@ -584,7 +591,7 @@ Espace: page suivante, \keys{b}: page précédente \\
 \code|whatis [p]| \quad description commande \\
 \end{cmdblock}
 
-\emph{Sections du manuel: 1 utilisateur, 2 syscalls, 3 lib, 4 spéciaux, 5 formats, 6 jeux, 7 divers, 8 admin} \\
+\emph{Sections du manuel: 1~utilisateur, 2~syscalls, 3~lib, 4~spéciaux, 5~formats, 6~jeux, 7~divers, 8~admin}
 
 \section*{Gestion Réseau}
 \begin{cmdblock}
@@ -649,12 +656,14 @@ Espace: page suivante, \keys{b}: page précédente \\
 \end{cmdblock}
 
 \section*{Python}
-\code{python -mvenv venv} \quad crée environnement virtuel \\
-\code{uv venv venv} \quad même chose avec uv \\
-\code{source venv/bin/activate} \quad active l'env. virtuel \\
-\code{deactivate} \quad désactive l'env. virtuel \\
-\code{pip install pkg} \quad installe un paquet dans l'env. virtuel \\
-\code{pip list} \quad liste les paquets installés \\
+\begin{cmdblock}
+\code|python -mvenv venv| \quad crée environnement virtuel \\
+\code|uv venv venv| \quad même chose avec uv \\
+\code|source venv/bin/activate| \quad active l'env. virtuel \\
+\code|deactivate| \quad désactive l'env. virtuel \\
+\code|pip install pkg| \quad installe un paquet dans l'env. virtuel \\
+\code|pip list| \quad liste les paquets installés \\
+\end{cmdblock}
 
 \section*{Système}
 
