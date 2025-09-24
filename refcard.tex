@@ -16,6 +16,10 @@
 \usepackage{titlesec}
 \usepackage{xparse}
 
+\ifdefined\tinted
+  \pagecolor{red!10!orange!10!white}
+\fi
+
 \setlength{\columnsep}{5mm}
 \setlength{\columnseprule}{0.4pt}
 
@@ -44,28 +48,25 @@
     {uu}{{test}}2
 }
 
-\NewDocumentCommand{\code}{v}{%
-  \tcbox[
+\tcbset{
+  codeinline/.style={
     on line,
-    colframe=black!60, colback=black!5,
+    colframe=black!60, colback=white,
+    opacityback=0.8,
     bottom=1.5pt, left=1.5pt, right=1.5pt, top=1.5pt,
     boxrule=0.4pt, arc=2pt, boxsep=0.2pt,
     fontupper=\ttfamily\footnotesize,
     before upper=\rule{0pt}{0.7em},
     tcbox raise base
-  ]{\lstinline!#1!}%
+  }
 }
 
-\NewDocumentCommand{\codx}{m}{%
-  \tcbox[
-    on line,
-    colframe=black!60, colback=black!5,
-    bottom=1.5pt, left=1.5pt, right=1.5pt, top=1.5pt,
-    boxrule=0.4pt, arc=2pt, boxsep=0.2pt,
-    fontupper=\ttfamily\footnotesize,
-    before upper=\rule{0pt}{0.7em},
-    tcbox raise base
-  ]{#1}%
+\NewDocumentCommand{\code}{O{} v}{%
+  \tcbox[codeinline,#1]{\lstinline!#2!}%
+}
+
+\NewDocumentCommand{\codx}{O{} m}{%
+  \tcbox[codeinline,#1]{#2}%
 }
 
 \renewmenumacro{\keys}[+]{roundedkeys}

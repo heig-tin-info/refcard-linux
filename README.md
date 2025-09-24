@@ -6,7 +6,7 @@ Cette carte de référence est destinée à accompagner l'étudiant durant ses �
 
 ## Preview
 
-La carte de référence est une feuille A4 recto-verso supposément imprimée sur du papier cartonné blanc :
+La carte de référence est une feuille A4 recto-verso supposément imprimée sur du papier cartonné saumon :
 
 [![Preview](preview.png)](https://github.com/heig-vd-tin/refcard-linux/releases/latest/download/refcard.pdf)
 
