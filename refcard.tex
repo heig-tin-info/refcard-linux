@@ -342,6 +342,8 @@
         \code|set| \> liste variables et fonctions \\
         \code|env| \> liste les variables d'env. \\
         \code|export VAR=[s]| \> crée/mod. variable d'env. \\
+        \code|unset VAR| \> supprime une variable \\
+        \code|printenv [VAR]| \> affiche variable(s) \\
         \code|echo \$VAR| \> affiche valeur variable \\
         \codx{\$PATH} \> chemin des exécutables \\
         \codx{\$HOME} \> répertoire personnel \\
@@ -362,8 +364,12 @@
         \code|fg [j]| \> ramène un job au premier plan \\
         \code|bg [j]| \> relance un job en arrière-plan \\
         \code|ps aux| \> liste les processus \\
+        \code|pgrep [nom]| \> trouve PID par nom \\
+        \code|pkill [nom]| \> tue processus par nom \\
         \code|kill [pid]| \> termine un processus \\
         \code|killall [p]| \> termine tous les processus nommés \\
+        \code|nohup [p]| \> lance sans interruption \\
+        \code|screen/tmux| \> sessions persistantes \\
         \code|top| \> moniteur de processus \\
         \code|htop| \> top amélioré (si installé) \\
 
@@ -493,6 +499,11 @@
         \code|ping [hôte]| \> teste la connectivité \\
         \code|ss -tuln| \> sockets réseau \\
         \code|dig [hôte]| \> résolution DNS avancée \\
+        \code|nslookup [hôte]| \> résolution DNS simple \\
+        \code|traceroute [hôte]| \> trace la route \\
+        \code|netstat -tuln| \> sockets (ancien) \\
+        \code|mtr [hôte]| \> traceroute+ping continu \\
+        \code|arp -a| \> table ARP \\
     \end{tabbing}
 
     \section*{Internet}
@@ -573,8 +584,20 @@
         \code|systemctl enable [srv]| \> active service \\
         \code|systemctl disable [srv]| \> désactive service \\
         \code|journalctl -xe| \> logs système \\
+        \code|journalctl -f| \> suit logs temps réel \\
         \code|timedatectl| \quad date, heure, fuseau horaire \\
         \code|hostnamectl| \quad informations sur le système \\
+    \end{tabbing}
+
+    \section*{Planification (cron)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|crontab -e| \> édite crontab utilisateur \\
+        \code|crontab -l| \> liste tâches planifiées \\
+        \code|crontab -r| \> supprime crontab \\
+        \code|at 15:30| \> programme tâche unique \\
+        \code|atq| \> liste tâches at \\
+        \code|atrm [id]| \> supprime tâche at \\
     \end{tabbing}
 
     \section*{Hardware}
@@ -587,6 +610,11 @@
         \code|df -h| \> espace disque \\
         \code|du -sh [f/d]| \> taille d'un fichier/répertoire \\
         \code|free -h| \> mémoire \\
+        \code|lshw| \> matériel détaillé \\
+        \code|lspci| \> périphériques PCI \\
+        \code|lsusb| \> périphériques USB \\
+        \code|dmidecode| \> infos BIOS/matériel \\
+        \code|sensors| \> températures/ventilateurs \\
     \end{tabbing}
 
     \section*{APT (Debian/Ubuntu)}
@@ -613,6 +641,72 @@
         \code|cmatrix| \> effet Matrix  \\
         \code|toilet "s"| \> texte ASCII art  \\
         \code|lolcat| \> texte coloré  \\
+    \end{tabbing}
+
+    \section*{Éditeurs de texte}
+    \begin{cmdblock}
+        \code|nano [f]| \quad éditeur simple \\
+        \cmdopt{\keys{\ctrl + X} quitter, \keys{\ctrl + O} sauver,
+            \keys{\ctrl + W} chercher, \keys{\ctrl + K} couper ligne}
+        \code|vi/vim [f]| \quad éditeur vi/vim \\
+        \cmdopt{\keys{i} insertion, \keys{Esc} mode commande,
+            \codx{:w} sauver, \codx{:q} quitter, \codx{:wq} sauver+quitter,
+            \codx{:q!} quitter sans sauver, \codx{/text} chercher}
+    \end{cmdblock}
+
+    \section*{Performance système}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|iostat| \> statistiques E/S disques \\
+        \code|vmstat| \> statistiques virtuelles \\
+        \code|sar| \> rapports d'activité système \\
+        \code|nload| \> moniteur réseau temps réel \\
+        \code|iotop| \> top pour les E/S \\
+        \code|lsof| \> fichiers ouverts \\
+    \end{tabbing}
+
+    \section*{YUM/DNF (Red Hat/Fedora)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|dnf update| \> met à jour les paquets \\
+        \code|dnf install [pkg]| \> installe un paquet \\
+        \code|dnf remove [pkg]| \> désinstalle un paquet \\
+        \code|dnf search [terme]| \> cherche un paquet \\
+        \code|dnf info [pkg]| \> infos sur un paquet \\
+        \code|dnf list installed| \> paquets installés \\
+    \end{tabbing}
+
+    \section*{Pacman (Arch Linux)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|pacman -Syu| \> met à jour système \\
+        \code|pacman -S [pkg]| \> installe un paquet \\
+        \code|pacman -R [pkg]| \> désinstalle un paquet \\
+        \code|pacman -Ss [terme]| \> cherche un paquet \\
+        \code|pacman -Si [pkg]| \> infos sur un paquet \\
+        \code|pacman -Q| \> paquets installés \\
+    \end{tabbing}
+
+    \section*{Docker (conteneurs)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|docker ps| \> conteneurs actifs \\
+        \code|docker images| \> liste les images \\
+        \code|docker run [img]| \> lance un conteneur \\
+        \code|docker stop [id]| \> arrête un conteneur \\
+        \code|docker rm [id]| \> supprime un conteneur \\
+        \code|docker pull [img]| \> télécharge une image \\
+    \end{tabbing}
+
+    \section*{Sécurité / Firewall}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|ufw status| \> statut firewall Ubuntu \\
+        \code|ufw enable| \> active le firewall \\
+        \code|ufw allow [port]| \> autorise un port \\
+        \code|firewall-cmd --list-all| \> config firewall \\
+        \code|iptables -L| \> règles iptables \\
+        \code|fail2ban-client status| \> statut fail2ban \\
     \end{tabbing}
 
     \section*{Substituts modernes conseillés}
