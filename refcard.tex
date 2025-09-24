@@ -1,14 +1,20 @@
 \documentclass[9pt]{extarticle}
-\usepackage{graphicx}
-\usepackage{tabularx}
 \usepackage[a4paper,landscape,margin=10mm]{geometry}
-\usepackage{multicol}
-\usepackage{fontawesome}
-\usepackage[most]{tcolorbox}
-\usepackage{fontspec}
 \usepackage[french]{babel}
-\usepackage{microtype}
+\usepackage[most]{tcolorbox}
+\usepackage[os=win]{menukeys}
 \usepackage{enumitem}
+\usepackage{environ}
+\usepackage{fontawesome}
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{multicol}
+\usepackage{ragged2e}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{xparse}
 
 \setlength{\columnsep}{5mm}
 \setlength{\columnseprule}{0.4pt}
@@ -22,11 +28,6 @@
 % \setmonofont{Inconsolata}
 \renewcommand{\familydefault}{\sfdefault}
 
-
-\usepackage{listings}
-\usepackage{xparse}
-
-% Règles de remplacement (STARRED !) pour listings
 \lstset{
   basicstyle=\ttfamily\footnotesize,
   columns=fullflexible,
@@ -55,31 +56,22 @@
   ]{\lstinline!#1!}%
 }
 
-\newtcbox{\inlinecode}{nobeforeafter,
-  colframe=black!40, colback=black!5,
-  boxrule=0.3pt, arc=2pt,
-  boxsep=1pt, % padding global
-  left=1.5pt, right=1.5pt, top=1.5pt, bottom=1.5pt, % marges internes
-  tcbox raise base,
-  fontupper=\ttfamily\footnotesize
+\NewDocumentCommand{\codx}{m}{%
+  \tcbox[
+    on line,
+    colframe=black!60, colback=black!5,
+    bottom=1.5pt, left=1.5pt, right=1.5pt, top=1.5pt,
+    boxrule=0.4pt, arc=2pt, boxsep=0.2pt,
+    fontupper=\ttfamily\footnotesize,
+    before upper=\rule{0pt}{0.7em},
+    tcbox raise base
+  ]{#1}%
 }
 
-%\lstMakeShortInline[columns=flexible]{|}
-
-%\newcommand{\lstcode}[1]{\inlinecode{#1}}
-% remplace ta définition existante
-\newcommand{\lstcode}[1]{\inlinecode{\detokenize{#1}}}
-\newcommand{\lstc}[1]{\inlinecode{#1}}
-
-\usepackage[os=win]{menukeys}
 \renewmenumacro{\keys}[+]{roundedkeys}
 
 \let\oldkeys\keys
 \renewcommand{\keys}[1]{\small\oldkeys{#1}\normalsize}
-
-\renewcommand{\familydefault}{\sfdefault}
-
-\usepackage{titlesec}
 
 % Tailles des titres (s'applique aussi aux versions étoilées *)
 \titleformat{\section}
@@ -100,11 +92,8 @@
 \titlespacing*{\subsubsection}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
 
 
-\pagenumbering{gobble}
+\pagenumbering{gobble} % pas de numéros de page
 
-% \titlespacing*{\section}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-% \titlespacing*{\subsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-% \titlespacing*{\subsubsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
 
 \newlength\mybaselinestretch
 \mybaselinestretch=0pt plus 0.02pt\relax
@@ -116,72 +105,6 @@
 
 \input{revision}
 
-% % Largeur de la colonne "commande" + écart
-% \newlength{\cmdlabelwidth} \setlength{\cmdlabelwidth}{2.8cm} % ajuste au besoin
-% \newlength{\cmdlabelsep}   \setlength{\cmdlabelsep}{0.4em}
-
-% % Bloc de commandes compact
-% \newenvironment{cmdblock}{%
-%   \par\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
-% }{\par}
-
-% % Une ligne "commande — description" compacte avec wrap automatique
-% \newcommand{\cmditem}[2]{%
-%   \noindent
-%   \makebox[\cmdlabelwidth][l]{\inlinecode{#1}}%
-%   \hspace{\cmdlabelsep}%
-%   \parbox[t]{\dimexpr\linewidth-\cmdlabelwidth-\cmdlabelsep\relax}{#2}%
-%   \par
-% }
-
-% PRÉREQUIS
-\usepackage{environ}
-\usepackage{ragged2e} % pour \RaggedRight
-
-% style de code inline (ton tcolorbox)
-% \usepackage[most]{tcolorbox}
-% \newtcbox{\inlinecode}{nobeforeafter,
-%   colframe=black!40, colback=black!5,
-%   boxrule=0.4pt, arc=2pt,
-%   boxsep=1pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
-%   tcbox raise base,
-%   fontupper=\ttfamily\footnotesize
-% }
-
-% écart entre la colonne commande et la description
-\newlength{\cmdlabelsep} \setlength{\cmdlabelsep}{0.4em}
-
-% largeur “colonne commande” (calculée à la volée)
-\newlength{\cmdlabelwidth}
-
-% Définitions par défaut (pour éviter “undefined”)
-% \newcommand{\cmditem}[2]{} % placeholder
-% \newcommand{\cmdline}[2]{% rendu final d’une ligne
-%   \noindent
-%   \makebox[\cmdlabelwidth][l]{\inlinecode{#1}}%
-%   \hspace{\cmdlabelsep}%
-%   \begin{minipage}[t]{\dimexpr\linewidth-\cmdlabelwidth-\cmdlabelsep\relax}
-%     \RaggedRight #2%
-%   \end{minipage}\par
-% }
-
-% Bloc avec mesure automatique de la largeur max
-% \NewEnviron{cmdblock}{%
-%   % 1) Passe de mesure (aucune sortie)
-%   \setlength{\cmdlabelwidth}{0pt}%
-%   \setbox0=\vbox{%
-%     \renewcommand{\cmditem}[2]{%
-%       \sbox2{\inlinecode{##1}}%
-%       \ifdim\wd2>\cmdlabelwidth
-%         \global\setlength{\cmdlabelwidth}{\wd2}%
-%       \fi
-%     }%
-%     \BODY
-%   }%
-%   % 2) Composition réelle
-%   \renewcommand{\cmditem}[2]{\cmdline{##1}{##2}}%
-%   \BODY
-% }
 \newenvironment{cmdblock}{%
   \par\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
   \RaggedRight%
@@ -190,6 +113,7 @@
 \newcommand{\cmditem}[2]{%
   \noindent\inlinecode{#1}\quad #2\par
 }
+
 % indentation supplémentaire pour les sous-lignes (options)
 \newlength{\cmdoptindent}
 \setlength{\cmdoptindent}{1em} % ajuste au goût
@@ -201,44 +125,6 @@
   \end{minipage}\par
 }
 
-% \usepackage{xparse}
-% \usepackage{tikz}
-% \usetikzlibrary{shapes.geometric}
-% % distance marge droite -> bord gauche de la règle
-% \newlength{\mcRuleOffset}
-% \setlength{\mcRuleOffset}{\dimexpr\columnsep/2 - \columnseprule/2\relax}
-
-% % petit triangle contour, pointe vers la droite, collé à la règle
-% \newcommand{\mcChevbox}[2]{%
-%   \hbox to \linewidth{%
-%     \hfil
-%     \makebox[0pt][l]{\hskip \mcRuleOffset
-%       \tikz[baseline]{%
-%         \node[
-%           isosceles triangle,
-%           shape border rotate=-90,
-%           draw, fill=none,
-%           inner sep=0pt,
-%           minimum width=#1,
-%           minimum height=#2,
-%           anchor=east
-%         ] {};
-%       }%
-%     }%
-%   }%
-% }
-
-% % \placeChevron[<largeur>=6pt][<hauteur>=8pt]
-% \NewDocumentCommand{\placeChevron}{O{6pt} O{8pt}}{%
-%   \begingroup
-%   \ifhmode
-%     \vadjust pre{\mcChevbox{#1}{#2}}%
-%   \else
-%     \nointerlineskip\smash{\mcChevbox{#1}{#2}}%
-%   \fi
-%   \endgroup
-% }
-
 \newcommand{\codefa}[2][]{%
   \raisebox{-0.15ex}{\faIcon[#1]{#2}}%
 }
@@ -247,494 +133,500 @@
 \widowpenalty=0           % veuves (fin de page)
 \displaywidowpenalty=0
 
-\begin{document}
-
-\raggedcolumns                 % colonnes non équilibrées (hauteurs différentes)
 \setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
 \setlength{\postmulticols}{0pt}
 \setlength{\multicolsep}{0pt}
-\setlength{\topskip}{0pt plus 2pt minus 1pt}
 
+\begin{document}
+
+\raggedcolumns
 \begin{multicols}{4}
-\raggedbottom
+    \raggedbottom
 
-\begin{tabularx}{\columnwidth}{lX}
-    \raisebox{-2em}{\includegraphics[height=5em]{assets/linux-logo.pdf}} &
+    \begin{tabularx}{\columnwidth}{lX}
+        \raisebox{-2em}{\includegraphics[height=5em]{assets/linux-logo.pdf}} &
+        \begin{raggedright}
+            {\Large \bf Linux / Unix} \\
+            HEIG-VD -- version \revision \ -- \revisiondate \\
+        \end{raggedright}
+    \end{tabularx}
     \begin{raggedright}
-      {\Large \bf Linux / Unix} \\
-      HEIG-VD -- version \revision \ -- \revisiondate \\
+        Carte de référence des commandes et utilitaires Unix-like courants. Les marqueurs suivants sont utilisés : \code{[f]} : nom de fichier,
+        \code{[d]} : nom de répertoire,
+        \code{[p]} : commande,
+        \code{"s"} : chaîne de caractères
     \end{raggedright}
-\end{tabularx}
-\begin{raggedright}
-Carte de référence des commandes et utilitaires Unix-like courants. Les marqueurs suivants sont utilisés : \code{[f]} : nom de fichier,
-\code{[d]} : nom de répertoire,
-\code{[p]} : commande,
-\code{"s"} : chaîne de caractères
-\end{raggedright}
 
-  % File:  {\scriptsize\faFileO\par}
-  % Folder: {\scriptsize\faFolderO\par}
+    \section*{Raccourcis clavier Bash}
+    \subsection*{Mouvements}
 
-\section*{Raccourcis clavier Bash}
-\subsection*{Mouvements}
+    \begin{tabularx}{\columnwidth}{lX}
+        \keys{\ctrl + B} & recule d'un caractère (\keys{\leftarrow})   \\
+        \keys{\ctrl + F} & avance d'un caractère (\keys{\rightarrow})  \\
+        \keys{\ctrl + A} & début de ligne (\keys{Home})                \\
+        \keys{\ctrl + E} & fin de ligne (\keys{End})                   \\
+        \keys{\Alt + B}  & recule d'un mot (\keys{\Alt + \leftarrow})  \\
+        \keys{\Alt + F}  & avance d'un mot (\keys{\Alt + \rightarrow}) \\
+    \end{tabularx}
 
-\begin{tabularx}{\columnwidth}{lX}
-\keys{\ctrl + B} & recule d'un caractère \\
-\keys{\ctrl + F} & avance d'un caractère \\
-\keys{\ctrl + A} & début de ligne \\
-\keys{\ctrl + E} & fin de ligne \\
-\keys{\Alt + B} & recule d'un mot \\
-\keys{\Alt + F} & avance d'un mot \\
-\end{tabularx}
+    \subsection*{Édition}
 
-\subsection*{Édition}
+    \begin{tabularx}{\columnwidth}{lX}
+        \keys{\ctrl + H} & comme backspace (\keys{\backspace})    \\
+        \keys{\ctrl + D} & comme delete (\keys{\del})             \\
+        \keys{\ctrl + U} & coupe du début au curseur              \\
+        \keys{\ctrl + K} & coupe du curseur à la fin              \\
+        \keys{\ctrl + W} & coupe le mot avant le curseur          \\
+        \keys{\ctrl + Y} & colle le dernier texte coupé           \\
+        \keys{\ctrl + T} & swap le char courant avec le précédent \\
+        \keys{\Alt + D}  & supprime le mot après                  \\
+        \keys{\Alt + .}  & insère le dernier argument             \\
+    \end{tabularx}
 
-\begin{tabularx}{\columnwidth}{lX}
-\keys{\ctrl + H} & comme backspace (\keys{\backspace}) \\
-\keys{\ctrl + D} & comme delete (\keys{\del}) \\
-\keys{\ctrl + U} & coupe du début au curseur \\
-\keys{\ctrl + K} & coupe du curseur à la fin \\
-\keys{\ctrl + W} & coupe le mot avant le curseur \\
-\keys{\ctrl + Y} & colle le dernier texte coupé \\
-\keys{\ctrl + T} & swap le char courant avec le précédent \\
-\keys{\Alt + D} & supprime le mot après \\
-\keys{\Alt + .} & insère le dernier argument \\
-\end{tabularx}
+    \subsection*{Exécution / complétion}
 
-\subsection*{Exécution / complétion}
+    \begin{tabularx}{\columnwidth}{lX}
+        \multicolumn{2}{l}{\keys{\ctrl + J}, \keys{\ctrl + M} exécuter (\keys{\return})} \\
+        \keys{\ctrl + I} & complétion (équivalent \keys{\tab})                           \\
+        \keys{\tab}{}    & auto-complétion                                               \\
+    \end{tabularx}
 
-\begin{tabularx}{\columnwidth}{lX}
-\multicolumn{2}{l}{\keys{\ctrl + J}, \keys{\ctrl + M} exécuter (\keys{\return})} \\
-\keys{\ctrl + I} & complétion (équivalent \keys{\tab}) \\
-\keys{\tab}{} & auto-complétion \\
-\end{tabularx}
+    \subsection*{Contrôle / Appels système}
 
-\subsection*{Contrôle / Appels système}
+    \begin{tabularx}{\columnwidth}{lX}
+        \keys{\ctrl + C} & interrompre (\emph{sigint})         \\
+        \keys{\ctrl + Z} & suspendre (\emph{sigstp})           \\
+        \keys{\ctrl + L} & effacer l'écran                     \\
+        \keys{\ctrl + D} & envoyer \emph{EOF} (ferme le shell) \\
+    \end{tabularx}
 
-\begin{tabularx}{\columnwidth}{lX}
-\keys{\ctrl + C} & interrompre (\emph{sigint}) \\
-\keys{\ctrl + Z} & suspendre (\emph{sigstp}) \\
-\keys{\ctrl + L} & effacer l'écran \\
-\keys{\ctrl + D} & envoyer \emph{EOF} (ferme le shell) \\
-\end{tabularx}
+    \subsection*{Casse / mots}
 
-\subsection*{Casse / mots}
+    \begin{tabularx}{\columnwidth}{lX}
+        \keys{\Alt + U} & majuscules (mot après)        \\
+        \keys{\Alt + L} & minuscules (mot après)        \\
+        \keys{\Alt + C} & capitalise la première lettre \\
+    \end{tabularx}
 
-\begin{tabularx}{\columnwidth}{lX}
-\keys{\Alt + U} & majuscules (mot après) \\
-\keys{\Alt + L} & minuscules (mot après) \\
-\keys{\Alt + C} & capitalise la première lettre \\
-\end{tabularx}
+    \subsection*{Historique / recherche}
 
-\subsection*{Historique / recherche}
+    \begin{tabularx}{\columnwidth}{lX}
+        \keys{\ctrl + R} & recherche historique                \\
+        \keys{\ctrl + G} & annuler la recherche                \\
+        \keys{\ctrl + P} & commande précédente                 \\
+        \keys{\ctrl + N} & commande suivante                   \\
+        \keys{\ctrl + S} & pause (débloquer: \keys{\ctrl + Q}) \\
+        \keys{\Alt + <}  & début de l'historique               \\
+        \keys{\Alt + >}  & fin de l'historique                 \\
+        \keys{\Alt + P}  & précédent dans l'historique         \\
+        \keys{\Alt + N}  & suivant dans l'historique           \\
+    \end{tabularx}
 
-\begin{tabularx}{\columnwidth}{lX}
-\keys{\ctrl + R} & recherche historique \\
-\keys{\ctrl + G} & annuler la recherche \\
-\keys{\ctrl + P} & commande précédente \\
-\keys{\ctrl + N} & commande suivante \\
-\keys{\ctrl + S} & pause (débloquer: \keys{\ctrl + Q}) \\
-\keys{\Alt + <} & début de l'historique \\
-\keys{\Alt + >} & fin de l'historique \\
-\keys{\Alt + P} & préc. dans l'historique\\
-\keys{\Alt + N} & suiv. dans l'historique \\
-\end{tabularx}
+    \section*{Sucres syntaxiques}
 
-\section*{Sucres syntaxiques}
+    \begin{tabbing}
+        aaaaaaaaaaaa \= a \kill
+        \code|~| \> identique à \codx{\$HOME} \\
+        \code|.| \> répertoire courant \\
+        \code|..| \> répertoire parent \\
+        \code|!!| \> dernière commande \\
+        \code|!n| \> commande \#n de l'historique \\
+        \codx{\$?} \> code retour dernière commande \\
+        \codx{\$0} \> nom du script \\
+        \code{!*} \> arguments ancienne command \\
+        \code{^abc^123} \> substitution dans dernière cmd. \\
+        \code{`cmd`} \> obsolète, préférer \codx{\$(cmd)} \\
+        \codx{\$(cmd)} \> substitution de commande \\
+        \codx{\${var}} \> rendu de variable \\
+        \code{{a,b,c}} \> expansion par alternatives \\
+        \code{{1..5}} \> expansions de séquence \\
+        \codx{\$(cmd1; cmd2)} \> sous-coquille \\
+        \codx{\$(cmd \&)} \> arrière-plan (sous-coquille) \\
+        \codx{\$(( expr ))} \> arithmétique \\
+    \end{tabbing}
 
-\begin{tabbing}
-  aaaaaaaaaaaa \= a \kill
-\code|~| \> identique à \lstc{\$HOME} \\
-\code|.| \> répertoire courant \\
-\code|..| \> répertoire parent \\
-\code|!!| \> dernière commande \\
-\code|!n| \> commande \#n de l'historique \\
-\lstc{\$?} \> code retour dernière commande \\
-\lstc{\$0} \> nom du script \\
-\code{!*} \> arguments ancienne command \\
-\code{^abc^123} \> substitution dans dernière cmd. \\
-\code{`cmd`} \> obsolète, préférer \lstc{\$(cmd)} \\
-\lstc{\$(cmd)} \> substitution de commande \\
-\lstc{\${var}} \> rendu de variable \\
-\code{{a,b,c}} \> expansion par alternatives \\
-\code{{1..5}} \> expansions de séquence \\
-\lstc{\$(cmd1; cmd2)} \> sous-coquille \\
-\lstc{\$(cmd \&)} \> arrière-plan (sous-coquille) \\
-\lstc{\$(( expr ))} \> arithmétique \\
-\end{tabbing}
+    \section*{Redirections / pipes}
+    \begin{tabbing}
+        aaaaaaaaa \= a \kill
+        \code|[p] > [f]| \> stdout \textrightarrow{} fichier (écrase) \\
+        \code|[p] >> [f]| \> stdout \textrightarrow{} fichier (ajout) \\
+        \code|[p] 2> [f]| \> stderr \textrightarrow{} fichier (écrase) \\
+        \code|[p] &> [f]| \> stdout+stderr \textrightarrow{} fichier (écrase) \\
+        \code|[p] &>> [f]| \> stdout+stderr \textrightarrow{} fichier (ajout) \\
+        \code|[p] < [f]| \> stdin depuis fichier \\
+        \code|[p] << EOF| \> heredoc (jusqu'à EOF) \\
+        \code|[p] <<< "s"| \> here-string (inject sur stdin) \\
+        \code{[p] | [p]} \> pipe (stdout \textrightarrow{} stdin) \\
+        \code{[p] |& [p]} \> pipe (stdout+stderr \textrightarrow{} stdin) \\
+    \end{tabbing}
 
-\section*{Redirections / pipes}
-\begin{tabbing}
-  aaaaaaaaa \= a \kill
-\code|[p] > [f]| \> stdout \textrightarrow{} fichier (écrase) \\
-\code|[p] >> [f]| \> stdout \textrightarrow{} fichier (ajout) \\
-\code|[p] 2> [f]| \> stderr \textrightarrow{} fichier (écrase) \\
-\code|[p] &> [f]| \> stdout+stderr \textrightarrow{} fichier (écrase) \\
-\code|[p] &>> [f]| \> stdout+stderr \textrightarrow{} fichier (ajout) \\
-\code|[p] < [f]| \> stdin depuis fichier \\
-\code|[p] << EOF| \> heredoc (jusqu'à EOF) \\
-\code|[p] <<< "s"| \> here-string (inject sur stdin) \\
-\code{[p] | [p]} \> pipe (stdout \textrightarrow{} stdin) \\
-\code{[p] |& [p]} \> pipe (stdout+stderr \textrightarrow{} stdin) \\
-\end{tabbing}
+    \section*{Exécution de commandes}
+    \begin{cmdblock}
+        \code|source [f]| \quad exécute script dans contexte \\
+        \code|./[p]| \quad exécute programme dans rép. courant \\
+    \end{cmdblock}
 
-\section*{Utilisateur}
-\begin{cmdblock}
-\code|uptime| \quad temps de fonctionnement depuis reboot \\
-\code|date| \quad date et heure actuelles \\
-\code|cal| \quad calendrier du mois en cours \\
-\code|whoami| \quad nom de l'utilisateur courant \\
-\end{cmdblock}
+    \section*{Information utilisateur}
+    \begin{cmdblock}
+        \code|uptime| \quad temps écoulé depuis reboot \\
+        \code|date| \quad date et heure actuelles \\
+        \code|cal| \quad calendrier du mois en cours \\
+        \code|whoami| \quad nom de l'utilisateur courant \\
+        \code|hostname| \quad nom de la machine \\
+        \code|arch| \quad architecture matérielle \\
+        \code|lsb_release -a| \quad infos distribution Linux \\
+    \end{cmdblock}
 
-\section*{Fichiers / répertoires}
+    \section*{Fichiers / répertoires}
 
-\begin{cmdblock}
-  \code|pwd| \quad chemin répertoire courant \\
-  \code|ls| \quad liste les fichiers \\
-  \cmdopt{\lstcode{-l} détails, \lstcode{-a} fichiers cachés,
-          \lstcode{-h} tailles lisibles, \lstcode{-R} récursif,
-          \lstcode{-t} trier par date, \lstcode{-r} ordre inverse,
-          \lstcode{-Q} guillemets, \lstcode{-i} inode,
-          \lstcode{-d} répertoires seulement, \lstcode{-S} trier par taille,
-          \lstcode{-1} un par ligne}
-  \code|cd [d]| \quad change de répertoire \\
-  \code|touch [f]| \quad crée fichier vide ou met à jour date \\
-  \code|mkdir [d]| \quad crée un répertoire. \\
-  \cmdopt{\lstcode{-v} verbeux,
-    \lstcode{-p} parents si besoin,
-    \lstcode{-m [perms]} permissions}
-  \code|rmdir [d]| \quad supprime un répertoire vide \\
-  \code|rm [f]| \quad supprime un fichier. \\
-  \cmdopt{\lstcode{-i} interactif,
-    \lstcode{-f} force,
-    \lstcode{-v} verbeux,
-    \lstcode{-r} récursif}
+    \begin{cmdblock}
+        \code|pwd| \quad chemin répertoire courant \\
+        \code|ls| \quad liste les fichiers \\
+        \cmdopt{\codx{-l} détails, \codx{-a} fichiers cachés,
+            \codx{-h} tailles lisibles, \codx{-R} récursif,
+            \codx{-t} trier par date, \codx{-r} ordre inverse,
+            \codx{-Q} guillemets, \codx{-i} inode,
+            \codx{-d} répertoires seulement, \codx{-S} trier par taille,
+            \codx{-1} un par ligne}
+        \code|cd [d]| \quad change de répertoire \\
+        \code|touch [f]| \quad crée fichier vide ou met à jour date \\
+        \code|mkdir [d]| \quad crée un répertoire. \\
+        \cmdopt{\codx{-v} verbeux,
+        \codx{-p} parents si besoin,
+        \codx{-m [perms]} permissions}
+        \code|rmdir [d]| \quad supprime un répertoire vide \\
+        \code|rm [f]| \quad supprime un fichier. \\
+        \cmdopt{\codx{-i} interactif,
+            \codx{-f} force,
+            \codx{-v} verbeux,
+            \codx{-r} récursif, (\codx{rm -rf} dangereux)}
 
-  \code|cp [src] [dst]| \quad copie un fichier/répertoire. \\
-  \cmdopt{\lstcode{-a} archive (récursif + attributs),
-    \lstcode{-i} interactif,
-    \lstcode{-f} force,
-    \lstcode{-v} verbeux,
-    \lstcode{-r} récursif}
-  \code|mv [src] [dst]| \quad déplace/renomme. \\
-  \cmdopt{\lstcode{-i} interactif,
-    \lstcode{-f} force,
-    \lstcode{-n} ne pas écraser,
-    \lstcode{-v} verbeux}
-\end{cmdblock}
+        \code|cp [src] [dst]| \quad copie un fichier/répertoire. \\
+        \cmdopt{\codx{-a} archive (récursif + attributs),
+            \codx{-i} interactif,
+            \codx{-f} force,
+            \codx{-v} verbeux,
+            \codx{-r} récursif}
+        \code|mv [src] [dst]| \quad déplace/renomme. \\
+        \cmdopt{\codx{-i} interactif,
+            \codx{-f} force,
+            \codx{-n} ne pas écraser,
+            \codx{-v} verbeux}
+        \code|ln -s [src] [dst]| \quad crée un lien symbolique \\
+    \end{cmdblock}
 
-\section*{Exécution de commandes}
-\begin{cmdblock}
-\code|source [f]| \quad exécute script dans contexte \\
-\code|./[p]| \quad exécute programme dans répertoire courant \\
-\end{cmdblock}
+    \section*{Consultation de fichiers}
 
-\section*{Consultation de fichiers}
+    \begin{cmdblock}
+        \code|file [f]|\quad type du fichier\par
+        \code|stat [f]|\quad infos détaillées\par
+        \code|wc [f]|\quad compte occurences\par
+        \cmdopt{\codx{-l} lignes, \codx{-w} mots, \codx{-c} caractères}
+        \code{head [f]}\quad affiche premières lignes\par
+        \cmdopt{\codx{-n N} N premières lignes}
+        \code|tail [f]| \quad affiche les dernières lignes \\
+        \cmdopt{\codx{-n N} N dernières lignes,
+            \codx{-f} temps réel}
+        \code|less [f]| \quad affiche page par page \\
+        \code|cat [f]| \quad affiche le contenu \\
+        \code|hexdump -C [f]| \quad affiche en hexadécimal \\
+        \code|diff [f1] [f2]| \quad comparaison ligne par ligne \\
+        \code|cmp [f1] [f2]| \quad comparaison byte par byte \\
+        \code|sha256sum [f]| \quad somme de contrôle SHA256 \\
+    \end{cmdblock}
 
-\begin{cmdblock}
-\code|file [f]|\quad type du fichier\par
-\code|stat [f]|\quad infos détaillées\par
-\code|wc [f]|\quad compte occurences\par
-\cmdopt{\lstcode{-l} lignes, \lstcode{-w} mots, \lstcode{-c} caractères}
-\code{head [f]}\quad affiche premières lignes\par
-\cmdopt{\lstcode{-n N} N premières lignes}
-\code|tail [f]| \quad affiche les dernières lignes \\
-\cmdopt{\lstcode{-n N} N dernières lignes,
-        \lstcode{-f} temps réel}
-\code|less [f]| \quad affiche page par page \\
-\code|cat [f]| \quad affiche le contenu \\
-\code|hexdump -C [f]| \quad affiche en hexadécimal \\
-\code|diff [f1] [f2]| \quad comparaison ligne par ligne \\
-\end{cmdblock}
+    \section*{Variables d'environnement}
+    \begin{tabbing}
+        aaaaaaaaaaaaa \= a \kill
+        \code|set| \> liste variables et fonctions \\
+        \code|env| \> liste les variables d'env. \\
+        \code|export VAR=[s]| \> crée/mod. variable d'env. \\
+        \code|echo \$VAR| \> affiche valeur variable \\
+        \codx{\$PATH} \> chemin des exécutables \\
+        \codx{\$HOME} \> répertoire personnel \\
+        \codx{\$SHELL} \> interpréteur de commandes \\
+        \codx{\$USER} \> nom de l'utilisateur \\
+        \codx{\$PS1} \> invite de commande \\
+        \codx{\$PWD} \> répertoire courant \\
+        \codx{\$OLDPWD} \> répertoire précédent \\
+    \end{tabbing}
 
-\section*{Variables d'environnement}
-\begin{cmdblock}
-\code|set| \quad liste variables et fonctions \\
-\code|env| \quad liste les variables d'env. \\
-\code|export VAR=[s]| \quad crée/mod. variable d'env. \\
-\code|echo \$VAR| \quad affiche valeur variable \\
-\code|\$PATH| \quad chemin des exécutables \\
-\code|\$HOME| \quad répertoire personnel \\
-\code|\$SHELL| \quad interpréteur de commandes \\
-\code|\$USER| \quad nom de l'utilisateur \\
-\code|\$PS1| \quad invite de commande \\
-\code|\$PWD| \quad répertoire courant \\
-\code|\$OLDPWD| \quad répertoire précédent \\
-\end{cmdblock}
+    \section*{Processus / jobs}
+    \begin{tabbing}
+        aaaaaaaaaaaaa \= a \kill
+        \code|[p]&| \> exécute en arrière-plan \\
+        \code|jobs| \> liste les jobs en cours \\
+        \code|wait [PID]| \> attend la fin d'un job \\
+        \code|disown [PID]| \> détache un job du shell \\
+        \code|fg [j]| \> ramène un job au premier plan \\
+        \code|bg [j]| \> relance un job en arrière-plan \\
+        \code|ps aux| \> liste les processus \\
+        \code|kill [pid]| \> termine un processus \\
+        \code|killall [p]| \> termine tous les processus nommés \\
+        \code|top| \> moniteur de processus \\
+        \code|htop| \> top amélioré (si installé) \\
 
-\section*{Processus / jobs}
-\begin{cmdblock}
-\code|[p]\&| \quad exécute en arrière-plan \\
-\code|jobs| \quad liste les jobs en cours \\
-\code|wait [PID]| \quad attend la fin d'un job \\
-\code|disown [PID]| \quad détache un job du shell \\
-\code|fg [j]| \quad ramène un job au premier plan \\
-\code|bg [j]| \quad relance un job en arrière-plan \\
-\code|ps aux| \quad liste les processus \\
-\code|kill [pid]| \quad termine un processus \\
-\code|killall [p]| \quad termine tous les processus nommés \\
-\code|top| \quad moniteur de processus \\
-\code|htop| \quad top amélioré (si installé) \\
+    \end{tabbing}
 
-\end{cmdblock}
+    \section*{Archives / compression}
+    \begin{cmdblock}
+        \code|tar -czvf archive.tar.gz [f]| \quad crée archive .tar.gz \\
+        \code|tar -xzvf archive.tar.gz| \quad extrait archive .tar.gz \\
+        \code|zip archive.zip [f]| \quad crée archive .zip \\
+        \code|unzip archive.zip| \quad extrait archive .zip \\
+        \code|tar -cJvf archive.tar.xz [f]| \quad crée archive .tar.xz \\
+        \code|tar -xJvf archive.tar.xz| \quad extrait archive .tar.xz \\
+        \code|7z a archive.7z [f]| \quad crée archive .7z \\
+        \code|7z x archive.7z| \quad extrait archive .7z \\
+        \code|bsdtar -xf [f]| \quad extrait \\
+        \code|bsdtar -cf archive.tar [f]| \quad crée archive .tar \\
+    \end{cmdblock}
 
-\section*{Archives / compression}
-\begin{cmdblock}
-\code|tar -czvf archive.tar.gz [f]| \quad crée archive .tar.gz \\
-\code|tar -xzvf archive.tar.gz| \quad extrait archive .tar.gz \\
-\code|zip archive.zip [f]| \quad crée archive .zip \\
-\code|unzip archive.zip| \quad extrait archive .zip \\
-\code|tar -cJvf archive.tar.xz [f]| \quad crée archive .tar.xz \\
-\code|tar -xJvf archive.tar.xz| \quad extrait archive .tar.xz \\
-\code|7z a archive.7z [f]| \quad crée archive .7z \\
-\code|7z x archive.7z| \quad extrait archive .7z \\
-\code|bsdtar -xf [f]| \quad extrait \\
-\code|bsdtar -cf archive.tar [f]| \quad crée archive .tar \\
-\end{cmdblock}
+    \section*{Permissions / utilisateurs}
 
-\section*{Permissions / utilisateurs}
+    \begin{cmdblock}
+        \code|chmod| \quad modifie les permissions \\
+        \cmdopt{\codx{u} user, \codx{g} group, \codx{o} others, \codx{a} all,
+            \codx{+} add, \codx{-} remove, \codx{=} set exactly}
+        \code|chown| \quad change le propriétaire \\
+        \code|chgrp| \quad change le groupe \\
+        \code|umask| \quad masque de création de fichiers \\
+        \code|sudo [p]| \quad exécute en superutilisateur \\
+        \code|su [utilisateur]| \quad change d'utilisateur \\
+        \code|who| \quad qui est connecté \\
+        \code|w| \quad qui est connecté et que font-ils \\
+        \code|id| \quad informations sur l'utilisateur courant \\
+        \code|groups| \quad groupes de l'utilisateur courant \\
+        \code|passwd| \quad change le mot de passe \\
+        \code|last| \quad historique des connexions \\
+    \end{cmdblock}
 
-\begin{cmdblock}
-\code|chmod| \quad modifie les permissions \\
-\cmdopt{\lstcode{u} user, \lstcode{g} group, \lstcode{o} others, \lstcode{a} all,
-        \lstcode{+} add, \lstcode{-} remove, \lstcode{=} set exactly}
-\code|chown| \quad change le propriétaire \\
-\code|chgrp| \quad change le groupe \\
-\code|umask| \quad masque de création de fichiers \\
-\code|sudo [p]| \quad exécute en superutilisateur \\
-\code|su [utilisateur]| \quad change d'utilisateur \\
-\code|who| \quad qui est connecté \\
-\code|w| \quad qui est connecté et que font-ils \\
-\code|id| \quad informations sur l'utilisateur courant \\
-\code|groups| \quad groupes de l'utilisateur courant \\
-\code|passwd| \quad change le mot de passe \\
-\code|last| \quad historique des connexions \\
-\end{cmdblock}
+    \textit{bits :} 1 x, 2 w, 4 r
 
-\textit{bits :} 1 x, 2 w, 4 r
-
-\section*{Raccourcis less / more / man}
-\begin{cmdblock}
-Espace: page suivante, \keys{b}: page précédente \\
-\keys{\return}{}: ligne suivante, \keys{y}: ligne précédente \\
-\keys{/}: rechercher, \keys{n}/\keys{N}: suivant/précédent \\
-\keys{g}/\keys{G}: début/fin, \keys{q}: quitter \\
-\keys{h}: aide, \keys{m}: marque-page \\
-\keys{'}: aller au marque-page, \keys{`}: revenir \\
-\end{cmdblock}
+    \section*{Raccourcis less / more / man}
+    \begin{cmdblock}
+        Espace: page suivante, \keys{b}: page précédente \\
+        \keys{\return}{}: ligne suivante, \keys{y}: ligne précédente \\
+        \keys{/}: rechercher, \keys{n}/\keys{N}: suivant/précédent \\
+        \keys{g}/\keys{G}: début/fin, \keys{q}: quitter \\
+        \keys{h}: aide, \keys{m}: marque-page \\
+        \keys{'}: aller au marque-page, \keys{`}: revenir \\
+    \end{cmdblock}
 
 
-\section*{Recherche}
-\begin{cmdblock}
-\code|grep "s" [f]| \quad cherche une chaîne dans un fichier \\
-\cmdopt{\lstcode{-P} regex Perl,
-        \lstcode{-r} récursif,
-        \lstcode{-i} ignore la casse,
-        \lstcode{-v} inverse (non),
-        \lstcode{-n} numéro de ligne,
-        \lstcode{-c} compte les lignes,
-        \lstcode{-l} liste les fichiers,
-        \lstcode{-w} mot entier,
-        \lstcode{-A n} n lignes après,
-        \lstcode{-B n} n lignes avant,
-        \lstcode{-C n} n lignes contexte,
-        \lstcode{-o} seulement correspondance}
-\code|rg "s" [f]| \quad comme grep, plus rapide (si installé) \\
-\code|find [d] -name "s"| \quad cherche un fichier \\
-\cmdopt{\lstcode{-iname} ignore la casse,
-        \lstcode{-type f/d} fichier/répertoire,
-        \lstcode{-exec cmd \{\} \;} exécute cmd sur chaque fichier}
-\code|locate "s"| \quad cherche un fichier (base de données) \\
-\code|which [p]| \quad chemin d'une commande \\
-\end{cmdblock}
+    \section*{Recherche}
+    \begin{cmdblock}
+        \code|grep "s" [f]| \quad cherche une chaîne dans un fichier \\
+        \cmdopt{\codx{-P} regex Perl,
+            \codx{-r} récursif,
+            \codx{-i} ignore la casse,
+            \codx{-v} inverse (non),
+            \codx{-n} numéro de ligne,
+            \codx{-c} compte les lignes,
+            \codx{-l} liste les fichiers,
+            \codx{-w} mot entier,
+            \codx{-A n} n lignes après,
+            \codx{-B n} n lignes avant,
+            \codx{-C n} n lignes contexte,
+            \codx{-o} seulement correspondance}
+        \code|rg "s" [f]| \quad comme grep, plus rapide (si installé) \\
+        \code|find [d] -name "s"| \quad cherche un fichier \\
+        \cmdopt{\codx{-iname} ignore la casse,
+            \codx{-type f/d} fichier/répertoire,
+            \codx{-exec cmd \{\} \;} exécute cmd sur chaque fichier}
+        \code|locate "s"| \quad cherche un fichier (base de données) \\
+        \code|which [p]| \quad chemin d'une commande \\
+    \end{cmdblock}
 
-\section*{Remplacement}
-\begin{cmdblock}
-\code|sed 's/search/new/g' [f]| \quad remplace avec BRE regex \\
-\cmdopt{\lstcode{-i} modifie le fichier,
-        \lstcode{-n} n'affiche rien par défaut,
-        \lstcode{-E} regex étendues,
-        \lstcode{-e} script, \lstcode{-r} regex étendues}
-\code|perl -pe 's/search/new/g' [f]| \quad remplace avec regex Perl \\
-\cmdopt{\lstcode{-i} modifie le fichier,
-        \lstcode{-n} n'affiche rien par défaut,
-        \lstcode{-e} script, \lstcode{-l} gère les nouvelles lignes}
-\code|perl -0777 -pe 's/search/new/gs' [f]| \quad remplace sur tout le fichier \\
-\end{cmdblock}
+    \section*{Remplacement}
+    \begin{cmdblock}
+        \code|sed 's/search/new/g' [f]| \quad remplace avec BRE regex \\
+        \cmdopt{\codx{-i} modifie le fichier,
+            \codx{-n} n'affiche rien par défaut,
+            \codx{-E} regex étendues,
+            \codx{-e} script, \codx{-r} regex étendues}
+        \code|perl -pe 's/search/new/g' [f]| \quad remplace avec regex Perl \\
+        \cmdopt{\codx{-i} modifie le fichier,
+            \codx{-n} n'affiche rien par défaut,
+            \codx{-e} script, \codx{-l} gère les nouvelles lignes}
+        \code|perl -0777 -pe 's/search/new/gs' [f]| \quad remplace sur tout le fichier \\
+    \end{cmdblock}
 
-\section*{Utilitaires}
-\begin{cmdblock}
-\code|uniq [f]| \quad filtre les lignes consécutives identiques \\
-\cmdopt{\lstcode{-c} compte, \lstcode{-d} que les doublons,
-        \lstcode{-u} que les uniques, \lstcode{-i} ignore la casse}
-\code|sort [f]| \quad trie les lignes \\
-\cmdopt{\lstcode{-r} inverse, \lstcode{-n} numérique,
-        \lstcode{-k n} clé n, \lstcode{-u} unique,
-        \lstcode{-t x} séparateur x}
-\code|cut -d x -f n [f]| \quad extrait le champ n, séparé par x \\
-\code|awk '{print \$n}' [f]| \quad extrait le champ n (espace séparateur) \\
-\code|xargs [p]| \quad construit des lignes de commande \\
-\cmdopt{\lstcode{-n N} N arguments par commande,
-        \lstcode{-I \{\}} remplace \{\} par l'argument}
-\code|tr 'set1' 'set2'| \quad remplace set1 par set2 \\
-\cmdopt{\lstcode{-d} supprime set1, \lstcode{-s} squeeze}
-\code|tee [f]| \quad duplique le flux vers un fichier \\
-\cmdopt{\lstcode{-a} ajoute au fichier, \lstcode{-i} ignore les signaux}
-\end{cmdblock}
+    \section*{Utilitaires}
+    \begin{cmdblock}
+        \code|uniq [f]| \quad filtre les lignes consécutives identiques \\
+        \cmdopt{\codx{-c} compte, \codx{-d} que les doublons,
+            \codx{-u} que les uniques, \codx{-i} ignore la casse}
+        \code|sort [f]| \quad trie les lignes \\
+        \cmdopt{\codx{-r} inverse, \codx{-n} numérique,
+            \codx{-k n} clé n, \codx{-u} unique,
+            \codx{-t x} séparateur x}
+        \code|cut -d x -f n [f]| \quad extrait le champ n, séparé par x \\
+        \code|awk '{print \$n}' [f]| \quad extrait le champ n (espace séparateur) \\
+        \code|xargs [p]| \quad construit des lignes de commande \\
+        \cmdopt{\codx{-n N} N arguments par commande,
+            \codx{-I \{\}} remplace \{\} par l'argument}
+        \code|tr 'set1' 'set2'| \quad remplace set1 par set2 \\
+        \cmdopt{\codx{-d} supprime set1, \codx{-s} squeeze}
+        \code|tee [f]| \quad duplique le flux vers un fichier \\
+        \cmdopt{\codx{-a} ajoute au fichier, \codx{-i} ignore les signaux}
+    \end{cmdblock}
 
-\section*{Aide}
-\begin{cmdblock}
-\code|help [p]| \quad aide interne bash \\
-\code|[p] --help| \quad aide d'une commande \\
-\code|man [p]| \quad manuel d'une commande \\
-\code|apropos [terme]| \quad cherche dans les manuels \\
-\code|whatis [p]| \quad description commande \\
-\end{cmdblock}
+    \section*{Aide}
+    \begin{tabbing}
+        aaaaaaaaaaaaaa \= a \kill
+        \code|help [p]| \> aide interne bash \\
+        \code|[p] --help| \> aide d'une commande \\
+        \code|man [p]| \> manuel d'une commande \\
+        \code|apropos [terme]| \> cherche dans les manuels \\
+        \code|whatis [p]| \> description commande \\
+    \end{tabbing}
 
-\emph{Sections du manuel: 1~utilisateur, 2~syscalls, 3~lib, 4~spéciaux, 5~formats, 6~jeux, 7~divers, 8~admin}
+    \emph{Sections du manuel: 1~utilisateur, 2~syscalls, 3~lib, 4~spéciaux, 5~formats, 6~jeux, 7~divers, 8~admin.} (\code{man 3 printf})
 
-\section*{Gestion Réseau}
-\begin{cmdblock}
-\code|ip a| \quad liste adresses IP \\
-\code|ip r| \quad table de routage \\
-\code|ping [hôte]| \quad teste la connectivité \\
-\code|ss -tuln| \quad sockets réseau \\
-\code|dig [hôte]| \quad résolution DNS avancée \\
-\end{cmdblock}
+    \section*{Gestion Réseau}
+    \begin{tabbing}
+        aaaaaaaaaaaaa \= a \kill
+        \code|ip a| \> liste adresses IP \\
+        \code|ip r| \> table de routage \\
+        \code|ping [hôte]| \> teste la connectivité \\
+        \code|ss -tuln| \> sockets réseau \\
+        \code|dig [hôte]| \> résolution DNS avancée \\
+    \end{tabbing}
 
-\section*{Internet}
-\begin{cmdblock}
-\code|ssh user@host| \quad connexion SSH \\
-\code|scp [src] [dst]| \quad copie sécurisée \\
-\code|wget [url]| \quad télécharge un fichier \\
-\cmdopt{\lstcode{-O f} fichier de sortie,
-        \lstcode{-c} reprendre, \lstcode{-q} silencieux,
-        \lstcode{--limit-rate=100k} limite le débit}
-\code|curl [url]| \quad transfère une URL \\
-\cmdopt{\lstcode{-o f} fichier de sortie,
-        \lstcode{-O} nomme comme l'original,
-        \lstcode{-L} suivre redirections,
-        \lstcode{-I} en-têtes seulement,
-        \lstcode{-d data} données POST,
-        \lstcode{-H 'Hdr: v'} ajoute un en-tête}
-\code|lynx [url]| \quad navigateur web en console \\
-\end{cmdblock}
+    \section*{Internet}
+    \begin{cmdblock}
+        \code|ssh user@host| \quad connexion SSH \\
+        \code|scp [src] [dst]| \quad copie sécurisée \\
+        \code|wget [url]| \quad télécharge un fichier \\
+        \cmdopt{\codx{-O f} fichier de sortie,
+            \codx{-c} reprendre, \codx{-q} silencieux,
+            \codx{--limit-rate=100k} limite le débit}
+        \code|curl [url]| \quad transfère une URL \\
+        \cmdopt{\codx{-o f} fichier de sortie,
+            \codx{-O} nomme comme l'original,
+            \codx{-L} suivre redirections,
+            \codx{-I} en-têtes seulement,
+            \codx{-d data} données POST,
+            \codx{-H 'Hdr: v'} ajoute un en-tête}
+        \code|lynx [url]| \quad navigateur web en console \\
+    \end{cmdblock}
 
-\section*{Git}
-\begin{cmdblock}
-\code|git init| \quad initialise un dépôt git \\
-\code|git status| \quad statut du dépôt \\
-%\code|git remote add origin [url]| \quad ajoute une origine \\
-\code|git remote -v| \quad liste les origines \\
-\code|git fetch| \quad récupère les changements distants \\
-\code|git pull| \quad pull + merge \\
-\code|git push| \quad pousse les changements locaux \\
-\code|git clone [url]| \quad clone un dépôt distant \\
-\code|git branch| \quad liste les branches \\
-\code|git branch [br]| \quad crée une branche \\
-\code|git checkout [br]| \quad change de branche \\
-\code|git commit -m "s"| \quad crée un commit \\
-\code|git add [f]| \quad ajoute un fichier au commit \\
-\code|git log| \quad historique des commits \\
-\cmdopt{\lstcode{--oneline} résumé, \lstcode{--graph} graphe,
-        \lstcode{--stat} stats, \lstcode{-p} diff}
-\end{cmdblock}
+    \section*{Git}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|git init| \> initialise un dépôt git \\
+        \code|git status| \> statut du dépôt \\
+        %\code|git remote add origin [url]| \> ajoute une origine \\
+        \code|git remote -v| \> liste les origines \\
+        \code|git fetch| récupère les changements distants \\
+        \code|git pull| \> pull + merge \\
+        \code|git push| \> pousse les changements \\
+        \code|git clone [url]| \> clone un dépôt distant \\
+        \code|git branch| \> liste les branches \\
+        \code|git branch [br]| \> crée une branche \\
+        \code|git checkout [br]| \> change de branche \\
+        \code|git commit -m "s"| \> crée un commit \\
+        \code|git add [f]| \> ajoute un fichier au commit \\
+        \code|git log| \> historique des commits \\
+        \cmdopt{\codx{--oneline} résumé, \codx{--graph} graphe,
+            \codx{--stat} stats, \codx{-p} diff}
+    \end{tabbing}
 
-\section*{GCC}
-\begin{cmdblock}
-\code|gcc [f.c]| \quad compile un fichier C \\
-\cmdopt{\lstcode{-o f} nom de l'exécutable,
-        \lstcode{-Wall} tous les avertissements,
-        \lstcode{-Wextra} avertissements supplémentaires,
-        \lstcode{-g} infos debug,
-        \lstcode{-O0, -O1, -O2, -O3} optimisation,
-        \lstcode{-std=c17} standard C,
-        \lstcode{-I dir} inclure répertoire dir,
-        \lstcode{-L dir} lier répertoire dir,
-        \lstcode{-l lib} lier la bibliothèque lib
-        \lstcode{-c} compiler seulement (pas linker)}
-\end{cmdblock}
+    \section*{GCC}
+    \begin{cmdblock}
+        \code|gcc [f.c]| \quad compile un fichier C \\
+        \cmdopt{\codx{-o f} nom de l'exécutable,
+            \codx{-Wall} tous les avertissements,
+            \codx{-Wextra} avertissements supplémentaires,
+            \codx{-g} infos debug,
+            \codx{-O0, -O1, -O2, -O3} optimisation,
+            \codx{-std=c17} standard C,
+            \codx{-I dir} inclure répertoire dir,
+            \codx{-L dir} lier répertoire dir,
+            \codx{-l lib} lier la bibliothèque lib
+            \codx{-c} compiler seulement (pas linker)}
+    \end{cmdblock}
 
-\section*{Python}
-\begin{cmdblock}
-\code|python -mvenv venv| \quad crée environnement virtuel \\
-\code|uv venv venv| \quad même chose avec uv \\
-\code|source venv/bin/activate| \quad active l'env. virtuel \\
-\code|deactivate| \quad désactive l'env. virtuel \\
-\code|pip install pkg| \quad installe un paquet dans l'env. virtuel \\
-\code|pip list| \quad liste les paquets installés \\
-\end{cmdblock}
+    \section*{Python}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaaaaaaa \= a \kill
+        \code|python -mvenv venv| \> crée un virtual env. \\
+        \code|uv venv venv| \> même chose avec uv \\
+        \code|source venv/bin/activate| \> active l'env. virtuel \\
+        \code|deactivate| \> désactive l'env. virtuel \\
+        \code|pip list| \> liste les paquets installés \\
+        \code|pip install pkg| installe un paquet dans l'env. \\
+    \end{tabbing}
 
-\section*{Système}
+    \section*{Système}
 
-\begin{cmdblock}
-\code|shutdown -h now| \quad arrête le système \\
-\code|shutdown -r now| \quad redémarre le système \\
-\code|systemctl status [service]| \quad statut d'un service \\
-\code|systemctl start [service]| \quad démarre un service \\
-\code|systemctl stop [service]| \quad arrête un service \\
-\code|systemctl restart [service]| \quad redémarre service \\
-\code|systemctl enable [service]| \quad active service \\
-\code|systemctl disable [service]| \quad désactive service \\
-\code|journalctl -xe| \quad logs système \\
-\code|timedatectl| \quad date, heure, fuseau horaire \\
-\code|hostnamectl| \quad informations sur le système \\
-\end{cmdblock}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaaaaaaaa \= a \kill
+        \code|shutdown -h now| \> arrête le système \\
+        \code|shutdown -r now| \> redémarre le système \\
+        \code|systemctl status [srv]| \> statut d'un service \\
+        \code|systemctl start [srv]| \> démarre un service \\
+        \code|systemctl stop [srv]| \> arrête un service \\
+        \code|systemctl restart [srv]| \> redémarre service \\
+        \code|systemctl enable [srv]| \> active service \\
+        \code|systemctl disable [srv]| \> désactive service \\
+        \code|journalctl -xe| \> logs système \\
+        \code|timedatectl| \quad date, heure, fuseau horaire \\
+        \code|hostnamectl| \quad informations sur le système \\
+    \end{tabbing}
 
-\section*{Hardware}
+    \section*{Hardware}
 
-\begin{cmdblock}
-\code|uname -a| \quad informations système \\
-\code|lscpu| \quad infos CPU \\
-\code|lsblk| \quad liste les disques et partitions \\
-\code|df -h| \quad espace disque \\
-\code|du -sh [f/d]| \quad taille d'un fichier/répertoire \\
-\code|free -h| \quad mémoire \\
-\end{cmdblock}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|uname -a| \> informations système \\
+        \code|lscpu| \> infos CPU \\
+        \code|lsblk| \> liste les disques et partitions \\
+        \code|df -h| \> espace disque \\
+        \code|du -sh [f/d]| \> taille d'un fichier/répertoire \\
+        \code|free -h| \> mémoire \\
+    \end{tabbing}
 
-\section*{APT (Debian/Ubuntu)}
-\begin{cmdblock}
-\code|apt update| \quad met à jour liste des paquets \\
-\code|apt upgrade| \quad met à jour les paquets installés \\
-\code|apt install [pkg]| \quad installe un paquet \\
-\code|apt remove [pkg]| \quad désinstalle un paquet \\
-\code|apt search [terme]| \quad cherche un paquet \\
-\code|apt show [pkg]| \quad informations sur un paquet \\
-\code|apt autoremove| \quad supprime dépendances inutiles \\
-\code|dpkg -L [pkg]| \quad liste fichiers d'un paquet \\
-\code|dpkg -S [f]| \quad quel paquet fournit ce fichier \\
-\end{cmdblock}
+    \section*{APT (Debian/Ubuntu)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|apt update| \> met à jour liste des paquets \\
+        \code|apt upgrade| \> met à jour les paquets installés \\
+        \code|apt install [pkg]| \> installe un paquet \\
+        \code|apt remove [pkg]| \> désinstalle un paquet \\
+        \code|apt search [terme]| \> cherche un paquet \\
+        \code|apt show [pkg]| \> informations sur un paquet \\
+        \code|apt autoremove| \> supprime dépendances inutiles \\
+        \code|dpkg -L [pkg]| \> liste fichiers d'un paquet \\
+        \code|dpkg -S [f]| \> quel paquet fournit ce fichier \\
+    \end{tabbing}
 
-% \section*{À installer (exemples)}
-% \textbf{Utilitaires} : \lstinline|sudo apt install util-linux coreutils findutils grep sed awk wget curl unzip zip tar| \\
-% \textbf{Manuels FR} : \lstinline|sudo apt install manpages-fr manpages-fr-extra| \\
-% \textbf{Dev} : \lstinline|sudo apt install build-essential git curl wget vim htop| \\
-% \textbf{Réseau} : \lstinline|sudo apt install net-tools iputils-ping traceroute dnsutils| \\
+    \section*{Fun}
 
-\section*{Fun}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaa \= a \kill
+        \code|cowsay "s"| \> phylactere et vache \\
+        \code|fortune| \> citation aléatoire  \\
+        \code|sl| \> locomotive à vapeur  \\
+        \code|cmatrix| \> effet Matrix  \\
+        \code|toilet "s"| \> texte ASCII art  \\
+        \code|lolcat| \> texte coloré  \\
+    \end{tabbing}
 
-\begin{cmdblock}
-\code|cowsay "s"| \quad phylactere et vache \\
-\code|fortune| \quad citation aléatoire  \\
-\code|sl| \quad locomotive à vapeur  \\
-\code|cmatrix| \quad effet Matrix  \\
-\code|toilet "s"| \quad texte ASCII art  \\
-\code|lolcat| \quad texte coloré  \\
-\end{cmdblock}
+    \section*{Substituts modernes conseillés}
 
-\section*{Substituts modernes conseillés}
-
-\begin{tabularx}{\columnwidth}{lX}
-lsd & Substitut de ls  \\
-batcat& Amélioration de cat  \\
-fd & Substitut de find  \\
-ripgrep (rg) & Substitut de grep  \\
-sd & Substitut de sed  \\
-hexyl & Substitut de hexdump  \\
-broot & Explorateur de fichiers CLI  \\
-fzf & Outil de recherche floue  \\
-git-delta & Substitut de git diff \\
-\end{tabularx}
+    \begin{tabularx}{\columnwidth}{lX}
+        lsd          & Substitut de ls             \\
+        batcat       & Amélioration de cat         \\
+        fd           & Substitut de find           \\
+        ripgrep (rg) & Substitut de grep           \\
+        sd           & Substitut de sed            \\
+        hexyl        & Substitut de hexdump        \\
+        broot        & Explorateur de fichiers CLI \\
+        fzf          & Outil de recherche floue    \\
+        git-delta    & Substitut de git diff       \\
+    \end{tabularx}
 
 \end{multicols}
 \end{document}
