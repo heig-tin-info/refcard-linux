@@ -1,5 +1,5 @@
 \documentclass[9pt]{extarticle}
-\usepackage[a4paper,landscape,margin=10mm]{geometry}
+\usepackage[a4paper,landscape,margin=5mm]{geometry}
 \usepackage[french]{babel}
 \usepackage[most]{tcolorbox}
 \usepackage[os=win]{menukeys}
@@ -52,7 +52,7 @@
   codeinline/.style={
     on line,
     colframe=black!60, colback=white,
-    opacityback=0.8,
+    opacityback=0.9,
     bottom=1.5pt, left=1.5pt, right=1.5pt, top=1.5pt,
     boxrule=0.4pt, arc=2pt, boxsep=0.2pt,
     fontupper=\ttfamily\footnotesize,
@@ -553,11 +553,13 @@
     \begin{tabbing}
         aaaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|python -mvenv venv| \> crée un virtual env. \\
+        \code|source venv/bin/activate| \> active l'env. virtuel (bash) \\
+        \codx{venv\textbackslash{}Scripts\textbackslash{}activate} \> même chose (PowerShell) \\
         \code|uv venv venv| \> même chose avec uv \\
-        \code|source venv/bin/activate| \> active l'env. virtuel \\
         \code|deactivate| \> désactive l'env. virtuel \\
         \code|pip list| \> liste les paquets installés \\
         \code|pip install pkg| installe un paquet dans l'env. \\
+        \code|pipx install pkg| installe un outil globalement \\
     \end{tabbing}
 
     \section*{Système}
