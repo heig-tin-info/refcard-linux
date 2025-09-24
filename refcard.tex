@@ -80,7 +80,7 @@
   {}{0pt}{}
 
 \titleformat{\subsection}
-  {\sffamily\bfseries\fontsize{10}{12}\selectfont}
+  {\sffamily\bfseries\fontsize{9}{11}\selectfont}
   {}{0pt}{}
 
 \titleformat{\subsubsection}
@@ -88,21 +88,19 @@
   {}{0pt}{}
 
 % Espacements (les tiens, inchangés)
-\titlespacing*{\section}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-\titlespacing*{\subsection}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-\titlespacing*{\subsubsection}{0pt}{0.1ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\section}{0pt}{0ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
+\titlespacing*{\subsection}{0pt}{0.1ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
+\titlespacing*{\subsubsection}{0pt}{0.1ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
 
 
 \pagenumbering{gobble} % pas de numéros de page
 
 
-\newlength\mybaselinestretch
-\mybaselinestretch=0pt plus 0.02pt\relax
-\addtolength{\baselineskip}{\mybaselinestretch}
+% \newlength\mybaselinestretch
+% \mybaselinestretch=0pt plus 0.02pt\relax
+% \addtolength{\baselineskip}{\mybaselinestretch}
 
-\setlength\parindent{0pt}
-\setlength\tabcolsep{1.5pt}
-\setlength{\columnseprule}{0.4pt}
+
 
 \input{revision}
 
@@ -130,16 +128,20 @@
   \raisebox{-0.15ex}{\faIcon[#1]{#2}}%
 }
 
-\clubpenalty=0            % orphelines (début de page)
-\widowpenalty=0           % veuves (fin de page)
-\displaywidowpenalty=0
-
-\setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
-\setlength{\postmulticols}{0pt}
+\setlength\parindent{0pt}
+\setlength\tabcolsep{1.5pt}
+\setlength{\columnseprule}{0.4pt}
 \setlength{\multicolsep}{0pt}
 
-\begin{document}
+% \clubpenalty=0            % orphelines (début de page)
+% \widowpenalty=0           % veuves (fin de page)
+% \displaywidowpenalty=0
 
+% \setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
+% \setlength{\postmulticols}{0pt}
+% \setlength{\multicolsep}{0pt}
+
+\begin{document}
 \raggedcolumns
 \begin{multicols}{4}
     \raggedbottom
@@ -161,67 +163,76 @@
     \section*{Raccourcis clavier Bash}
     \subsection*{Mouvements}
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \keys{\ctrl + B} & recule d'un caractère (\keys{\leftarrow})   \\
-        \keys{\ctrl + F} & avance d'un caractère (\keys{\rightarrow})  \\
-        \keys{\ctrl + A} & début de ligne (\keys{Home})                \\
-        \keys{\ctrl + E} & fin de ligne (\keys{End})                   \\
-        \keys{\Alt + B}  & recule d'un mot (\keys{\Alt + \leftarrow})  \\
-        \keys{\Alt + F}  & avance d'un mot (\keys{\Alt + \rightarrow}) \\
-    \end{tabularx}
+    \begin{tabbing}
+        aaaaaaaa \= a \kill
+        \keys{\ctrl + B} \> recule d'un caractère (\keys{\leftarrow})   \\
+        \keys{\ctrl + F} \> avance d'un caractère (\keys{\rightarrow})  \\
+        \keys{\ctrl + A} \> début de ligne (\keys{Home})                \\
+        \keys{\ctrl + E} \> fin de ligne (\keys{End})                   \\
+        \keys{\Alt + B}  \> recule d'un mot (\keys{\Alt + \leftarrow})  \\
+        \keys{\Alt + F}  \> avance d'un mot (\keys{\Alt + \rightarrow})
+    \end{tabbing}
 
     \subsection*{Édition}
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \keys{\ctrl + H} & comme backspace (\keys{\backspace})    \\
-        \keys{\ctrl + D} & comme delete (\keys{\del})             \\
-        \keys{\ctrl + U} & coupe du début au curseur              \\
-        \keys{\ctrl + K} & coupe du curseur à la fin              \\
-        \keys{\ctrl + W} & coupe le mot avant le curseur          \\
-        \keys{\ctrl + Y} & colle le dernier texte coupé           \\
-        \keys{\ctrl + T} & swap le char courant avec le précédent \\
-        \keys{\Alt + D}  & supprime le mot après                  \\
-        \keys{\Alt + .}  & insère le dernier argument             \\
-    \end{tabularx}
+    \begin{tabbing}
+        aaaaaaaaa \= a \kill
+        \keys{\ctrl + H} \> comme backspace (\keys{\backspace})    \\
+        \keys{\ctrl + D} \> comme delete (\keys{\del})             \\
+        \keys{\ctrl + U} \> coupe du début au curseur              \\
+        \keys{\ctrl + K} \> coupe du curseur à la fin              \\
+        \keys{\ctrl + W} \> coupe le mot avant le curseur          \\
+        \keys{\ctrl + Y} \> colle le dernier texte coupé           \\
+        \keys{\ctrl + T} \> swap le char courant avec le précédent \\
+        \keys{\Alt + D}  \> supprime le mot après                  \\
+        \keys{\Alt + .}  \> insère le dernier argument
+    \end{tabbing}
 
     \subsection*{Exécution / complétion}
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \multicolumn{2}{l}{\keys{\ctrl + J}, \keys{\ctrl + M} exécuter (\keys{\return})} \\
-        \keys{\ctrl + I} & complétion (équivalent \keys{\tab})                           \\
-        \keys{\tab}{}    & auto-complétion                                               \\
-    \end{tabularx}
+    \begin{tabbing}
+        aaaaaaaaaaaa \= a \kill
+        \keys{\ctrl + J}, \keys{\ctrl + M} exécuter (\keys{\return}) \\
+        \keys{\ctrl + I} \> complétion (équivalent \keys{\tab})                           \\
+        \keys{\tab}{}    \> auto-complétion
+    \end{tabbing}
 
     \subsection*{Contrôle / Appels système}
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \keys{\ctrl + C} & interrompre (\emph{sigint})         \\
-        \keys{\ctrl + Z} & suspendre (\emph{sigstp})           \\
-        \keys{\ctrl + L} & effacer l'écran                     \\
-        \keys{\ctrl + D} & envoyer \emph{EOF} (ferme le shell) \\
-    \end{tabularx}
+    \begin{tabbing}
+        aaaaaaaaaaaa \= a \kill
 
-    \subsection*{Casse / mots}
+        \keys{\ctrl + C} \> interrompre (\emph{sigint})         \\
+        \keys{\ctrl + Z} \> suspendre (\emph{sigstp})           \\
+        \keys{\ctrl + L} \> effacer l'écran                     \\
+        \keys{\ctrl + D} \> envoyer \emph{EOF} (ferme le shell)
+    \end{tabbing}
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \keys{\Alt + U} & majuscules (mot après)        \\
-        \keys{\Alt + L} & minuscules (mot après)        \\
-        \keys{\Alt + C} & capitalise la première lettre \\
-    \end{tabularx}
+
 
     \subsection*{Historique / recherche}
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \keys{\ctrl + R} & recherche historique                \\
-        \keys{\ctrl + G} & annuler la recherche                \\
-        \keys{\ctrl + P} & commande précédente                 \\
-        \keys{\ctrl + N} & commande suivante                   \\
-        \keys{\ctrl + S} & pause (débloquer: \keys{\ctrl + Q}) \\
-        \keys{\Alt + <}  & début de l'historique               \\
-        \keys{\Alt + >}  & fin de l'historique                 \\
-        \keys{\Alt + P}  & précédent dans l'historique         \\
-        \keys{\Alt + N}  & suivant dans l'historique           \\
-    \end{tabularx}
+    \begin{tabbing}
+        aaaaaaaaaaaa \= a \kill
+        \keys{\ctrl + R} \> recherche historique                \\
+        \keys{\ctrl + G} \> annuler la recherche                \\
+        \keys{\ctrl + P} \> commande précédente                 \\
+        \keys{\ctrl + N} \> commande suivante                   \\
+        \keys{\ctrl + S} \> pause (débloquer: \keys{\ctrl + Q}) \\
+        \keys{\Alt + <}  \> début de l'historique               \\
+        \keys{\Alt + >}  \> fin de l'historique                 \\
+        \keys{\Alt + P}  \> précédent dans l'historique         \\
+        \keys{\Alt + N}  \> suivant dans l'historique
+    \end{tabbing}
+
+    \subsection*{Casse / mots}
+
+    \begin{tabbing}
+        aaaaaaaaaaaa \= a \kill
+        \keys{\Alt + U} \> majuscules (mot après)        \\
+        \keys{\Alt + L} \> minuscules (mot après)        \\
+        \keys{\Alt + C} \> capitalise la première lettre
+    \end{tabbing}
 
     \section*{Sucres syntaxiques}
 
@@ -243,7 +254,7 @@
         \code{{1..5}} \> expansions de séquence \\
         \codx{\$(cmd1; cmd2)} \> sous-coquille \\
         \codx{\$(cmd \&)} \> arrière-plan (sous-coquille) \\
-        \codx{\$(( expr ))} \> arithmétique \\
+        \codx{\$(( expr ))} \> arithmétique
     \end{tabbing}
 
     \section*{Redirections / pipes}
@@ -258,25 +269,29 @@
         \code|[p] << EOF| \> heredoc (jusqu'à EOF) \\
         \code|[p] <<< "s"| \> here-string (inject sur stdin) \\
         \code{[p] | [p]} \> pipe (stdout \textrightarrow{} stdin) \\
-        \code{[p] |& [p]} \> pipe (stdout+stderr \textrightarrow{} stdin) \\
+        \code{[p] |& [p]} \> pipe (stdout+stderr \textrightarrow{} stdin)
     \end{tabbing}
 
     \section*{Exécution de commandes}
-    \begin{cmdblock}
-        \code|source [f]| \quad exécute script dans contexte \\
-        \code|./[p]| \quad exécute programme dans rép. courant \\
-    \end{cmdblock}
+    \begin{tabbing}
+        aaaaaaaaa \= a \kill
+        \code|source [f]| \> exécute script dans contexte \\
+        \code|./[p]| \> exécute programme dans rép. courant \\
+        \code|sh -c "[p]"| \> exécute commande dans un shell
+        %\code|[p] ; [p]| \> exécute commandes successivement \\
+    \end{tabbing}
 
     \section*{Information utilisateur}
-    \begin{cmdblock}
-        \code|uptime| \quad temps écoulé depuis reboot \\
-        \code|date| \quad date et heure actuelles \\
-        \code|cal| \quad calendrier du mois en cours \\
-        \code|whoami| \quad nom de l'utilisateur courant \\
-        \code|hostname| \quad nom de la machine \\
-        \code|arch| \quad architecture matérielle \\
-        \code|lsb_release -a| \quad infos distribution Linux \\
-    \end{cmdblock}
+    \begin{tabbing}
+        aaaaaaaaaaaaa \= a \kill
+        \code|uptime| \> temps écoulé depuis reboot \\
+        \code|date| \> date et heure actuelles \\
+        \code|cal| \> calendrier du mois en cours \\
+        \code|whoami| \> nom de l'utilisateur courant \\
+        \code|hostname| \> nom de la machine \\
+        \code|arch| \> architecture matérielle \\
+        \code|lsb_release -a| \> infos distribution Linux \\
+    \end{tabbing}
 
     \section*{Fichiers / répertoires}
 
@@ -342,6 +357,8 @@
         \code|set| \> liste variables et fonctions \\
         \code|env| \> liste les variables d'env. \\
         \code|export VAR=[s]| \> crée/mod. variable d'env. \\
+        \code|unset VAR| \> supprime une variable \\
+        \code|printenv [VAR]| \> affiche variable(s) \\
         \code|echo \$VAR| \> affiche valeur variable \\
         \codx{\$PATH} \> chemin des exécutables \\
         \codx{\$HOME} \> répertoire personnel \\
@@ -362,10 +379,14 @@
         \code|fg [j]| \> ramène un job au premier plan \\
         \code|bg [j]| \> relance un job en arrière-plan \\
         \code|ps aux| \> liste les processus \\
+        \code|pgrep [nom]| \> trouve PID par nom \\
+        \code|pkill [nom]| \> tue processus par nom \\
         \code|kill [pid]| \> termine un processus \\
         \code|killall [p]| \> termine tous les processus nommés \\
+        \code|nohup [p]| \> lance sans interruption \\
+        %\code|screen/tmux| \> sessions persistantes \\
         \code|top| \> moniteur de processus \\
-        \code|htop| \> top amélioré (si installé) \\
+        \code|htop| \> top amélioré (si installé)
 
     \end{tabbing}
 
@@ -480,19 +501,24 @@
         \code|[p] --help| \> aide d'une commande \\
         \code|man [p]| \> manuel d'une commande \\
         \code|apropos [terme]| \> cherche dans les manuels \\
-        \code|whatis [p]| \> description commande \\
+        \code|whatis [p]| \> description commande
     \end{tabbing}
 
     \emph{Sections du manuel: 1~utilisateur, 2~syscalls, 3~lib, 4~spéciaux, 5~formats, 6~jeux, 7~divers, 8~admin.} (\code{man 3 printf})
 
     \section*{Gestion Réseau}
     \begin{tabbing}
-        aaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaa \= a \kill
         \code|ip a| \> liste adresses IP \\
         \code|ip r| \> table de routage \\
         \code|ping [hôte]| \> teste la connectivité \\
         \code|ss -tuln| \> sockets réseau \\
         \code|dig [hôte]| \> résolution DNS avancée \\
+        \code|nslookup [hôte]| \> résolution DNS simple \\
+        \code|traceroute [hôte]| \> trace la route \\
+        \code|netstat -tuln| \> sockets (ancien) \\
+        \code|mtr [hôte]| \> traceroute+ping continu \\
+        \code|arp -a| \> table ARP
     \end{tabbing}
 
     \section*{Internet}
@@ -510,7 +536,7 @@
             \codx{-I} en-têtes seulement,
             \codx{-d data} données POST,
             \codx{-H 'Hdr: v'} ajoute un en-tête}
-        \code|lynx [url]| \quad navigateur web en console \\
+        %\code|lynx [url]| \quad navigateur web en console \\
     \end{cmdblock}
 
     \section*{Git}
@@ -562,6 +588,17 @@
         \code|pipx install pkg| installe un outil globalement \\
     \end{tabbing}
 
+    \section*{Docker (conteneurs)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|docker ps| \> conteneurs actifs \\
+        \code|docker images| \> liste les images \\
+        \code|docker run [img]| \> lance un conteneur \\
+        \code|docker stop [id]| \> arrête un conteneur \\
+        \code|docker rm [id]| \> supprime un conteneur \\
+        \code|docker pull [img]| \> télécharge une image
+    \end{tabbing}
+
     \section*{Système}
 
     \begin{tabbing}
@@ -575,8 +612,20 @@
         \code|systemctl enable [srv]| \> active service \\
         \code|systemctl disable [srv]| \> désactive service \\
         \code|journalctl -xe| \> logs système \\
+        \code|journalctl -f| \> suit logs temps réel \\
         \code|timedatectl| \quad date, heure, fuseau horaire \\
-        \code|hostnamectl| \quad informations sur le système \\
+        \code|hostnamectl| \quad informations sur le système
+    \end{tabbing}
+
+    \section*{Planification (cron)}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|crontab -e| \> édite crontab utilisateur \\
+        \code|crontab -l| \> liste tâches planifiées \\
+        % \code|crontab -r| \> supprime crontab \\
+        \code|at 15:30| \> programme tâche unique \\
+        \code|atq| \> liste tâches at
+        % \code|atrm [id]| \> supprime tâche at \\
     \end{tabbing}
 
     \section*{Hardware}
@@ -589,6 +638,11 @@
         \code|df -h| \> espace disque \\
         \code|du -sh [f/d]| \> taille d'un fichier/répertoire \\
         \code|free -h| \> mémoire \\
+        \code|lshw| \> matériel détaillé \\
+        \code|lspci| \> périphériques PCI \\
+        \code|lsusb| \> périphériques USB \\
+        \code|dmidecode| \> infos BIOS/matériel \\
+        \code|sensors| \> températures/ventilateurs
     \end{tabbing}
 
     \section*{APT (Debian/Ubuntu)}
@@ -600,9 +654,9 @@
         \code|apt remove [pkg]| \> désinstalle un paquet \\
         \code|apt search [terme]| \> cherche un paquet \\
         \code|apt show [pkg]| \> informations sur un paquet \\
-        \code|apt autoremove| \> supprime dépendances inutiles \\
+        %\code|apt autoremove| \> supprime dépendances inutiles \\
         \code|dpkg -L [pkg]| \> liste fichiers d'un paquet \\
-        \code|dpkg -S [f]| \> quel paquet fournit ce fichier \\
+        \code|dpkg -S [f]| \> quel paquet fournit ce fichier
     \end{tabbing}
 
     \section*{Fun}
@@ -614,10 +668,67 @@
         \code|sl| \> locomotive à vapeur  \\
         \code|cmatrix| \> effet Matrix  \\
         \code|toilet "s"| \> texte ASCII art  \\
-        \code|lolcat| \> texte coloré  \\
+        \code|lolcat| \> texte coloré
     \end{tabbing}
 
-    \section*{Substituts modernes conseillés}
+    % \section*{Éditeurs de texte}
+    % \begin{cmdblock}
+    %     \code|nano [f]| \quad éditeur simple \\
+    %     \cmdopt{\keys{\ctrl + X} quitter, \keys{\ctrl + O} sauver,
+    %         \keys{\ctrl + W} chercher, \keys{\ctrl + K} couper ligne}
+    %     \code|vi/vim [f]| \quad éditeur vi/vim \\
+    %     \cmdopt{\keys{i} insertion, \keys{Esc} mode commande,
+    %         \codx{:w} sauver, \codx{:q} quitter, \codx{:wq} sauver+quitter,
+    %         \codx{:q!} quitter sans sauver, \codx{/text} chercher}
+    % \end{cmdblock}
+
+    % \section*{Performance système}
+    % \begin{tabbing}
+    %     aaaaaaaaaaaaaaaa \= a \kill
+    %     \code|iostat| \> statistiques E/S disques \\
+    %     \code|vmstat| \> statistiques virtuelles \\
+    %     \code|sar| \> rapports d'activité système \\
+    %     \code|nload| \> moniteur réseau temps réel \\
+    %     \code|iotop| \> top pour les E/S \\
+    %     \code|lsof| \> fichiers ouverts \\
+    % \end{tabbing}
+
+    % \section*{YUM/DNF (Red Hat/Fedora)}
+    % \begin{tabbing}
+    %     aaaaaaaaaaaaaaaa \= a \kill
+    %     \code|dnf update| \> met à jour les paquets \\
+    %     \code|dnf install [pkg]| \> installe un paquet \\
+    %     \code|dnf remove [pkg]| \> désinstalle un paquet \\
+    %     \code|dnf search [terme]| \> cherche un paquet \\
+    %     \code|dnf info [pkg]| \> infos sur un paquet \\
+    %     \code|dnf list installed| \> paquets installés \\
+    % \end{tabbing}
+
+    % \section*{Pacman (Arch Linux)}
+    % \begin{tabbing}
+    %     aaaaaaaaaaaaaaaa \= a \kill
+    %     \code|pacman -Syu| \> met à jour système \\
+    %     \code|pacman -S [pkg]| \> installe un paquet \\
+    %     \code|pacman -R [pkg]| \> désinstalle un paquet \\
+    %     \code|pacman -Ss [terme]| \> cherche un paquet \\
+    %     \code|pacman -Si [pkg]| \> infos sur un paquet \\
+    %     \code|pacman -Q| \> paquets installés \\
+    % \end{tabbing}
+
+
+
+    % \section*{Sécurité / Firewall}
+    % \begin{tabbing}
+    %     aaaaaaaaaaaaaaaa \= a \kill
+    %     \code|ufw status| \> statut firewall Ubuntu \\
+    %     \code|ufw enable| \> active le firewall \\
+    %     \code|ufw allow [port]| \> autorise un port \\
+    %     \code|firewall-cmd --list-all| \> config firewall \\
+    %     \code|iptables -L| \> règles iptables \\
+    %     \code|fail2ban-client status| \> statut fail2ban \\
+    % \end{tabbing}
+
+    \section*{Substituts modernes}
 
     \begin{tabularx}{\columnwidth}{lX}
         lsd          & Substitut de ls             \\
