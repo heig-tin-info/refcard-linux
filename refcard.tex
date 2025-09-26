@@ -149,14 +149,14 @@
 \begin{multicols}{4}
     \raggedbottom
 
-\begin{tabularx}{\columnwidth}{lX}
-    % \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} & 
-    \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/linux-logo.pdf}} &
-    \begin{center}
-  {\Large \bf Référence Linux / Unix} \\
-  version \revision \ -- \revisiondate \\
-    \end{center}
-\end{tabularx}
+    \begin{tabularx}{\columnwidth}{llX}
+        \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} &
+        \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/linux-logo.pdf}}  &
+        \begin{center}
+            {\Large \bf Référence Linux / Unix} \\
+            version \revision \ -- \revisiondate \\
+        \end{center}
+    \end{tabularx}
 
     \begin{raggedright}
         Carte de référence des commandes et utilitaires Unix-like courants. Les marqueurs suivants sont utilisés : \code{[f]} : nom de fichier,
@@ -165,25 +165,25 @@
         \code{"s"} : chaîne de caractères
     \end{raggedright}
 
-    \section*{Raccourcis clavier Bash}
+    \section*{Bash}
     \subsection*{Mouvements}
 
     \begin{tabbing}
-        aaaaaaaa \= a \kill
-        \keys{\ctrl + B} \> recule d'un caractère (\keys{\leftarrow})   \\
-        \keys{\ctrl + F} \> avance d'un caractère (\keys{\rightarrow})  \\
-        \keys{\ctrl + A} \> début de ligne (\keys{Home})                \\
-        \keys{\ctrl + E} \> fin de ligne (\keys{End})                   \\
-        \keys{\Alt + B}  \> recule d'un mot (\keys{\Alt + \leftarrow})  \\
-        \keys{\Alt + F}  \> avance d'un mot (\keys{\Alt + \rightarrow})
+        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        \keys{\ctrl + B} \> recule d'un char (\keys{\leftarrow})   \>
+        \keys{\ctrl + F} \> avance d'un char (\keys{\rightarrow})  \\
+        \keys{\ctrl + A} \> début ligne (\keys{Home})                \>
+        \keys{\ctrl + E} \> fin ligne (\keys{End})                   \\
+        \keys{\Alt + B}  \> recule mot (\keys{\Alt + \leftarrow})  \>
+        \keys{\Alt + F}  \> avance mot (\keys{\Alt + \rightarrow})
     \end{tabbing}
 
     \subsection*{Édition}
 
     \begin{tabbing}
-        aaaaaaaaa \= a \kill
-        \keys{\ctrl + H} \> comme backspace (\keys{\backspace})    \\
-        \keys{\ctrl + D} \> comme delete (\keys{\del})             \\
+        aaaaaaaa \= a \kill
+        \keys{\ctrl + H} \> backspace (\keys{\backspace})    \\
+        \keys{\ctrl + D} \> delete (\keys{\del})             \\
         \keys{\ctrl + U} \> coupe du début au curseur              \\
         \keys{\ctrl + K} \> coupe du curseur à la fin              \\
         \keys{\ctrl + W} \> coupe le mot avant le curseur          \\
@@ -204,65 +204,65 @@
 
     \subsection*{Contrôle / Appels système}
 
-    \begin{tabbing}
-        aaaaaaaaaaaa \= a \kill
+    \setlength{\columnseprule}{0pt}
 
-        \keys{\ctrl + C} \> interrompre (\emph{sigint})         \\
-        \keys{\ctrl + Z} \> suspendre (\emph{sigstp})           \\
-        \keys{\ctrl + L} \> effacer l'écran                     \\
+    \begin{tabbing}
+        aaaaaaa \= aaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        \keys{\ctrl + C} \> interrompre (\emph{sigint}) \> \keys{\ctrl + Z} \> suspendre (\emph{sigstp}) \\
+        \keys{\ctrl + L} \> effacer l'écran \>
         \keys{\ctrl + D} \> envoyer \emph{EOF} (ferme le shell)
     \end{tabbing}
-
-
 
     \subsection*{Historique / recherche}
 
     \begin{tabbing}
-        aaaaaaaaaaaa \= a \kill
-        \keys{\ctrl + R} \> recherche historique                \\
+        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        \keys{\ctrl + R} \> recherche historique                \>
         \keys{\ctrl + G} \> annuler la recherche                \\
-        \keys{\ctrl + P} \> commande précédente                 \\
+        \keys{\ctrl + P} \> commande précédente                 \>
         \keys{\ctrl + N} \> commande suivante                   \\
-        \keys{\ctrl + S} \> pause (débloquer: \keys{\ctrl + Q}) \\
-        \keys{\Alt + <}  \> début de l'historique               \\
+        \keys{\ctrl + S} \> pause                               \>
+        \keys{\ctrl + Q} \> reprise                             \\
+        \keys{\Alt + <}  \> début de l'historique               \>
         \keys{\Alt + >}  \> fin de l'historique                 \\
-        \keys{\Alt + P}  \> précédent dans l'historique         \\
+        \keys{\Alt + P}  \> précédent dans l'hist.         \>
         \keys{\Alt + N}  \> suivant dans l'historique
     \end{tabbing}
 
     \subsection*{Casse / mots}
 
     \begin{tabbing}
-        aaaaaaaaaaaa \= a \kill
-        \keys{\Alt + U} \> majuscules (mot après)        \\
+        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        \keys{\Alt + U} \> majuscules (mot après)        \>
         \keys{\Alt + L} \> minuscules (mot après)        \\
         \keys{\Alt + C} \> capitalise la première lettre
     \end{tabbing}
 
-    \section*{Sucres syntaxiques}
+    \subsection*{Sucres syntaxiques}
 
     \begin{tabbing}
-        aaaaaaaaaaaa \= a \kill
-        \code|~| \> identique à \codx{\$HOME} \\
+        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        \code|~| \> identique à \codx{\$HOME} \>
         \code|.| \> répertoire courant \\
-        \code|..| \> répertoire parent \\
+        \code|..| \> répertoire parent \>
         \code|!!| \> dernière commande \\
-        \code|!n| \> commande \#n de l'historique \\
-        \codx{\$?} \> code retour dernière commande \\
-        \codx{\$0} \> nom du script \\
-        \code{!*} \> arguments ancienne command \\
-        \code{^abc^123} \> substitution dans dernière cmd. \\
+        \code|!n| \> commande \#n de l'hist. \>
+        \codx{\$?} \> code retour last cmd. \\
+        \codx{\$0} \> nom du script \>
+        \code{!*} \> arguments ancienne cmd. \\
+        \code{^ab^12} \> subst. dans last cmd. \>
         \code{`cmd`} \> obsolète, préférer \codx{\$(cmd)} \\
-        \codx{\$(cmd)} \> substitution de commande \\
+        \codx{\$(cmd)} \> subst. de commande \>
         \codx{\${var}} \> rendu de variable \\
-        \code{{a,b,c}} \> expansion par alternatives \\
+        \code{{a,b,c}} \> exp. par alternatives \>
         \code{{1..5}} \> expansions de séquence \\
-        \codx{\$(cmd1; cmd2)} \> sous-coquille \\
-        \codx{\$(cmd \&)} \> arrière-plan (sous-coquille) \\
-        \codx{\$(( expr ))} \> arithmétique
+        \codx{\$(cmd1; cmd2)}  sous-coquille
+        \codx{\$(cmd \&)}  arrière-plan (sous-coquille) \\
+        \codx{\$(( expr ))} arithmétique (p.ex \codx{\$((i++))}) \\
+        \codx{diff <(cmd1) <(cmd2)} \quad compare sorties sans fichiers \\
     \end{tabbing}
 
-    \section*{Redirections / pipes}
+    \subsection*{Redirections / pipes}
     \begin{tabbing}
         aaaaaaaaa \= a \kill
         \code|[p] > [f]| \> stdout \textrightarrow{} fichier (écrase) \\
@@ -277,7 +277,7 @@
         \code{[p] |& [p]} \> pipe (stdout+stderr \textrightarrow{} stdin)
     \end{tabbing}
 
-    \section*{Exécution de commandes}
+    \subsection*{Exécution de commandes}
     \begin{tabbing}
         aaaaaaaaa \= a \kill
         \code|source [f]| \> exécute script dans contexte \\
@@ -285,6 +285,50 @@
         \code|sh -c "[p]"| \> exécute commande dans un shell
         %\code|[p] ; [p]| \> exécute commandes successivement \\
     \end{tabbing}
+
+    \subsection*{Boucles express}
+    \code|for f in *.log; do grep -H "ERR" "$f"; done| \\
+        \code|while read -r url; do curl -I "$url"; done < urls.txt| \\
+    \code{seq 1 5 | xargs -I{} echo ligne {}} \\
+    \code{find . -type f -print0 | xargs -0 -n1 -P4 sha256sum} (parallèle) \\
+
+    \subsection*{Globbing / motifs}
+    \begin{tabbing}
+        aaaaaaaaaa \= a \kill
+        \code|*.log| \> fichiers se terminant par .log \\
+        \code|file?.txt| \> un seul caractère \\
+        \code|[abc].txt| \> classe de caractères \\
+        \code|[^0-9]*| \> tout sauf chiffres (selon shell) \\
+        \code|**/*.py| \> récursif (bash \ge 4: \code{shopt -s globstar}) \\
+        \code|!(tmp)| \> négation (extglob: \code{shopt -s extglob}) \\
+    \end{tabbing}
+
+    \subsection*{Tests / conditions}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaaaaa \= a \kill
+        \code|[ -f [f] ]| \> fichier régulier \\
+        \code|[ -d [d] ]| \> répertoire \\
+        \code|[ -x [f] ]| \> exécutable \\
+        \code|[ -n "s" ]| \> chaîne non vide \\
+        \code|[ -z "s" ]| \> chaîne vide \\
+        \code|[ n1 -eq n2 ]| \> égalité numérique \\
+        \code|[ s1 = s2 ]| \> égalité chaîne \\
+        \code|test ...| \> identique à \code|[ ... ]| \\
+        \code|[[ ... ]]| \> tests étendus (globs/regex) \\
+        \code|if cmd; then ...; fi| \> condition sur le code retour \\
+        \code|cmd1 && cmd2| \> exécute cmd2 si cmd1 réussit \\
+        \code{cmd1 || cmd2} \> sinon \\
+    \end{tabbing}
+
+    \section*{Gestion utilisateurs \& groupes}
+    \begin{cmdblock}
+        \code|sudo adduser alice| \quad crée un utilisateur (Debian/Ubuntu) \\
+        \code|sudo usermod -aG sudo alice| \quad ajoute au groupe \\
+        \code|sudo passwd alice| \quad change le mot de passe \\
+        \code|sudo deluser alice| \quad supprime l'utilisateur \\
+        \code|sudo groupadd dev| \quad crée un groupe \\
+        \code|id alice| \quad UID/GIDs de alice \\
+    \end{cmdblock}
 
     \section*{Information utilisateur}
     \begin{tabbing}
@@ -336,12 +380,25 @@
         \code|ln -s [src] [dst]| \quad crée un lien symbolique \\
     \end{cmdblock}
 
-    \section*{Consultation de fichiers}
+    \section*{Texte}
+    \begin{tabbing}
+        aaaaaaaaaaaaa \= a \kill
+        \code|paste a b| \> fusionne lignes côte à côte \\
+        \code|join a b| \> jointure sur 1\iere\ colonne triée \\
+        \code|tac [f]| \> cat inversé (bas \textrightarrow{} haut) \\
+        \code|nl -ba [f]| \> numérote lignes \\
+        \code|fmt -w 72 [f]| \> reformate texte (largeur 72) \\
+        \code|fold -w 72 [f]| \> coupe lignes (largeur 72) \\
+        \code|strings [f]| \> extrait chaînes imprimables \\
+        \code|tr 'a-z' 'A-Z' < [f]| translate majuscules \\
+        \code|iconv -f enc1 -t enc2 [f]| convertit encodage \\
+    \end{tabbing}
 
+    \section*{Consultation de fichiers}
     \begin{cmdblock}
         \code|file [f]|\quad type du fichier\par
         \code|stat [f]|\quad infos détaillées\par
-        \code|wc [f]|\quad compte occurences\par
+        \code|wc [f]|\quad compte occurrences\par
         \cmdopt{\codx{-l} lignes, \codx{-w} mots, \codx{-c} caractères}
         \code{head [f]}\quad affiche premières lignes\par
         \cmdopt{\codx{-n N} N premières lignes}
@@ -528,10 +585,18 @@
         \code|arp -a| \> table ARP
     \end{tabbing}
 
+    \section*{SSH}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaaaaa \= a \kill
+        \code|ssh user@host| \> connexion SSH \\
+        \code|scp [src] [dst]| \> copie sécurisée \\
+        \code|ssh-keygen| \> génère une clé \\
+        \code|ssh-copy-id user@host| \> installe la clé sur hôte \\
+        \code|ssh -J bastion cible| \> ProxyJump (bastion) \\
+    \end{tabbing}
+
     \section*{Internet}
     \begin{cmdblock}
-        \code|ssh user@host| \quad connexion SSH \\
-        \code|scp [src] [dst]| \quad copie sécurisée \\
         \code|wget [url]| \quad télécharge un fichier \\
         \cmdopt{\codx{-O f} fichier de sortie,
             \codx{-c} reprendre, \codx{-q} silencieux,
@@ -548,12 +613,12 @@
 
     \section*{Git}
     \begin{tabbing}
-        aaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|git init| \> initialise un dépôt git \\
         \code|git status| \> statut du dépôt \\
         %\code|git remote add origin [url]| \> ajoute une origine \\
         \code|git remote -v| \> liste les origines \\
-        \code|git fetch| récupère les changements distants \\
+        \code|git fetch| \> récupère les changements distants \\
         \code|git pull| \> pull + merge \\
         \code|git push| \> pousse les changements \\
         \code|git clone [url]| \> clone un dépôt distant \\
@@ -562,6 +627,11 @@
         \code|git checkout [br]| \> change de branche \\
         \code|git commit -m "s"| \> crée un commit \\
         \code|git add [f]| \> ajoute un fichier au commit \\
+        \code|git switch -c br| \> crée \& bascule (nouveau) \\
+        \code|git restore --staged [f]| \> retire de l'index \\
+        \code|git stash -u| \> met de côté (inclut non suivis) \\
+        \code|git cherry -v main| \> commits non poussés \\
+        \code|git bisect start ...| \> recherche bogue binaire \\
         \code|git log| \> historique des commits \\
         \cmdopt{\codx{--oneline} résumé, \codx{--graph} graphe,
             \codx{--stat} stats, \codx{-p} diff}
@@ -597,13 +667,17 @@
 
     \section*{Docker (conteneurs)}
     \begin{tabbing}
-        aaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|docker ps| \> conteneurs actifs \\
         \code|docker images| \> liste les images \\
         \code|docker run [img]| \> lance un conteneur \\
         \code|docker stop [id]| \> arrête un conteneur \\
         \code|docker rm [id]| \> supprime un conteneur \\
-        \code|docker pull [img]| \> télécharge une image
+        \code|docker pull [img]| \> télécharge une image \\
+        \code|docker logs -f [id]| \> logs en direct \\
+        \code|docker build -t [nom] .| crée une image depuis Dockerfile \\
+        \code|docker exec -it [id] /bin/bash| shell dans conteneur \\
+        \codx{docker run -it -v\$(pwd):/data [img]} volume partagé \\
     \end{tabbing}
 
     \section*{Système}
@@ -634,7 +708,7 @@
         \code|atq| \> liste tâches at
         % \code|atrm [id]| \> supprime tâche at \\
     \end{tabbing}
-    
+
     \emph{Format crontab:} \codx{min heure jour mois jourSem commande} \\
     \emph{Exemples:} \codx{0 2 * * *} (2h), \codx{*/15 * * * *} (chaque 15min)
 
@@ -669,17 +743,7 @@
         \code|dpkg -S [f]| \> quel paquet fournit ce fichier
     \end{tabbing}
 
-    \section*{Fun}
 
-    \begin{tabbing}
-        aaaaaaaaaaaaaaa \= a \kill
-        \code|cowsay "s"| \> phylactere et vache \\
-        \code|fortune| \> citation aléatoire  \\
-        \code|sl| \> locomotive à vapeur  \\
-        \code|cmatrix| \> effet Matrix  \\
-        \code|toilet "s"| \> texte ASCII art  \\
-        \code|lolcat| \> texte coloré
-    \end{tabbing}
 
     \section*{Disques / systèmes de fichiers}
     \begin{cmdblock}
@@ -775,9 +839,26 @@
         \code|ufw allow [port]| \> autorise un port \\
         \code|ufw deny [port]| \> refuse un port \\
         \code|iptables -L| \> affiche règles iptables \\
+        \code|iptables -A INPUT -p tcp --dport [port] -j ACCEPT| Autorise \\
+        \code|iptables -A INPUT -p tcp --dport [port] -j DROP| Refuse \\
+        \code|iptables -t nat -A PREROUTING ... -j REDIRECT --to-port [port3]| \\
+
         \code|fail2ban-client status| \> statut fail2ban \\
         \code|lastlog| \> dernières connexions \\
         \code|sudo -l| \> droits sudo de l'utilisateur
+    \end{tabbing}
+
+
+    \section*{Fun}
+
+    \begin{tabbing}
+        aaaaaaaaaaaaaaa \= a \kill
+        \code|cowsay "s"| \> phylactère et vache \\
+        \code|fortune| \> citation aléatoire  \\
+        \code|sl| \> locomotive à vapeur  \\
+        \code|cmatrix| \> effet Matrix  \\
+        \code|toilet "s"| \> texte ASCII art  \\
+        \code|lolcat| \> texte coloré
     \end{tabbing}
 
     \section*{Substituts modernes}
