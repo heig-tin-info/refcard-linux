@@ -1,8 +1,11 @@
-\documentclass[9pt]{extarticle}
+%\documentclass[9pt]{extarticle}
+\documentclass{article}
+
 \usepackage[a4paper,landscape,margin=5mm]{geometry}
 \usepackage[french]{babel}
 \usepackage[most]{tcolorbox}
 \usepackage[os=win]{menukeys}
+\usepackage[fontsize=6.5pt]{scrextend}
 \usepackage{enumitem}
 \usepackage{environ}
 \usepackage{fontawesome}
@@ -146,13 +149,14 @@
 \begin{multicols}{4}
     \raggedbottom
 
-    \begin{tabularx}{\columnwidth}{lX}
-        \raisebox{-2em}{\includegraphics[height=5em]{assets/linux-logo.pdf}} &
-        \begin{raggedright}
-            {\Large \bf Linux / Unix} \\
-            HEIG-VD -- version \revision \ -- \revisiondate \\
-        \end{raggedright}
-    \end{tabularx}
+\begin{tabularx}{\columnwidth}{llX}
+    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} & \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/linux-logo.pdf}} &
+    \begin{center}
+  {\Large \bf Référence Linux / Unix} \\
+  version \revision \ -- \revisiondate \\
+    \end{center}
+\end{tabularx}
+
     \begin{raggedright}
         Carte de référence des commandes et utilitaires Unix-like courants. Les marqueurs suivants sont utilisés : \code{[f]} : nom de fichier,
         \code{[d]} : nom de répertoire,
