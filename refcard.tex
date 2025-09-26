@@ -149,8 +149,9 @@
 \begin{multicols}{4}
     \raggedbottom
 
-\begin{tabularx}{\columnwidth}{llX}
-    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} & \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/linux-logo.pdf}} &
+\begin{tabularx}{\columnwidth}{lX}
+    % \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} & 
+    \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/linux-logo.pdf}} &
     \begin{center}
   {\Large \bf Référence Linux / Unix} \\
   version \revision \ -- \revisiondate \\
@@ -353,6 +354,8 @@
         \code|diff [f1] [f2]| \quad comparaison ligne par ligne \\
         \code|cmp [f1] [f2]| \quad comparaison byte par byte \\
         \code|sha256sum [f]| \quad somme de contrôle SHA256 \\
+        \code|tree [d]| \quad arborescence (si installé) \\
+        \code|du -sh [f/d]| \quad taille fichier/répertoire \\
     \end{cmdblock}
 
     \section*{Variables d'environnement}
@@ -631,6 +634,9 @@
         \code|atq| \> liste tâches at
         % \code|atrm [id]| \> supprime tâche at \\
     \end{tabbing}
+    
+    \emph{Format crontab:} \codx{min heure jour mois jourSem commande} \\
+    \emph{Exemples:} \codx{0 2 * * *} (2h), \codx{*/15 * * * *} (chaque 15min)
 
     \section*{Hardware}
 
@@ -675,16 +681,30 @@
         \code|lolcat| \> texte coloré
     \end{tabbing}
 
-    % \section*{Éditeurs de texte}
-    % \begin{cmdblock}
-    %     \code|nano [f]| \quad éditeur simple \\
-    %     \cmdopt{\keys{\ctrl + X} quitter, \keys{\ctrl + O} sauver,
-    %         \keys{\ctrl + W} chercher, \keys{\ctrl + K} couper ligne}
-    %     \code|vi/vim [f]| \quad éditeur vi/vim \\
-    %     \cmdopt{\keys{i} insertion, \keys{Esc} mode commande,
-    %         \codx{:w} sauver, \codx{:q} quitter, \codx{:wq} sauver+quitter,
-    %         \codx{:q!} quitter sans sauver, \codx{/text} chercher}
-    % \end{cmdblock}
+    \section*{Disques / systèmes de fichiers}
+    \begin{cmdblock}
+        \code|mount [device] [mountpoint]| \quad monte un système de fichiers \\
+        \code|umount [mountpoint]| \quad démonte un système de fichiers \\
+        \code|lsblk -f| \quad liste disques avec systèmes de fichiers \\
+        \code|fdisk -l| \quad liste les partitions \\
+        \code|fsck [device]| \quad vérifie un système de fichiers \\
+        \cmdopt{\codx{-f} forcer, \codx{-y} répond oui automatiquement}
+        \code|mkfs.ext4 [device]| \quad crée système de fichiers ext4 \\
+        \code|rsync -av [src] [dst]| \quad synchronise répertoires \\
+        \cmdopt{\codx{-a} archive, \codx{-v} verbeux, \codx{-z} compression,
+            \codx{--delete} supprime fichiers destination}
+    \end{cmdblock}
+
+    \section*{Éditeurs de texte}
+    \begin{cmdblock}
+        \code|nano [f]| \quad éditeur simple \\
+        \cmdopt{\keys{\ctrl + X} quitter, \keys{\ctrl + O} sauver,
+            \keys{\ctrl + W} chercher, \keys{\ctrl + K} couper ligne}
+        \code|vi/vim [f]| \quad éditeur vi/vim \\
+        \cmdopt{\keys{i} insertion, \keys{Esc} mode commande,
+            \codx{:w} sauver, \codx{:q} quitter, \codx{:wq} sauver+quitter,
+            \codx{:q!} quitter sans sauver, \codx{/text} chercher}
+    \end{cmdblock}
 
     % \section*{Performance système}
     % \begin{tabbing}
@@ -731,6 +751,34 @@
     %     \code|iptables -L| \> règles iptables \\
     %     \code|fail2ban-client status| \> statut fail2ban \\
     % \end{tabbing}
+
+    \section*{Répertoires système importants}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \codx{/etc/} \> fichiers de configuration \\
+        \codx{/var/log/} \> fichiers de logs \\
+        \codx{/tmp/} \> fichiers temporaires \\
+        \codx{/usr/bin/} \> exécutables utilisateur \\
+        \codx{/usr/local/} \> programmes installés localement \\
+        \codx{/opt/} \> packages optionnels \\
+        \codx{/proc/} \> infos processus et noyau \\
+        \codx{/sys/} \> infos matériel système \\
+        \codx{~/.bashrc} \> config shell utilisateur \\
+        \codx{/etc/hosts} \> résolution de noms locale
+    \end{tabbing}
+
+    \section*{Sécurité / Pare-feu}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaa \= a \kill
+        \code|ufw status| \> statut pare-feu Ubuntu \\
+        \code|ufw enable| \> active le pare-feu \\
+        \code|ufw allow [port]| \> autorise un port \\
+        \code|ufw deny [port]| \> refuse un port \\
+        \code|iptables -L| \> affiche règles iptables \\
+        \code|fail2ban-client status| \> statut fail2ban \\
+        \code|lastlog| \> dernières connexions \\
+        \code|sudo -l| \> droits sudo de l'utilisateur
+    \end{tabbing}
 
     \section*{Substituts modernes}
 
