@@ -1,4 +1,4 @@
-zFROM alpine:3.20.2
+FROM alpine:3.20.2
 
 ARG TL_YEAR=2023
 ARG TL_SCHEME="scheme-minimal"
