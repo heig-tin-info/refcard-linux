@@ -19,6 +19,19 @@
 \usepackage{titlesec}
 \usepackage{xparse}
 
+\makeatletter
+\AtBeginDocument{%
+  % N'ajoute QUE la police; ne remplace pas le style entier
+  \tikzset{
+    tw@menus@base/.append style={font=\relsize{-0.5}\sffamily},
+    tw@roundedmenus@base/.append style={font=\relsize{-0.5}\sffamily},
+    tw@angularmenus@base/.append style={font=\relsize{-0.5}\sffamily},
+    tw@roundedkeys@base/.append style={font=\relsize{-0.5}\sffamily},
+    tw@shadowedroundedkeys@base/.append style={font=\relsize{-0.5}\sffamily},
+  }%
+}
+\makeatother
+
 \ifdefined\tinted
   \pagecolor{red!10!orange!10!white}
 \fi
@@ -35,8 +48,10 @@
 % \setmonofont{Inconsolata}
 \renewcommand{\familydefault}{\sfdefault}
 
+\setmonofont{Source Code Pro}[Scale=1.3]
+
 \lstset{
-  basicstyle=\ttfamily\footnotesize,
+  basicstyle=\ttfamily\scriptsize,
   columns=fullflexible,
   keepspaces=true,
   upquote=true,
@@ -56,9 +71,9 @@
     on line,
     colframe=black!60, colback=white,
     opacityback=0.9,
-    bottom=1.5pt, left=1.5pt, right=1.5pt, top=1.5pt,
-    boxrule=0.4pt, arc=2pt, boxsep=0.2pt,
-    fontupper=\ttfamily\footnotesize,
+    bottom=1.1pt, left=1.2pt, right=1.2pt, top=1.1pt,
+    boxrule=0.2pt, arc=2pt, boxsep=0.2pt,
+    fontupper=\ttfamily\scriptsize,
     before upper=\rule{0pt}{0.7em},
     tcbox raise base
   }
@@ -169,7 +184,7 @@
     \subsection*{Mouvements}
 
     \begin{tabbing}
-        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        aaaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
         \keys{\ctrl + B} \> recule d'un char (\keys{\leftarrow})   \>
         \keys{\ctrl + F} \> avance d'un char (\keys{\rightarrow})  \\
         \keys{\ctrl + A} \> début ligne (\keys{Home})                \>
@@ -181,7 +196,7 @@
     \subsection*{Édition}
 
     \begin{tabbing}
-        aaaaaaaa \= a \kill
+        aaaaaaaaaa \= a \kill
         \keys{\ctrl + H} \> backspace (\keys{\backspace})    \\
         \keys{\ctrl + D} \> delete (\keys{\del})             \\
         \keys{\ctrl + U} \> coupe du début au curseur              \\
@@ -196,7 +211,7 @@
     \subsection*{Exécution / complétion}
 
     \begin{tabbing}
-        aaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaa \= a \kill
         \keys{\ctrl + J}, \keys{\ctrl + M} exécuter (\keys{\return}) \\
         \keys{\ctrl + I} \> complétion (équivalent \keys{\tab})                           \\
         \keys{\tab}{}    \> auto-complétion
@@ -205,7 +220,7 @@
     \subsection*{Contrôle / Appels système}
 
     \begin{tabbing}
-        aaaaaaa \= aaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        aaaaaaaa \= aaaaaaaaaaaaaaaaa \= aaaaaaaa \= aaaaaaaaaaa \kill
         \keys{\ctrl + C} \> interrompre (\emph{sigint}) \> \keys{\ctrl + Z} \> suspendre (\emph{sigstp}) \\
         \keys{\ctrl + L} \> effacer l'écran \>
         \keys{\ctrl + D} \> envoyer \emph{EOF} (ferme le shell)
@@ -214,7 +229,7 @@
     \subsection*{Historique / recherche}
 
     \begin{tabbing}
-        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        aaaaaaaa \= aaaaaaaaaaaaaaaaaaaa \= aaaaaaaa \= aaaaaaaaaaa \kill
         \keys{\ctrl + R} \> recherche historique                \>
         \keys{\ctrl + G} \> annuler la recherche                \\
         \keys{\ctrl + P} \> commande précédente                 \>
@@ -224,7 +239,7 @@
         \keys{\Alt + <}  \> début de l'historique               \>
         \keys{\Alt + >}  \> fin de l'historique                 \\
         \keys{\Alt + P}  \> précédent dans l'hist.         \>
-        \keys{\Alt + N}  \> suivant dans l'historique
+        \keys{\Alt + N}  \> suivant dans l'hist.
     \end{tabbing}
 
     \subsection*{Casse / mots}
@@ -239,17 +254,17 @@
     \subsection*{Sucres syntaxiques}
 
     \begin{tabbing}
-        aaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        aaaaaaaa \= aaaaaaaaaaaaaaaaaaa \= aaaaaaaa \= aaaaaaaaaaa \kill
         \code|~| \> identique à \codx{\$HOME} \>
         \code|.| \> répertoire courant \\
         \code|..| \> répertoire parent \>
         \code|!!| \> dernière commande \\
-        \code|!n| \> commande \#n de l'hist. \>
+        \code|!n| \> cmd. \#n de l'hist. \>
         \codx{\$?} \> code retour last cmd. \\
         \codx{\$0} \> nom du script \>
         \code{!*} \> arguments ancienne cmd. \\
         \code{^ab^12} \> subst. dans last cmd. \>
-        \code{`cmd`} \> obsolète, préférer \codx{\$(cmd)} \\
+        \code{`cmd`} \> obsolète, comme \codx{\$(cmd)} \\
         \codx{\$(cmd)} \> subst. de commande \>
         \codx{\${var}} \> rendu de variable \\
         \code{{a,b,c}} \> exp. par alternatives \>
@@ -262,7 +277,7 @@
 
     \subsection*{Redirections / pipes}
     \begin{tabbing}
-        aaaaaaaaa \= a \kill
+        aaaaaaaaaaa \= a \kill
         \code|[p] > [f]| \> stdout \textrightarrow{} fichier (écrase) \\
         \code|[p] >> [f]| \> stdout \textrightarrow{} fichier (ajout) \\
         \code|[p] 2> [f]| \> stderr \textrightarrow{} fichier (écrase) \\
@@ -277,7 +292,7 @@
 
     \subsection*{Exécution de commandes}
     \begin{tabbing}
-        aaaaaaaaa \= a \kill
+        aaaaaaaaaaa \= a \kill
         \code|source [f]| \> exécute script dans contexte \\
         \code|./[p]| \> exécute programme dans rép. courant \\
         \code|sh -c "[p]"| \> exécute commande dans un shell
@@ -288,17 +303,17 @@
     \code|for f in *.log; do grep -H "ERR" "$f"; done| \\
         \code|while read -r url; do curl -I "$url"; done < urls.txt| \\
     \code{seq 1 5 | xargs -I{} echo ligne {}} \\
-    \code{find . -type f -print0 | xargs -0 -n1 -P4 sha256sum} (parallèle) \\
+    \code{find . -type f -print0 | xargs -0 -n1 -P4 sha256sum}
 
     \subsection*{Globbing / motifs}
     \begin{tabbing}
-        aaaaaaaaaa \= a \kill
+        aaaaaaaaaaaa \= a \kill
         \code|*.log| \> fichiers se terminant par .log \\
         \code|file?.txt| \> un seul caractère \\
         \code|[abc].txt| \> classe de caractères \\
         \code|[^0-9]*| \> tout sauf chiffres (selon shell) \\
         \code|**/*.py| \> récursif (bash \ge 4: \code{shopt -s globstar}) \\
-        \code|!(tmp)| \> négation (extglob: \code{shopt -s extglob}) \\
+        \code|!(tmp)| \> négation (extglob: \code{shopt -s extglob})
     \end{tabbing}
 
     \subsection*{Tests / conditions}
@@ -313,31 +328,32 @@
         \code|[ s1 = s2 ]| \> égalité chaîne \\
         \code|test ...| \> identique à \code|[ ... ]| \\
         \code|[[ ... ]]| \> tests étendus (globs/regex) \\
-        \code|if cmd; then ...; fi| \> condition sur le code retour \\
         \code|cmd1 && cmd2| \> exécute cmd2 si cmd1 réussit \\
         \code{cmd1 || cmd2} \> sinon \\
+        \code|if cmd; then ...; fi| condition sur le code retour
     \end{tabbing}
 
     \section*{Gestion utilisateurs \& groupes}
-    \begin{cmdblock}
-        \code|sudo adduser alice| \quad crée un utilisateur (Debian/Ubuntu) \\
-        \code|sudo usermod -aG sudo alice| \quad ajoute au groupe \\
-        \code|sudo passwd alice| \quad change le mot de passe \\
-        \code|sudo deluser alice| \quad supprime l'utilisateur \\
-        \code|sudo groupadd dev| \quad crée un groupe \\
-        \code|id alice| \quad UID/GIDs de alice \\
-    \end{cmdblock}
+    \begin{tabbing}
+        aaaaaaaaaaaaaaaaaaaaa \= a \kill
+        \code|sudo adduser alice| \> crée un utilisateur (Debian/Ubuntu) \\
+        \code|sudo passwd alice| \> change le mot de passe \\
+        \code|sudo deluser alice| \> supprime l'utilisateur \\
+        \code|sudo groupadd dev| \> crée un groupe \\
+        \code|id alice| \> UID/GIDs de alice \\
+        \code|sudo usermod -aG grp user| ajoute au groupe
+    \end{tabbing}
 
     \section*{Information utilisateur}
     \begin{tabbing}
-        aaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaa \= a \kill
         \code|uptime| \> temps écoulé depuis reboot \\
         \code|date| \> date et heure actuelles \\
         \code|cal| \> calendrier du mois en cours \\
         \code|whoami| \> nom de l'utilisateur courant \\
         \code|hostname| \> nom de la machine \\
         \code|arch| \> architecture matérielle \\
-        \code|lsb_release -a| \> infos distribution Linux \\
+        \code|lsb_release -a| \> infos distribution Linux
     \end{tabbing}
 
     \section*{Fichiers / répertoires}
@@ -375,7 +391,7 @@
             \codx{-f} force,
             \codx{-n} ne pas écraser,
             \codx{-v} verbeux}
-        \code|ln -s [src] [dst]| \quad crée un lien symbolique \\
+        \code|ln -s [src] [dst]| \quad crée un lien symbolique
     \end{cmdblock}
 
     \section*{Texte}
@@ -389,7 +405,7 @@
         \code|fold -w 72 [f]| \> coupe lignes (largeur 72) \\
         \code|strings [f]| \> extrait chaînes imprimables \\
         \code|tr 'a-z' 'A-Z' < [f]| translate majuscules \\
-        \code|iconv -f enc1 -t enc2 [f]| convertit encodage \\
+        \code|iconv -f enc1 -t enc2 [f]| convertit encodage
     \end{tabbing}
 
     \section*{Consultation de fichiers}
@@ -410,12 +426,12 @@
         \code|cmp [f1] [f2]| \quad comparaison byte par byte \\
         \code|sha256sum [f]| \quad somme de contrôle SHA256 \\
         \code|tree [d]| \quad arborescence (si installé) \\
-        \code|du -sh [f/d]| \quad taille fichier/répertoire \\
+        \code|du -sh [f/d]| \quad taille fichier/répertoire
     \end{cmdblock}
 
     \section*{Variables d'environnement}
     \begin{tabbing}
-        aaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaa \= a \kill
         \code|set| \> liste variables et fonctions \\
         \code|env| \> liste les variables d'env. \\
         \code|export VAR=[s]| \> crée/mod. variable d'env. \\
@@ -428,12 +444,12 @@
         \codx{\$USER} \> nom de l'utilisateur \\
         \codx{\$PS1} \> invite de commande \\
         \codx{\$PWD} \> répertoire courant \\
-        \codx{\$OLDPWD} \> répertoire précédent \\
+        \codx{\$OLDPWD} \> répertoire précédent
     \end{tabbing}
 
     \section*{Processus / jobs}
     \begin{tabbing}
-        aaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaa \= a \kill
         \code|[p]&| \> exécute en arrière-plan \\
         \code|jobs| \> liste les jobs en cours \\
         \code|wait [PID]| \> attend la fin d'un job \\
@@ -463,7 +479,7 @@
         \code|7z a archive.7z [f]| \quad crée archive .7z \\
         \code|7z x archive.7z| \quad extrait archive .7z \\
         \code|bsdtar -xf [f]| \quad extrait \\
-        \code|bsdtar -cf archive.tar [f]| \quad crée archive .tar \\
+        \code|bsdtar -cf archive.tar [f]| \quad crée archive .tar
     \end{cmdblock}
 
     \section*{Permissions / utilisateurs}
@@ -482,20 +498,21 @@
         \code|id| \quad informations sur l'utilisateur courant \\
         \code|groups| \quad groupes de l'utilisateur courant \\
         \code|passwd| \quad change le mot de passe \\
-        \code|last| \quad historique des connexions \\
+        \code|last| \quad historique des connexions
     \end{cmdblock}
 
     \textit{bits :} 1 x, 2 w, 4 r
 
     \section*{Raccourcis less / more / man}
-    \begin{cmdblock}
-        Espace: page suivante, \keys{b}: page précédente \\
-        \keys{\return}{}: ligne suivante, \keys{y}: ligne précédente \\
-        \keys{/}: rechercher, \keys{n}/\keys{N}: suivant/précédent \\
-        \keys{g}/\keys{G}: début/fin, \keys{q}: quitter \\
-        \keys{h}: aide, \keys{m}: marque-page \\
-        \keys{'}: aller au marque-page, \keys{`}: revenir \\
-    \end{cmdblock}
+    \begin{tabbing}
+        aaaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        \keys{Space} \> Espace: page suivante \>  \keys{b} \>  page précédente \\
+        \keys{\return}{} \>  ligne suivante \>  \keys{y} \>  ligne précédente \\
+        \keys{/} \>  rechercher \> \keys{n}/\keys{N} \>  suivant/précédent \\
+        \keys{g}/\keys{G} \>  début/fin \>  \keys{q} \>  quitter \\
+        \keys{h} \>  aide \>  \keys{m} \>  marque-page \\
+        \keys{'} \>  aller au marque-page \>  \keys{`} \>  revenir
+    \end{tabbing}
 
 
     \section*{Recherche}
@@ -519,7 +536,7 @@
             \codx{-type f/d} fichier/répertoire,
             \codx{-exec cmd \{\} \;} exécute cmd sur chaque fichier}
         \code|locate "s"| \quad cherche un fichier (base de données) \\
-        \code|which [p]| \quad chemin d'une commande \\
+        \code|which [p]| \quad chemin d'une commande
     \end{cmdblock}
 
     \section*{Remplacement}
@@ -558,7 +575,7 @@
 
     \section*{Aide}
     \begin{tabbing}
-        aaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaa \= a \kill
         \code|help [p]| \> aide interne bash \\
         \code|[p] --help| \> aide d'une commande \\
         \code|man [p]| \> manuel d'une commande \\
@@ -570,7 +587,7 @@
 
     \section*{Gestion Réseau}
     \begin{tabbing}
-        aaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaa \= a \kill
         \code|ip a| \> liste adresses IP \\
         \code|ip r| \> table de routage \\
         \code|ping [hôte]| \> teste la connectivité \\
@@ -585,12 +602,12 @@
 
     \section*{SSH}
     \begin{tabbing}
-        aaaaaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|ssh user@host| \> connexion SSH \\
         \code|scp [src] [dst]| \> copie sécurisée \\
         \code|ssh-keygen| \> génère une clé \\
         \code|ssh-copy-id user@host| \> installe la clé sur hôte \\
-        \code|ssh -J bastion cible| \> ProxyJump (bastion) \\
+        \code|ssh -J bastion cible| \> ProxyJump (bastion)
     \end{tabbing}
 
     \section*{Internet}
@@ -652,15 +669,15 @@
 
     \section*{Python}
     \begin{tabbing}
-        aaaaaaaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|python -mvenv venv| \> crée un virtual env. \\
         \code|source venv/bin/activate| \> active l'env. virtuel (bash) \\
         \codx{venv\textbackslash{}Scripts\textbackslash{}activate} \> même chose (PowerShell) \\
         \code|uv venv venv| \> même chose avec uv \\
         \code|deactivate| \> désactive l'env. virtuel \\
         \code|pip list| \> liste les paquets installés \\
-        \code|pip install pkg| installe un paquet dans l'env. \\
-        \code|pipx install pkg| installe un outil globalement \\
+        \code|pip install pkg| \> installe un paquet dans l'env. \\
+        \code|pipx install pkg| \> installe un outil globalement
     \end{tabbing}
 
     \section*{Docker (conteneurs)}
@@ -681,7 +698,7 @@
     \section*{Système}
 
     \begin{tabbing}
-        aaaaaaaaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|shutdown -h now| \> arrête le système \\
         \code|shutdown -r now| \> redémarre le système \\
         \code|systemctl status [srv]| \> statut d'un service \\
@@ -692,8 +709,8 @@
         \code|systemctl disable [srv]| \> désactive service \\
         \code|journalctl -xe| \> logs système \\
         \code|journalctl -f| \> suit logs temps réel \\
-        \code|timedatectl| \quad date, heure, fuseau horaire \\
-        \code|hostnamectl| \quad informations sur le système
+        \code|timedatectl| \> date, heure, fuseau horaire \\
+        \code|hostnamectl| \> informations sur le système
     \end{tabbing}
 
     \section*{Planification (cron)}
@@ -729,7 +746,7 @@
 
     \section*{APT (Debian/Ubuntu)}
     \begin{tabbing}
-        aaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|apt update| \> met à jour liste des paquets \\
         \code|apt upgrade| \> met à jour les paquets installés \\
         \code|apt install [pkg]| \> installe un paquet \\
@@ -831,7 +848,7 @@
 
     \section*{Sécurité / Pare-feu}
     \begin{tabbing}
-        aaaaaaaaaaaaaaaa \= a \kill
+        aaaaaaaaaaaaaaaaaaaa \= a \kill
         \code|ufw status| \> statut pare-feu Ubuntu \\
         \code|ufw enable| \> active le pare-feu \\
         \code|ufw allow [port]| \> autorise un port \\
@@ -839,9 +856,9 @@
         \code|iptables -L| \> affiche règles iptables \\
         \code|iptables -A INPUT -p tcp --dport [port] -j ACCEPT| Autorise \\
         \code|iptables -A INPUT -p tcp --dport [port] -j DROP| Refuse \\
-        \code|iptables -t nat -A PREROUTING ... -j REDIRECT --to-port [port3]| \\
+        \code|iptables -t nat -A PREROUTING ... -j REDIRECT --to-port p| \\
 
-        \code|fail2ban-client status| \> statut fail2ban \\
+        \code|fail2ban-client status| statut fail2ban \\
         \code|lastlog| \> dernières connexions \\
         \code|sudo -l| \> droits sudo de l'utilisateur
     \end{tabbing}
