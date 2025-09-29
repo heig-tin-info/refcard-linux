@@ -1,4 +1,3 @@
-%\documentclass[9pt]{extarticle}
 \documentclass{article}
 
 \usepackage[a4paper,landscape,margin=5mm]{geometry}
@@ -57,12 +56,12 @@
   upquote=true,
   breaklines=true,
   literate=*%
-    {[f]}{{\raisebox{-0.15ex}{\scriptsize\faFileO}}}3
-    {[fc]}{{\raisebox{-0.15ex}{\scriptsize\faFileCodeO}}}4
-    {[fa]}{{\raisebox{-0.15ex}{\scriptsize\faFileArchiveO}}}4
-    {[d]}{{\raisebox{-0.15ex}{\scriptsize\faFolderO}}}3
-    {[p]}{{\raisebox{-0.15ex}{\scriptsize\faFilePowerpointO}}}2
-    {[t]}{{\raisebox{-0.15ex}{\scriptsize\faHashtag}}}2
+    {[f]}{{\raisebox{0ex}{\scriptsize\faFileO}}}3
+    {[fc]}{{\raisebox{0ex}{\scriptsize\faFileCodeO}}}4
+    {[fa]}{{\raisebox{0ex}{\scriptsize\faFileArchiveO}}}4
+    {[d]}{{\raisebox{0ex}{\scriptsize\faFolderO}}}3
+    {[p]}{{\raisebox{0ex}{\scriptsize\faFilePowerpointO}}}2
+    {[t]}{{\raisebox{0ex}{\scriptsize\faHashtag}}}2
     {uu}{{test}}2
 }
 
@@ -110,15 +109,7 @@
 \titlespacing*{\subsection}{0pt}{0.1ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
 \titlespacing*{\subsubsection}{0pt}{0.1ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
 
-
 \pagenumbering{gobble} % pas de numéros de page
-
-
-% \newlength\mybaselinestretch
-% \mybaselinestretch=0pt plus 0.02pt\relax
-% \addtolength{\baselineskip}{\mybaselinestretch}
-
-
 
 \input{revision}
 
@@ -151,14 +142,6 @@
 \setlength{\columnseprule}{0.4pt}
 \setlength{\multicolsep}{0pt}
 
-% \clubpenalty=0            % orphelines (début de page)
-% \widowpenalty=0           % veuves (fin de page)
-% \displaywidowpenalty=0
-
-% \setlength{\premulticols}{0pt} % pas d'espace avant/après l'environnement
-% \setlength{\postmulticols}{0pt}
-% \setlength{\multicolsep}{0pt}
-
 \begin{document}
 \raggedcolumns
 \begin{multicols}{4}
@@ -184,7 +167,7 @@
     \subsection*{Mouvements}
 
     \begin{tabbing}
-        aaaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaa \= aaaaaaaaaaa \kill
+        aaaaaaaa \= aaaaaaaaaaaaaaaaaaaaa \= aaaaaaaa \= aaaaaaaaaaaa \kill
         \keys{\ctrl + B} \> recule d'un char (\keys{\leftarrow})   \>
         \keys{\ctrl + F} \> avance d'un char (\keys{\rightarrow})  \\
         \keys{\ctrl + A} \> début ligne (\keys{Home})                \>
@@ -295,7 +278,9 @@
         aaaaaaaaaaa \= a \kill
         \code|source [f]| \> exécute script dans contexte \\
         \code|./[p]| \> exécute programme dans rép. courant \\
-        \code|sh -c "[p]"| \> exécute commande dans un shell
+        \code|sh -c "[p]"| \> exécute commande dans un shell \\
+        \code|#!/usr/bin/env bash| \quad shebang pour bash \\
+
         %\code|[p] ; [p]| \> exécute commandes successivement \\
     \end{tabbing}
 
@@ -487,7 +472,7 @@
     \begin{cmdblock}
         \code|chmod| \quad modifie les permissions \\
         \cmdopt{\codx{u} user, \codx{g} group, \codx{o} others, \codx{a} all,
-            \codx{+} add, \codx{-} remove, \codx{=} set exactly}
+            \codx{+} add, \codx{-} remove, \codx{=} set exactly, \codx{chmod 4755 f} (suid), \codx{chmod 2755 d} (setgid)}
         \code|chown| \quad change le propriétaire \\
         \code|chgrp| \quad change le groupe \\
         \code|umask| \quad masque de création de fichiers \\
@@ -501,7 +486,7 @@
         \code|last| \quad historique des connexions
     \end{cmdblock}
 
-    \textit{bits :} 1 x, 2 w, 4 r
+    \textit{bits :} 1 x, 2 w, 4 r.
 
     \section*{Raccourcis less / more / man}
     \begin{tabbing}
@@ -627,30 +612,38 @@
     \end{cmdblock}
 
     \section*{Git}
-    \begin{tabbing}
-        aaaaaaaaaaaaaaaaaaaaa \= a \kill
-        \code|git init| \> initialise un dépôt git \\
-        \code|git status| \> statut du dépôt \\
-        %\code|git remote add origin [url]| \> ajoute une origine \\
-        \code|git remote -v| \> liste les origines \\
-        \code|git fetch| \> récupère les changements distants \\
-        \code|git pull| \> pull + merge \\
-        \code|git push| \> pousse les changements \\
-        \code|git clone [url]| \> clone un dépôt distant \\
-        \code|git branch| \> liste les branches \\
-        \code|git branch [br]| \> crée une branche \\
-        \code|git checkout [br]| \> change de branche \\
-        \code|git commit -m "s"| \> crée un commit \\
-        \code|git add [f]| \> ajoute un fichier au commit \\
-        \code|git switch -c br| \> crée \& bascule (nouveau) \\
-        \code|git restore --staged [f]| \> retire de l'index \\
-        \code|git stash -u| \> met de côté (inclut non suivis) \\
-        \code|git cherry -v main| \> commits non poussés \\
-        \code|git bisect start ...| \> recherche bogue binaire \\
-        \code|git log| \> historique des commits \\
+    \begin{cmdblock}
+        \code|git init| \quad initialise un dépôt git \\
+        \code|git status| \quad statut du dépôt \\
+        \code|git remote add origin [url]| \quad ajoute une origine \\
+        \code|git remote -v| \quad liste les origines \\
+        \code|git fetch| \quad récupère les changements distants \\
+        \code|git pull| \quad pull + merge \\
+        \cmdopt{
+            \codx{--rebase} rebase au lieu de merge}
+        \code|git reset [br]| \quad réinitialise la branche courante \\
+        \cmdopt{\codx{--hard} réinitialise aussi les fichiers,
+            \codx{--soft} garde les fichiers modifiés}
+        \code|git push| \quad pousse les changements \\
+        \code|git clone [url]| \quad clone un dépôt distant \\
+        \code|git branch| \quad liste les branches \\
+        \code|git branch [br]| \quad crée une branche \\
+        \code|git checkout [br]| \quad change de branche \\
+        \code|git commit -m "s"| \quad crée un commit \\
+        \cmdopt{\codx{-a} ajoute tous les fichiers modifiés,
+            \codx{-m "msg"} message du commit,
+            \codx{--amend} modifie le dernier commit}
+            \codx{--allow-empty} commit même si rien à committer \\
+        \code|git add [f]| \quad ajoute un fichier au commit \\
+        \code|git switch -c br| \quad crée \& bascule (nouveau) \\
+        \code|git restore --staged [f]| \quad retire de l'index \\
+        \code|git stash -u| \quad met de côté (inclut non suivis) \\
+        \code|git cherry -v main| \quad commits non poussés \\
+        \code|git bisect start ...| \quad recherche bogue binaire \\
+        \code|git log| \quad historique des commits \\
         \cmdopt{\codx{--oneline} résumé, \codx{--graph} graphe,
             \codx{--stat} stats, \codx{-p} diff}
-    \end{tabbing}
+    \end{cmdblock}
 
     \section*{GCC}
     \begin{cmdblock}
@@ -667,6 +660,35 @@
             \codx{-c} compiler seulement (pas linker)}
     \end{cmdblock}
 
+    \section*{Débug/Profiler}
+    \begin{cmdblock}
+        \code strace -f -o out.log [p]| Trace les appels système \\
+        \cmdopt{\codx{-f} suit les processus fils,
+            \codx{-e trace=desc} trace seulement les descripteurs,
+            \codx{-e trace=file} trace seulement les accès fichiers,
+            \codx{-e trace=network} trace seulement le réseau,
+            \codx{-p PID} attache à un processus existant,
+            \codx{-c} résumé des appels}
+        \code|ltrace -f -o out.log [p]| Trace les appels de fonctions \\
+        \cmdopt{\codx{-f} suit les processus fils,
+            \codx{-p PID} attache à un processus existant,
+            \codx{-c} résumé des appels}
+        \code|gdb [p]| \quad débugge un programme \\
+        \cmdopt{\codx{-q} silencieux,
+            \codx{run} lance le programme,
+            \codx{break n/fonction} met un point d'arrêt,
+            \codx{next} ligne suivante (sans entrer dans les fonctions),
+            \codx{step} ligne suivante (en entrant dans les fonctions),
+            \codx{continue} continue jusqu'au prochain point d'arrêt,
+            \codx{print var} affiche la variable,
+            \codx{backtrace} pile d'appels,
+            \codx{list} affiche le code source,
+            \codx{quit} quitte gdb}
+        \code|valgrind --leak-check=full [p]| \quad détecte fuites mémoire \\
+        \code|perf stat [p]| \quad statistiques d'exécution \\
+        \code|perf record [p]| \quad enregistre les échantillons \\
+        \code|perf report| \quad affiche le rapport
+    \end{cmdblock}
     \section*{Python}
     \begin{tabbing}
         aaaaaaaaaaaaaaaaaaaaaaaaa \= a \kill
